@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicApp.API", "MusicApp.API\MusicApp.API.csproj", "{C577A4BC-3A91-4C7D-BDE0-8E361C4AE78C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicApp.Core", "MusicApp.Core\MusicApp.Core.csproj", "{7546C7C4-350E-44BE-8164-8B5B935A7EFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicApp.Services", "MusicApp.Services\MusicApp.Services.csproj", "{52B5520D-028C-415B-933F-26FF47EB0805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicApp.Data", "MusicApp.Data\MusicApp.Data.csproj", "{D1E2D3A7-14D7-4AA2-BB11-9BCEB6693964}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +19,17 @@ Global
 		{C577A4BC-3A91-4C7D-BDE0-8E361C4AE78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C577A4BC-3A91-4C7D-BDE0-8E361C4AE78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C577A4BC-3A91-4C7D-BDE0-8E361C4AE78C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7546C7C4-350E-44BE-8164-8B5B935A7EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7546C7C4-350E-44BE-8164-8B5B935A7EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7546C7C4-350E-44BE-8164-8B5B935A7EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7546C7C4-350E-44BE-8164-8B5B935A7EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52B5520D-028C-415B-933F-26FF47EB0805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52B5520D-028C-415B-933F-26FF47EB0805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52B5520D-028C-415B-933F-26FF47EB0805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52B5520D-028C-415B-933F-26FF47EB0805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E2D3A7-14D7-4AA2-BB11-9BCEB6693964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E2D3A7-14D7-4AA2-BB11-9BCEB6693964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E2D3A7-14D7-4AA2-BB11-9BCEB6693964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E2D3A7-14D7-4AA2-BB11-9BCEB6693964}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
