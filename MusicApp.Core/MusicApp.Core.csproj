@@ -9,6 +9,7 @@
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="Mapping\" />
+    <Folder Include="Repositories\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Class1.cs" />
