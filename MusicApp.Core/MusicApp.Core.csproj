@@ -10,4 +10,7 @@
     <Folder Include="Services\" />
     <Folder Include="Mapping\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
 </Project>
