@@ -21,4 +21,10 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Options\" />
+    <Folder Include="Installers\" />
+    <Folder Include="Installers\Interfaces\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
 </Project>
