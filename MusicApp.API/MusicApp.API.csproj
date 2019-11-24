@@ -26,5 +26,9 @@
     <Folder Include="Installers\" />
     <Folder Include="Installers\Interfaces\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Contracts\V1\" />
+    <Folder Include="Contracts\V1\Requests\" />
+    <Folder Include="Contracts\V1\Responses\" />
   </ItemGroup>
 </Project>
