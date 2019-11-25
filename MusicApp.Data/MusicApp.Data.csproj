@@ -22,5 +22,8 @@
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Shared\" />
+    <Folder Include="Configurations\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Domain\" />
   </ItemGroup>
 </Project>
