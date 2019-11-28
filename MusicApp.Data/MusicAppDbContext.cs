@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using MusicApp.Data.Configurations;
+//using MusicApp.Data.Configurations;
 using MusicApp.Data.Domain;
 
 namespace MusicApp.Data
@@ -19,14 +19,21 @@ namespace MusicApp.Data
             : base(options)
         { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder
-                .ApplyConfiguration(new ArtistConfiguration());
-            builder
-                .ApplyConfiguration(new AlbumConfiguration());
-            builder
-                .ApplyConfiguration(new SongConfiguration());
+            // Fluent API model configuration below. Some things can only be configured through Fluent API.
+            // Check Documention for these scenarios such as indexes
+
+            // e.g
+            //...
+            //...
+
+            //modelBuilder
+            //    .ApplyConfiguration(new ArtistConfiguration());
+            //modelBuilder
+            //    .ApplyConfiguration(new AlbumConfiguration());
+            //modelBuilder
+            //    .ApplyConfiguration(new SongConfiguration());
         }
         
 

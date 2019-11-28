@@ -1,9 +1,10 @@
 ﻿using System;
+
 namespace MusicApp.Data.Domain
 {
     public class Song
     {
-        public int Id { get; set; }
+        public int SongId { get; set; }
 
         public int Name { get; set; }
 

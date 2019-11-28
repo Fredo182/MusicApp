@@ -10,11 +10,19 @@ namespace MusicApp.Data.Configurations
         public void Configure(EntityTypeBuilder<Artist> builder)
         {
             builder
-                .HasKey(a => a.Id);
+                .HasKey(a => a.ArtistId);
 
             builder
-                .Property(a => a.Id)
+                .Property(a => a.ArtistId)
                 .UseIdentityColumn();
+
+            builder
+                .Property(a => a.ArtistId)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .HasIndex(a => a.Name)
+                .IsUnique();
 
             builder
                 .Property(a => a.Name)

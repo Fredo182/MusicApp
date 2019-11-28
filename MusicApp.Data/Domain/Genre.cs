@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace MusicApp.Data.Domain
 {
-    public class Artist
+    public class Genre
     {
-        public int ArtistId { get; set; }
+        public int GenreId { get; set; }
 
         public string Name { get; set; }
 
-        public virtual List<Album> Albums { get; set; }
+        public List<ArtistGenre> ArtistGenres { get; set; }
     }
 }

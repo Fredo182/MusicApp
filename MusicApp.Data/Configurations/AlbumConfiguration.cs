@@ -10,12 +10,20 @@ namespace MusicApp.Data.Configurations
         public void Configure(EntityTypeBuilder<Album> builder)
         {
             builder
-                .HasKey(a => a.Id);
+                .HasKey(a => a.AlbumId);
 
             builder
-                .Property(a => a.Id)
+                .Property(a => a.AlbumId)
                 .UseIdentityColumn();
 
+            builder
+                .Property(a => a.AlbumId)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .HasIndex(a => new { a.ArtistId, a.Name })
+                .IsUnique();
+            
             builder
                 .Property(a => a.Name)
                 .IsRequired()
@@ -24,7 +32,9 @@ namespace MusicApp.Data.Configurations
             builder
                 .HasOne(a => a.Artist)
                 .WithMany(ar => ar.Albums)
-                .HasForeignKey(a => a.ArtistId);
+                .HasForeignKey(a => a.ArtistId)
+                .IsRequired();
+                
 
             builder
                 .ToTable("Albums");
