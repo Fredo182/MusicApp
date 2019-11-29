@@ -3,6 +3,8 @@ namespace MusicApp.Services.Models
 {
     public class ArtistGenreModel
     {
+        public int ArtistGenreId { get; set; }
+
         public int ArtistId { get; set; }
 
         public ArtistModel Artist { get; set; }

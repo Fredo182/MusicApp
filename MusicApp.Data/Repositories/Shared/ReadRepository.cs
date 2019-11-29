@@ -34,7 +34,7 @@ namespace MusicApp.Data.Repositories.Shared
                 return await query.ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(object id)
+        public async Task<TEntity> GetByIdAsync(params object[] id)
         {
             return await dbSet.FindAsync(id);
         }

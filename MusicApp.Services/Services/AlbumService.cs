@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using MusicApp.Data.Domain;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
@@ -18,49 +19,64 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public Task<AlbumModel> CreateAlbum(AlbumModel album)
+        public async Task<AlbumModel> CreateAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<AlbumModel, Album>(album);
+            a = await _unitOfWork.Albums.AddAsync(a);
+            return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public Task<IEnumerable<AlbumModel>> CreateAlbums(IEnumerable<AlbumModel> albums)
+        public async Task<IEnumerable<AlbumModel>> CreateAlbums(IEnumerable<AlbumModel> albums)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
+            a = await _unitOfWork.Albums.AddRangeAsync(a);
+            return _mapper.Map<IEnumerable<Album>, IEnumerable<AlbumModel>>(a);
         }
 
         public void DeleteAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<AlbumModel, Album>(album);
+            _unitOfWork.Albums.Delete(a);
         }
 
         public void DeleteAlbums(IEnumerable<AlbumModel> albums)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
+            _unitOfWork.Albums.DeleteRange(a);
         }
 
-        public Task<AlbumModel> GetAlbum(AlbumModel album)
+        public async Task<AlbumModel> GetAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            //TODO: This one needs to be updated to use filtering
+            var a = _mapper.Map<AlbumModel, Album>(album);
+            a = await _unitOfWork.Albums.GetByIdAsync(a.AlbumId);
+            return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public Task<AlbumModel> GetAlbumById(int id)
+        public async Task<AlbumModel> GetAlbumById(int id)
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.Albums.GetByIdAsync(id);
+            return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public Task<IEnumerable<AlbumModel>> GetAllAlbums()
+        public async Task<IEnumerable<AlbumModel>> GetAllAlbums()
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.Albums.GetAsync();
+            return _mapper.Map<IEnumerable<Album>, IEnumerable<AlbumModel>>(a);
         }
 
-        public Task<AlbumModel> UpdateAlbum(AlbumModel album)
+        public AlbumModel UpdateAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<AlbumModel, Album>(album);
+            a = _unitOfWork.Albums.Update(a);
+            return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public Task<IEnumerable<AlbumModel>> UpdateAlbums(IEnumerable<AlbumModel> albums)
+        public IEnumerable<AlbumModel> UpdateAlbums(IEnumerable<AlbumModel> albums)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
+            a = _unitOfWork.Albums.UpdateRange(a);
+            return _mapper.Map<IEnumerable<Album>, IEnumerable<AlbumModel>>(a);
         }
     }
 }

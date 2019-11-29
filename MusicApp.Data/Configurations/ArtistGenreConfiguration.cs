@@ -9,8 +9,17 @@ namespace MusicApp.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ArtistGenre> builder)
         {
+
             builder
-                .HasKey(ag => new { ag.ArtistId, ag.GenreId });
+                .HasKey(a => a.ArtistGenreId);
+
+            builder
+                .Property(a => a.ArtistGenreId)
+                .UseIdentityColumn();
+
+            builder
+                .Property(a => a.ArtistGenreId)
+                .ValueGeneratedOnAdd();
 
             builder
                 .HasOne(ag => ag.Artist)

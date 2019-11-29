@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using MusicApp.Data.Domain;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
@@ -18,49 +19,64 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public Task<ArtistGenreModel> CreateArtistGenre(ArtistGenreModel artistGenre)
+        public async Task<ArtistGenreModel> CreateArtistGenre(ArtistGenreModel artistGenre)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
+            a = await _unitOfWork.ArtistGenres.AddAsync(a);
+            return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public Task<IEnumerable<ArtistGenreModel>> CreateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
+        public async Task<IEnumerable<ArtistGenreModel>> CreateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
+            a = await _unitOfWork.ArtistGenres.AddRangeAsync(a);
+            return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
 
         public void DeleteArtistGenre(ArtistGenreModel artistGenre)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
+            _unitOfWork.ArtistGenres.Delete(a);
         }
 
         public void DeleteArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
+            _unitOfWork.ArtistGenres.DeleteRange(a);
         }
 
-        public Task<IEnumerable<ArtistGenreModel>> GetAllAlbums()
+        public async Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenres()
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.ArtistGenres.GetAsync();
+            return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
 
-        public Task<ArtistGenreModel> GetArtistGenre(ArtistGenreModel artistGenre)
+        public async Task<ArtistGenreModel> GetArtistGenre(ArtistGenreModel artistGenre)
         {
-            throw new NotImplementedException();
+            //TODO: This one needs to be updated to use filtering
+            var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
+            a = await _unitOfWork.ArtistGenres.GetByIdAsync(a.ArtistGenreId);
+            return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public Task<ArtistGenreModel> GetArtistGenreById(int id)
+        public async Task<ArtistGenreModel> GetArtistGenreById(int id)
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.ArtistGenres.GetByIdAsync(id);
+            return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public Task<ArtistGenreModel> UpdateArtistGenre(ArtistGenreModel artistGenre)
+        public ArtistGenreModel UpdateArtistGenre(ArtistGenreModel artistGenre)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
+            a = _unitOfWork.ArtistGenres.Update(a);
+            return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
+        public IEnumerable<ArtistGenreModel> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
+            a = _unitOfWork.ArtistGenres.UpdateRange(a);
+            return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
     }
 }

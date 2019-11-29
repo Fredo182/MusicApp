@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using MusicApp.Data.Domain;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
@@ -18,49 +19,64 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public Task<GenreModel> CreateGenre(GenreModel genre)
+        public async Task<GenreModel> CreateGenre(GenreModel genre)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<GenreModel, Genre>(genre);
+            g = await _unitOfWork.Genres.AddAsync(g);
+            return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public Task<IEnumerable<GenreModel>> CreateGenres(IEnumerable<GenreModel> genres)
+        public async Task<IEnumerable<GenreModel>> CreateGenres(IEnumerable<GenreModel> genres)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
+            g = await _unitOfWork.Genres.AddRangeAsync(g);
+            return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
         public void DeleteGenre(GenreModel genre)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<GenreModel, Genre>(genre);
+            _unitOfWork.Genres.Delete(g);
         }
 
         public void DeleteGenres(IEnumerable<GenreModel> genres)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
+            _unitOfWork.Genres.DeleteRange(g);
         }
 
-        public Task<IEnumerable<GenreModel>> GetAllGenres()
+        public async Task<IEnumerable<GenreModel>> GetAllGenres()
         {
-            throw new NotImplementedException();
+            var g = await _unitOfWork.Genres.GetAsync();
+            return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
-        public Task<GenreModel> GetGenre(GenreModel genre)
+        public async Task<GenreModel> GetGenre(GenreModel genre)
         {
-            throw new NotImplementedException();
+            //TODO: This one needs to be updated to use filtering
+            var g = _mapper.Map<GenreModel, Genre>(genre);
+            g = await _unitOfWork.Genres.GetByIdAsync(g.GenreId);
+            return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public Task<GenreModel> GetGenreById(int id)
+        public async Task<GenreModel> GetGenreById(int id)
         {
-            throw new NotImplementedException();
+            var g = await _unitOfWork.Genres.GetByIdAsync(id);
+            return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public Task<GenreModel> UpdateGenre(GenreModel genre)
+        public GenreModel UpdateGenre(GenreModel genre)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<GenreModel, Genre>(genre);
+            g = _unitOfWork.Genres.Update(g);
+            return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public Task<IEnumerable<GenreModel>> UpdateGenres(IEnumerable<GenreModel> genres)
+        public IEnumerable<GenreModel> UpdateGenres(IEnumerable<GenreModel> genres)
         {
-            throw new NotImplementedException();
+            var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
+            g = _unitOfWork.Genres.UpdateRange(g);
+            return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
     }
 }

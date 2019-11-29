@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using MusicApp.Data.Domain;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
@@ -18,49 +19,64 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public Task<ArtistModel> CreateArtist(ArtistModel artist)
+        public async Task<ArtistModel> CreateArtist(ArtistModel artist)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistModel, Artist>(artist);
+            a = await _unitOfWork.Artists.AddAsync(a);
+            return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public Task<IEnumerable<ArtistModel>> CreateArtists(IEnumerable<ArtistModel> artists)
+        public async Task<IEnumerable<ArtistModel>> CreateArtists(IEnumerable<ArtistModel> artists)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
+            a = await _unitOfWork.Artists.AddRangeAsync(a);
+            return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
 
         public void DeleteArtist(ArtistModel artist)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistModel, Artist>(artist);
+            _unitOfWork.Artists.Delete(a);
         }
 
         public void DeleteArtists(IEnumerable<ArtistModel> artists)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
+            _unitOfWork.Artists.DeleteRange(a);
         }
 
-        public Task<IEnumerable<ArtistModel>> GetAllArtists()
+        public async Task<IEnumerable<ArtistModel>> GetAllArtists()
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.Artists.GetAsync();
+            return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
 
-        public Task<ArtistModel> GetArtist(ArtistModel artist)
+        public async Task<ArtistModel> GetArtist(ArtistModel artist)
         {
-            throw new NotImplementedException();
+            //TODO: This one needs to be updated to use filtering
+            var a = _mapper.Map<ArtistModel, Artist>(artist);
+            a = await _unitOfWork.Artists.GetByIdAsync(a.ArtistId);
+            return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public Task<ArtistModel> GetArtistById(int id)
+        public async Task<ArtistModel> GetArtistById(int id)
         {
-            throw new NotImplementedException();
+            var a = await _unitOfWork.Artists.GetByIdAsync(id);
+            return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public Task<ArtistModel> UpdateArtist(ArtistModel artist)
+        public ArtistModel UpdateArtist(ArtistModel artist)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<ArtistModel, Artist>(artist);
+            a = _unitOfWork.Artists.Update(a);
+            return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public Task<IEnumerable<ArtistModel>> UpdateArtists(IEnumerable<ArtistModel> artist)
+        public IEnumerable<ArtistModel> UpdateArtists(IEnumerable<ArtistModel> artists)
         {
-            throw new NotImplementedException();
+            var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
+            a = _unitOfWork.Artists.UpdateRange(a);
+            return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
     }
 }

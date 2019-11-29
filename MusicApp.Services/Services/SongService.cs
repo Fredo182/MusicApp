@@ -65,14 +65,18 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Song, SongModel>(s);
         }
 
-        public Task<SongModel> UpdateSong(SongModel song)
+        public SongModel UpdateSong(SongModel song)
         {
-            throw new NotImplementedException();
+            var s = _mapper.Map<SongModel, Song>(song);
+            s = _unitOfWork.Songs.Update(s);
+            return _mapper.Map<Song, SongModel>(s);
         }
 
-        public Task<IEnumerable<SongModel>> UpdateSongs(IEnumerable<SongModel> songs)
+        public IEnumerable<SongModel> UpdateSongs(IEnumerable<SongModel> songs)
         {
-            throw new NotImplementedException();
+            var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
+            s = _unitOfWork.Songs.UpdateRange(s);
+            return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
         }
 
     }

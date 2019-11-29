@@ -17,8 +17,8 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<GenreModel>> GetAllGenres();
 
         // UPDATE
-        Task<GenreModel> UpdateGenre(GenreModel genre);
-        Task<IEnumerable<GenreModel>> UpdateGenres(IEnumerable<GenreModel> genres);
+        GenreModel UpdateGenre(GenreModel genre);
+        IEnumerable<GenreModel> UpdateGenres(IEnumerable<GenreModel> genres);
 
         // DELETE
         void DeleteGenre(GenreModel genre);

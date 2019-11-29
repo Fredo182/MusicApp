@@ -14,11 +14,11 @@ namespace MusicApp.Services.Services.Interfaces
         // READ
         Task<ArtistGenreModel> GetArtistGenreById(int id);
         Task<ArtistGenreModel> GetArtistGenre(ArtistGenreModel artistGenre);
-        Task<IEnumerable<ArtistGenreModel>> GetAllAlbums();
+        Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenres();
 
         // UPDATE
-        Task<ArtistGenreModel> UpdateArtistGenre(ArtistGenreModel artistGenre);
-        Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
+        ArtistGenreModel UpdateArtistGenre(ArtistGenreModel artistGenre);
+        IEnumerable<ArtistGenreModel> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
 
         // DELETE
         void DeleteArtistGenre(ArtistGenreModel artistGenre);

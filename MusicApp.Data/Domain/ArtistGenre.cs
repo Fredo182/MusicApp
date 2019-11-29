@@ -3,6 +3,8 @@ namespace MusicApp.Data.Domain
 {
     public class ArtistGenre
     {
+        public int ArtistGenreId { get; set; }
+
         public int ArtistId { get; set; }
 
         public Artist Artist { get; set; }
