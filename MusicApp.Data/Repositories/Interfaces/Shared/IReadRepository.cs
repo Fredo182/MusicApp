@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MusicApp.Core.Repositories.Shared
+namespace MusicApp.Data.Repositories.Interfaces.Shared
 {
     public interface IReadRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {

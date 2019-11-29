@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MusicApp.Core
+namespace MusicApp.Data.UnitOfWork.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

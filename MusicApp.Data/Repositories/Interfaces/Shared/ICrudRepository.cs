@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MusicApp.Core.Repositories.Shared
+namespace MusicApp.Data.Repositories.Interfaces.Shared
 {
     public interface ICrudRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
     {

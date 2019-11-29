@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MusicApp.Core.Models
+namespace MusicApp.Services.Models
 {
     public class AlbumModel
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.Core.Repositories.Shared
+namespace MusicApp.Data.Repositories.Interfaces.Shared
 {
     public interface IRepository<TEntity> where TEntity : class
     {

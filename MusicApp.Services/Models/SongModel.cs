@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.Core.Models
+namespace MusicApp.Services.Models
 {
     public class SongModel
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-//using MusicApp.Data.Configurations;
+using MusicApp.Data.Configurations;
 using MusicApp.Data.Domain;
 
 namespace MusicApp.Data
@@ -34,6 +34,8 @@ namespace MusicApp.Data
             //    .ApplyConfiguration(new AlbumConfiguration());
             //modelBuilder
             //    .ApplyConfiguration(new SongConfiguration());
+            
+
         }
         
 

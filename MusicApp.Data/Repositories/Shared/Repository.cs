@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using MusicApp.Core.Repositories.Shared;
+using MusicApp.Data.Repositories.Interfaces.Shared;
 
 namespace MusicApp.Data.Repositories.Shared
 {
