@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MusicApp.API.Installers.Interfaces;
 using MusicApp.Data;
+using MusicApp.Data.UnitOfWork;
+using MusicApp.Data.UnitOfWork.Interfaces;
 
 namespace MusicApp.API.Installers
 {
@@ -18,7 +20,9 @@ namespace MusicApp.API.Installers
 
             services.AddDbContextPool<MusicAppDbContext>( options =>
                 options.UseSqlServer( connection , x => x.MigrationsAssembly("MusicApp.Data"))
-            ); 
+            );
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         }
     }
