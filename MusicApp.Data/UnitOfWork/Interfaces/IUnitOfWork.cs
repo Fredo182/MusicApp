@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MusicApp.Data.Repositories.Interfaces;
 
 namespace MusicApp.Data.UnitOfWork.Interfaces
 {
@@ -10,9 +11,12 @@ namespace MusicApp.Data.UnitOfWork.Interfaces
         // ...
         // e.g.
 
-        // IArtistRepository Artists { get; }
-        // IAlbumRepository Orders { get; }
-
+        IAlbumRepository Albums { get; }
+        IArtistGenreRepository ArtistGenres { get; }
+        IArtistRepository Artists { get; }
+        IGenreRepository Genres { get; }
+        ISongRepository Songs { get; }
+        
         Task<int> CommitAsync();
     }
 }
