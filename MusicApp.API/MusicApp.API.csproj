@@ -30,5 +30,7 @@
     <Folder Include="Contracts\V1\Requests\" />
     <Folder Include="Contracts\V1\Responses\" />
     <Folder Include="Mapping\" />
+    <Folder Include="Controllers\V1\" />
+    <Folder Include="Contracts\V1\Responses\Shared\" />
   </ItemGroup>
 </Project>
