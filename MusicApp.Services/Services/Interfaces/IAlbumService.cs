@@ -17,12 +17,12 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<AlbumModel>> GetAllAlbums();
 
         // UPDATE
-        AlbumModel UpdateAlbum(AlbumModel album);
-        IEnumerable<AlbumModel> UpdateAlbums(IEnumerable<AlbumModel> albums);
+        Task<AlbumModel> UpdateAlbum(AlbumModel album);
+        Task<IEnumerable<AlbumModel>> UpdateAlbums(IEnumerable<AlbumModel> albums);
 
         // DELETE
-        void DeleteAlbum(AlbumModel album);
-        void DeleteAlbums(IEnumerable<AlbumModel> albums);
+        Task DeleteAlbum(AlbumModel album);
+        Task DeleteAlbums(IEnumerable<AlbumModel> albums);
 
     }
 }

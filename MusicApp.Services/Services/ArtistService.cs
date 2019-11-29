@@ -23,6 +23,7 @@ namespace MusicApp.Services.Services
         {
             var a = _mapper.Map<ArtistModel, Artist>(artist);
             a = await _unitOfWork.Artists.AddAsync(a);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Artist, ArtistModel>(a);
         }
 
@@ -30,19 +31,22 @@ namespace MusicApp.Services.Services
         {
             var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
             a = await _unitOfWork.Artists.AddRangeAsync(a);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
 
-        public void DeleteArtist(ArtistModel artist)
+        public async Task DeleteArtist(ArtistModel artist)
         {
             var a = _mapper.Map<ArtistModel, Artist>(artist);
             _unitOfWork.Artists.Delete(a);
+            await _unitOfWork.CommitAsync();
         }
 
-        public void DeleteArtists(IEnumerable<ArtistModel> artists)
+        public async Task DeleteArtists(IEnumerable<ArtistModel> artists)
         {
             var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
             _unitOfWork.Artists.DeleteRange(a);
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task<IEnumerable<ArtistModel>> GetAllArtists()
@@ -65,17 +69,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public ArtistModel UpdateArtist(ArtistModel artist)
+        public async Task<ArtistModel> UpdateArtist(ArtistModel artist)
         {
             var a = _mapper.Map<ArtistModel, Artist>(artist);
             a = _unitOfWork.Artists.Update(a);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public IEnumerable<ArtistModel> UpdateArtists(IEnumerable<ArtistModel> artists)
+        public async Task<IEnumerable<ArtistModel>> UpdateArtists(IEnumerable<ArtistModel> artists)
         {
             var a = _mapper.Map<IEnumerable<ArtistModel>, IEnumerable<Artist>>(artists);
             a = _unitOfWork.Artists.UpdateRange(a);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
     }

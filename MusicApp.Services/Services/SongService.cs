@@ -23,6 +23,7 @@ namespace MusicApp.Services.Services
         {
             var s = _mapper.Map<SongModel, Song>(song);
             s = await _unitOfWork.Songs.AddAsync(s);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Song, SongModel>(s);
         }
 
@@ -30,19 +31,22 @@ namespace MusicApp.Services.Services
         {
             var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
             s = await _unitOfWork.Songs.AddRangeAsync(s);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
         }
 
-        public void DeleteSong(SongModel song)
+        public async Task DeleteSong(SongModel song)
         {
             var s = _mapper.Map<SongModel, Song>(song);
             _unitOfWork.Songs.Delete(s);
+            await _unitOfWork.CommitAsync();
         }
 
-        public void DeleteSongs(IEnumerable<SongModel> songs)
+        public async Task DeleteSongs(IEnumerable<SongModel> songs)
         {
             var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
             _unitOfWork.Songs.DeleteRange(s);
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task<IEnumerable<SongModel>> GetAllSongs()
@@ -65,17 +69,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Song, SongModel>(s);
         }
 
-        public SongModel UpdateSong(SongModel song)
+        public async Task<SongModel> UpdateSong(SongModel song)
         {
             var s = _mapper.Map<SongModel, Song>(song);
             s = _unitOfWork.Songs.Update(s);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Song, SongModel>(s);
         }
 
-        public IEnumerable<SongModel> UpdateSongs(IEnumerable<SongModel> songs)
+        public async Task<IEnumerable<SongModel>> UpdateSongs(IEnumerable<SongModel> songs)
         {
             var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
             s = _unitOfWork.Songs.UpdateRange(s);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
         }
 

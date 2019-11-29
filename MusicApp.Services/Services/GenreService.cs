@@ -23,6 +23,7 @@ namespace MusicApp.Services.Services
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             g = await _unitOfWork.Genres.AddAsync(g);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
@@ -30,19 +31,22 @@ namespace MusicApp.Services.Services
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             g = await _unitOfWork.Genres.AddRangeAsync(g);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
-        public void DeleteGenre(GenreModel genre)
+        public async Task DeleteGenre(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             _unitOfWork.Genres.Delete(g);
+            await _unitOfWork.CommitAsync();
         }
 
-        public void DeleteGenres(IEnumerable<GenreModel> genres)
+        public async Task DeleteGenres(IEnumerable<GenreModel> genres)
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             _unitOfWork.Genres.DeleteRange(g);
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task<IEnumerable<GenreModel>> GetAllGenres()
@@ -65,17 +69,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public GenreModel UpdateGenre(GenreModel genre)
+        public async Task<GenreModel> UpdateGenre(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             g = _unitOfWork.Genres.Update(g);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public IEnumerable<GenreModel> UpdateGenres(IEnumerable<GenreModel> genres)
+        public async Task<IEnumerable<GenreModel>> UpdateGenres(IEnumerable<GenreModel> genres)
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             g = _unitOfWork.Genres.UpdateRange(g);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
     }
