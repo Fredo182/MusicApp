@@ -26,11 +26,11 @@ namespace MusicApp.API.Installers
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Services
-            services.AddTransient<IAlbumService, AlbumService>();
-            services.AddTransient<IArtistGenreService, ArtistGenreService>();
-            services.AddTransient<IArtistService, ArtistService>();
-            services.AddTransient<IGenreService, GenreService>();
-            services.AddTransient<ISongService, SongService>();
+            services.AddScoped<IAlbumService, AlbumService>();
+            services.AddScoped<IArtistGenreService, ArtistGenreService>();
+            services.AddScoped<IArtistService, ArtistService>();
+            services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<ISongService, SongService>();
 
         }
     }
