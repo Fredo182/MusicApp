@@ -9,6 +9,8 @@ namespace MusicApp.Data.Domain
 
         public string Name { get; set; }
 
-        public virtual List<Album> Albums { get; set; }
+        public List<Album> Albums { get; set; }
+
+        public List<ArtistGenre> ArtistGenres { get; set; } 
     }
 }
