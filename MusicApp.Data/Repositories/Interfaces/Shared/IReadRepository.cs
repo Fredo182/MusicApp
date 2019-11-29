@@ -14,7 +14,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "");
 
-        Task<TEntity> GetByIdAsync(object id);
+        Task<TEntity> GetByIdAsync(params object[] id);
 
         Task<IEnumerable<TEntity>> GetWithRawSQLAsync(
             string query,
