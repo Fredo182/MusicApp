@@ -21,8 +21,8 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<AlbumModel>> UpdateAlbums(IEnumerable<AlbumModel> albums);
 
         // DELETE
-        Task DeleteAlbum(AlbumModel album);
-        Task DeleteAlbums(IEnumerable<AlbumModel> albums);
+        void DeleteAlbum(AlbumModel album);
+        void DeleteAlbums(IEnumerable<AlbumModel> albums);
 
     }
 }

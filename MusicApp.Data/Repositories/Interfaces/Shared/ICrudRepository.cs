@@ -7,8 +7,8 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
     public interface ICrudRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
     {
         //CREATE
-        Task<TEntity> InsertAsync(TEntity entity);
-        Task<IEnumerable<TEntity>> InsertRangeAsync(IEnumerable<TEntity> entities);
+        Task<TEntity> AddAsync(TEntity entity);
+        Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities);
 
         //UPDATE
         TEntity Update(TEntity entity);

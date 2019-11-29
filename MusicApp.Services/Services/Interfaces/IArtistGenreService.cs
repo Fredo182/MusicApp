@@ -21,7 +21,7 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
 
         // DELETE
-        Task DeleteArtistGenre(ArtistGenreModel artistGenre);
-        Task DeleteArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
+        void DeleteArtistGenre(ArtistGenreModel artistGenre);
+        void DeleteArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
     }
 }

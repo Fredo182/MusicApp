@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
@@ -10,6 +11,7 @@ namespace MusicApp.Services.Services
     public class AlbumService : IAlbumService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public AlbumService(IUnitOfWork unitOfWork)
         {
@@ -26,12 +28,12 @@ namespace MusicApp.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteAlbum(AlbumModel album)
+        public void DeleteAlbum(AlbumModel album)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAlbums(IEnumerable<AlbumModel> albums)
+        public void DeleteAlbums(IEnumerable<AlbumModel> albums)
         {
             throw new NotImplementedException();
         }

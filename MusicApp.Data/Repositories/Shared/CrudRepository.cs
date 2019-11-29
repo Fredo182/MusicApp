@@ -31,13 +31,13 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.RemoveRange(entities);
         }
 
-        public async Task<TEntity> InsertAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             await dbSet.AddAsync(entity);
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> InsertRangeAsync(IEnumerable<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
         {
             await dbSet.AddRangeAsync(entities);
             return entities;
