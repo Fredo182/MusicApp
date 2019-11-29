@@ -14,6 +14,10 @@ namespace MusicApp.Data
 
         public DbSet<Song> Songs { get; set; }
 
+        public DbSet<Genre> Genres { get; set; }
+
+        public DbSet<ArtistGenre> ArtistGenres { get; set; }
+
 
         public MusicAppDbContext(DbContextOptions<MusicAppDbContext> options)
             : base(options)
@@ -28,13 +32,20 @@ namespace MusicApp.Data
             //...
             //...
 
-            //modelBuilder
-            //    .ApplyConfiguration(new ArtistConfiguration());
-            //modelBuilder
-            //    .ApplyConfiguration(new AlbumConfiguration());
-            //modelBuilder
-            //    .ApplyConfiguration(new SongConfiguration());
-            
+            modelBuilder
+                .ApplyConfiguration(new ArtistConfiguration());
+
+            modelBuilder
+                .ApplyConfiguration(new AlbumConfiguration());
+
+            modelBuilder
+                .ApplyConfiguration(new SongConfiguration());
+
+            modelBuilder
+                .ApplyConfiguration(new GenreConfiguration());
+
+            modelBuilder
+                .ApplyConfiguration(new ArtistGenreConfiguration());
 
         }
         
