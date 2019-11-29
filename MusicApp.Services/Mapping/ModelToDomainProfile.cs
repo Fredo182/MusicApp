@@ -5,17 +5,10 @@ using MusicApp.Services.Models;
 
 namespace MusicApp.Services.Mapping
 {
-    public class MappingProfile : Profile
+    public class ModelToDomainProfile : Profile
     {
-        public MappingProfile()
+        public ModelToDomainProfile()
         {
-            // Domain to Model
-            CreateMap<Album, AlbumModel>();
-            CreateMap<ArtistGenre, ArtistGenreModel>();
-            CreateMap<Artist, ArtistModel>();
-            CreateMap<Genre, GenreModel>();
-            CreateMap<Song, SongModel>();
-
             // Model to Domain
             CreateMap<AlbumModel, Album>();
             CreateMap<ArtistGenreModel, ArtistGenre>();
