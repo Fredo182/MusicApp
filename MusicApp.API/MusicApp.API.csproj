@@ -32,5 +32,10 @@
     <Folder Include="Mapping\" />
     <Folder Include="Controllers\V1\" />
     <Folder Include="Contracts\V1\Responses\Shared\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Contracts\V1\Requests\Queries\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 </Project>
