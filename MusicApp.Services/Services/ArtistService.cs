@@ -52,7 +52,18 @@ namespace MusicApp.Services.Services
         public async Task<IEnumerable<ArtistModel>> GetAllArtistsAsync()
         {
             var a = await _unitOfWork.Artists.GetAsync();
-            return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
+
+            try
+            {
+                IEnumerable<ArtistModel> temp = _mapper.Map<IEnumerable<ArtistModel>>(a);
+            }
+            catch (Exception ex)
+            {
+                bool failed = true;
+            }
+            
+
+            return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
         public async Task<ArtistModel> GetArtistAsync(ArtistModel artist)
