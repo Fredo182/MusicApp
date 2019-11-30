@@ -8,20 +8,20 @@ namespace MusicApp.Services.Services.Interfaces
     public interface IArtistGenreService
     {
         // CREATE
-        Task<ArtistGenreModel> CreateArtistGenre(ArtistGenreModel artistGenre);
-        Task<IEnumerable<ArtistGenreModel>> CreateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
+        Task<ArtistGenreModel> CreateArtistGenreAsync(ArtistGenreModel artistGenre);
+        Task<IEnumerable<ArtistGenreModel>> CreateArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres);
 
         // READ
-        Task<ArtistGenreModel> GetArtistGenreById(int id);
-        Task<ArtistGenreModel> GetArtistGenre(ArtistGenreModel artistGenre);
-        Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenres();
+        Task<ArtistGenreModel> GetArtistGenreByIdAsync(int id);
+        Task<ArtistGenreModel> GetArtistGenreAsync(ArtistGenreModel artistGenre);
+        Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenresAsync();
 
         // UPDATE
-        Task<ArtistGenreModel> UpdateArtistGenre(ArtistGenreModel artistGenre);
-        Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
+        Task<ArtistGenreModel> UpdateArtistGenreAsync(ArtistGenreModel artistGenre);
+        Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres);
 
         // DELETE
-        Task DeleteArtistGenre(ArtistGenreModel artistGenre);
-        Task DeleteArtistGenres(IEnumerable<ArtistGenreModel> artistGenres);
+        Task DeleteArtistGenreAsync(ArtistGenreModel artistGenre);
+        Task DeleteArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres);
     }
 }

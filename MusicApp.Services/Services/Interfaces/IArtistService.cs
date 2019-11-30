@@ -8,20 +8,20 @@ namespace MusicApp.Services.Services.Interfaces
     public interface IArtistService
     {
         // CREATE
-        Task<ArtistModel> CreateArtist(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> CreateArtists(IEnumerable<ArtistModel> artists);
+        Task<ArtistModel> CreateArtistAsync(ArtistModel artist);
+        Task<IEnumerable<ArtistModel>> CreateArtistsAsync(IEnumerable<ArtistModel> artists);
 
         // READ
-        Task<ArtistModel> GetArtistById(int id);
-        Task<ArtistModel> GetArtist(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetAllArtists();
+        Task<ArtistModel> GetArtistByIdAsync(int id);
+        Task<ArtistModel> GetArtistAsync(ArtistModel artist);
+        Task<IEnumerable<ArtistModel>> GetAllArtistsAsync();
 
         // UPDATE
-        Task<ArtistModel> UpdateArtist(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> UpdateArtists(IEnumerable<ArtistModel> artists);
+        Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);
+        Task<IEnumerable<ArtistModel>> UpdateArtistsAsync(IEnumerable<ArtistModel> artists);
 
         // DELETE
-        Task DeleteArtist(ArtistModel artist);
-        Task DeleteArtists(IEnumerable<ArtistModel> artists);
+        Task DeleteArtistAsync(ArtistModel artist);
+        Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
     }
 }

@@ -19,7 +19,7 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public async Task<ArtistGenreModel> CreateArtistGenre(ArtistGenreModel artistGenre)
+        public async Task<ArtistGenreModel> CreateArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
             a = await _unitOfWork.ArtistGenres.AddAsync(a);
@@ -27,7 +27,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public async Task<IEnumerable<ArtistGenreModel>> CreateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
+        public async Task<IEnumerable<ArtistGenreModel>> CreateArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres)
         {
             var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
             a = await _unitOfWork.ArtistGenres.AddRangeAsync(a);
@@ -35,27 +35,27 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
 
-        public async Task DeleteArtistGenre(ArtistGenreModel artistGenre)
+        public async Task DeleteArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
             _unitOfWork.ArtistGenres.Delete(a);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
+        public async Task DeleteArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres)
         {
             var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
             _unitOfWork.ArtistGenres.DeleteRange(a);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenres()
+        public async Task<IEnumerable<ArtistGenreModel>> GetAllArtistGenresAsync()
         {
             var a = await _unitOfWork.ArtistGenres.GetAsync();
             return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
 
-        public async Task<ArtistGenreModel> GetArtistGenre(ArtistGenreModel artistGenre)
+        public async Task<ArtistGenreModel> GetArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             //TODO: This one needs to be updated to use filtering
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
@@ -63,13 +63,13 @@ namespace MusicApp.Services.Services
             return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public async Task<ArtistGenreModel> GetArtistGenreById(int id)
+        public async Task<ArtistGenreModel> GetArtistGenreByIdAsync(int id)
         {
             var a = await _unitOfWork.ArtistGenres.GetByIdAsync(id);
             return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public async Task<ArtistGenreModel> UpdateArtistGenre(ArtistGenreModel artistGenre)
+        public async Task<ArtistGenreModel> UpdateArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
             a = _unitOfWork.ArtistGenres.Update(a);
@@ -77,7 +77,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
-        public async Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenres(IEnumerable<ArtistGenreModel> artistGenres)
+        public async Task<IEnumerable<ArtistGenreModel>> UpdateArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres)
         {
             var a = _mapper.Map<IEnumerable<ArtistGenreModel>, IEnumerable<ArtistGenre>>(artistGenres);
             a = _unitOfWork.ArtistGenres.UpdateRange(a);

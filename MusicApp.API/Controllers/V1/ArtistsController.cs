@@ -21,7 +21,7 @@ namespace MusicApp.API.Controllers.V1
         //[HttpGet(ApiRoutes.Artists.GetArtists)]
         //public async Task<IActionResult> GetAll()
         //{
-
+        //    var artists = await _artistService.get
         //}
     }
 }

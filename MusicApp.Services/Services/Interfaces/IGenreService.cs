@@ -8,20 +8,20 @@ namespace MusicApp.Services.Services.Interfaces
     public interface IGenreService
     {
         // CREATE
-        Task<GenreModel> CreateGenre(GenreModel genre);
-        Task<IEnumerable<GenreModel>> CreateGenres(IEnumerable<GenreModel> genres);
+        Task<GenreModel> CreateGenreAsync(GenreModel genre);
+        Task<IEnumerable<GenreModel>> CreateGenresAsync(IEnumerable<GenreModel> genres);
 
         // READ
-        Task<GenreModel> GetGenreById(int id);
-        Task<GenreModel> GetGenre(GenreModel genre);
-        Task<IEnumerable<GenreModel>> GetAllGenres();
+        Task<GenreModel> GetGenreByIdAsync(int id);
+        Task<GenreModel> GetGenreAsync(GenreModel genre);
+        Task<IEnumerable<GenreModel>> GetAllGenresAsync();
 
         // UPDATE
-        Task<GenreModel> UpdateGenre(GenreModel genre);
-        Task<IEnumerable<GenreModel>> UpdateGenres(IEnumerable<GenreModel> genres);
+        Task<GenreModel> UpdateGenreAsync(GenreModel genre);
+        Task<IEnumerable<GenreModel>> UpdateGenresAsync(IEnumerable<GenreModel> genres);
 
         // DELETE
-        Task DeleteGenre(GenreModel genre);
-        Task DeleteGenres(IEnumerable<GenreModel> genres);
+        Task DeleteGenreAsync(GenreModel genre);
+        Task DeleteGenresAsync(IEnumerable<GenreModel> genres);
     }
 }

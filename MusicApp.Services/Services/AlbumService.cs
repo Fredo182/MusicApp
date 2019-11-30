@@ -19,7 +19,7 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public async Task<AlbumModel> CreateAlbum(AlbumModel album)
+        public async Task<AlbumModel> CreateAlbumAsync(AlbumModel album)
         {
             var a = _mapper.Map<AlbumModel, Album>(album);
             a = await _unitOfWork.Albums.AddAsync(a);
@@ -27,7 +27,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public async Task<IEnumerable<AlbumModel>> CreateAlbums(IEnumerable<AlbumModel> albums)
+        public async Task<IEnumerable<AlbumModel>> CreateAlbumsAsync(IEnumerable<AlbumModel> albums)
         {
             var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
             a = await _unitOfWork.Albums.AddRangeAsync(a);
@@ -35,21 +35,21 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<Album>, IEnumerable<AlbumModel>>(a);
         }
 
-        public async Task DeleteAlbum(AlbumModel album)
+        public async Task DeleteAlbumAsync(AlbumModel album)
         {
             var a = _mapper.Map<AlbumModel, Album>(album);
             _unitOfWork.Albums.Delete(a);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteAlbums(IEnumerable<AlbumModel> albums)
+        public async Task DeleteAlbumsAsync(IEnumerable<AlbumModel> albums)
         {
             var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
             _unitOfWork.Albums.DeleteRange(a);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<AlbumModel> GetAlbum(AlbumModel album)
+        public async Task<AlbumModel> GetAlbumAsync(AlbumModel album)
         {
             //TODO: This one needs to be updated to use filtering
             var a = _mapper.Map<AlbumModel, Album>(album);
@@ -57,19 +57,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public async Task<AlbumModel> GetAlbumById(int id)
+        public async Task<AlbumModel> GetAlbumByIdAsync(int id)
         {
             var a = await _unitOfWork.Albums.GetByIdAsync(id);
             return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public async Task<IEnumerable<AlbumModel>> GetAllAlbums()
+        public async Task<IEnumerable<AlbumModel>> GetAllAlbumsAsync()
         {
             var a = await _unitOfWork.Albums.GetAsync();
             return _mapper.Map<IEnumerable<Album>, IEnumerable<AlbumModel>>(a);
         }
 
-        public async Task<AlbumModel> UpdateAlbum(AlbumModel album)
+        public async Task<AlbumModel> UpdateAlbumAsync(AlbumModel album)
         {
             var a = _mapper.Map<AlbumModel, Album>(album);
             a = _unitOfWork.Albums.Update(a);
@@ -77,7 +77,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Album, AlbumModel>(a);
         }
 
-        public async Task<IEnumerable<AlbumModel>> UpdateAlbums(IEnumerable<AlbumModel> albums)
+        public async Task<IEnumerable<AlbumModel>> UpdateAlbumsAsync(IEnumerable<AlbumModel> albums)
         {
             var a = _mapper.Map<IEnumerable<AlbumModel>, IEnumerable<Album>>(albums);
             a = _unitOfWork.Albums.UpdateRange(a);

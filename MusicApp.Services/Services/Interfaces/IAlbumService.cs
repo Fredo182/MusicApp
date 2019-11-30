@@ -8,21 +8,21 @@ namespace MusicApp.Services.Services.Interfaces
     public interface IAlbumService
     {
         // CREATE
-        Task<AlbumModel> CreateAlbum(AlbumModel album);
-        Task<IEnumerable<AlbumModel>> CreateAlbums(IEnumerable<AlbumModel> albums);
+        Task<AlbumModel> CreateAlbumAsync(AlbumModel album);
+        Task<IEnumerable<AlbumModel>> CreateAlbumsAsync(IEnumerable<AlbumModel> albums);
 
         // READ
-        Task<AlbumModel> GetAlbumById(int id);
-        Task<AlbumModel> GetAlbum(AlbumModel album);
-        Task<IEnumerable<AlbumModel>> GetAllAlbums();
+        Task<AlbumModel> GetAlbumByIdAsync(int id);
+        Task<AlbumModel> GetAlbumAsync(AlbumModel album);
+        Task<IEnumerable<AlbumModel>> GetAllAlbumsAsync();
 
         // UPDATE
-        Task<AlbumModel> UpdateAlbum(AlbumModel album);
-        Task<IEnumerable<AlbumModel>> UpdateAlbums(IEnumerable<AlbumModel> albums);
+        Task<AlbumModel> UpdateAlbumAsync(AlbumModel album);
+        Task<IEnumerable<AlbumModel>> UpdateAlbumsAsync(IEnumerable<AlbumModel> albums);
 
         // DELETE
-        Task DeleteAlbum(AlbumModel album);
-        Task DeleteAlbums(IEnumerable<AlbumModel> albums);
+        Task DeleteAlbumAsync(AlbumModel album);
+        Task DeleteAlbumsAsync(IEnumerable<AlbumModel> albums);
 
     }
 }

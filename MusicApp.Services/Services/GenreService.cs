@@ -19,7 +19,7 @@ namespace MusicApp.Services.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public async Task<GenreModel> CreateGenre(GenreModel genre)
+        public async Task<GenreModel> CreateGenreAsync(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             g = await _unitOfWork.Genres.AddAsync(g);
@@ -27,7 +27,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public async Task<IEnumerable<GenreModel>> CreateGenres(IEnumerable<GenreModel> genres)
+        public async Task<IEnumerable<GenreModel>> CreateGenresAsync(IEnumerable<GenreModel> genres)
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             g = await _unitOfWork.Genres.AddRangeAsync(g);
@@ -35,27 +35,27 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
-        public async Task DeleteGenre(GenreModel genre)
+        public async Task DeleteGenreAsync(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             _unitOfWork.Genres.Delete(g);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteGenres(IEnumerable<GenreModel> genres)
+        public async Task DeleteGenresAsync(IEnumerable<GenreModel> genres)
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             _unitOfWork.Genres.DeleteRange(g);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<GenreModel>> GetAllGenres()
+        public async Task<IEnumerable<GenreModel>> GetAllGenresAsync()
         {
             var g = await _unitOfWork.Genres.GetAsync();
             return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
-        public async Task<GenreModel> GetGenre(GenreModel genre)
+        public async Task<GenreModel> GetGenreAsync(GenreModel genre)
         {
             //TODO: This one needs to be updated to use filtering
             var g = _mapper.Map<GenreModel, Genre>(genre);
@@ -63,13 +63,13 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public async Task<GenreModel> GetGenreById(int id)
+        public async Task<GenreModel> GetGenreByIdAsync(int id)
         {
             var g = await _unitOfWork.Genres.GetByIdAsync(id);
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public async Task<GenreModel> UpdateGenre(GenreModel genre)
+        public async Task<GenreModel> UpdateGenreAsync(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             g = _unitOfWork.Genres.Update(g);
@@ -77,7 +77,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Genre, GenreModel>(g);
         }
 
-        public async Task<IEnumerable<GenreModel>> UpdateGenres(IEnumerable<GenreModel> genres)
+        public async Task<IEnumerable<GenreModel>> UpdateGenresAsync(IEnumerable<GenreModel> genres)
         {
             var g = _mapper.Map<IEnumerable<GenreModel>, IEnumerable<Genre>>(genres);
             g = _unitOfWork.Genres.UpdateRange(g);
