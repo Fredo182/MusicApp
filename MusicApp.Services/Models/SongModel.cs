@@ -5,7 +5,7 @@ namespace MusicApp.Services.Models
     {
         public int SongId { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public int AlbumId { get; set; }
 

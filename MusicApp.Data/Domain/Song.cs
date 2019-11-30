@@ -6,7 +6,7 @@ namespace MusicApp.Data.Domain
     {
         public int SongId { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public int AlbumId { get; set; }
 
