@@ -18,10 +18,11 @@ namespace MusicApp.API.Controllers.V1
             _mapper = mapper;
         }
 
-        //[HttpGet(ApiRoutes.Artists.GetArtists)]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var artists = await _artistService.get
-        //}
+        [HttpGet(ApiRoutes.Artists.GetArtists)]
+        public async Task<IActionResult> GetAll()
+        {
+            var artists = await _artistService.GetAllArtistsAsync();
+            return Ok(artists);
+        }
     }
 }
