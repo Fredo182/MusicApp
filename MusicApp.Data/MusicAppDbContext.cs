@@ -18,6 +18,8 @@ namespace MusicApp.Data
 
         public DbSet<ArtistGenre> ArtistGenres { get; set; }
 
+        public DbSet<Playlist> Playlists { get; set; }
+
 
         public MusicAppDbContext(DbContextOptions<MusicAppDbContext> options)
             : base(options)
@@ -46,6 +48,9 @@ namespace MusicApp.Data
 
             modelBuilder
                 .ApplyConfiguration(new ArtistGenreConfiguration());
+
+            modelBuilder
+                .ApplyConfiguration(new PlaylistConfiguration());
 
         }
         

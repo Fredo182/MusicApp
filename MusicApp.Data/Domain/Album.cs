@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MusicApp.Data.Domain
 {
@@ -13,7 +14,7 @@ namespace MusicApp.Data.Domain
 
         public Artist Artist { get; set; }
 
-        public List<Song> Songs { get; set; }
+        public ICollection<Song> Songs { get; set; }
 
     }
 }

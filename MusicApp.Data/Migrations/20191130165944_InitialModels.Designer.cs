@@ -9,8 +9,8 @@ using MusicApp.Data;
 namespace MusicApp.Data.Migrations
 {
     [DbContext(typeof(MusicAppDbContext))]
-    [Migration("20191130041330_SeedInitialModels")]
-    partial class SeedInitialModels
+    [Migration("20191130165944_InitialModels")]
+    partial class InitialModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

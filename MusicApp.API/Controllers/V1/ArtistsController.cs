@@ -18,11 +18,53 @@ namespace MusicApp.API.Controllers.V1
             _mapper = mapper;
         }
 
-        [HttpGet(ApiRoutes.Artists.GetArtists)]
-        public async Task<IActionResult> GetAll()
-        {
-            var artists = await _artistService.GetAllArtistsAsync();
-            return Ok(artists);
-        }
+        //[HttpPost(ApiRoutes.Artists.CreateArtist)]
+        //public async Task<IActionResult> CreateArtist()
+        //{
+
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.GetArtist)]
+        //public async Task<IActionResult> GetArtist()
+        //{
+
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.UpdateArtist)]
+        //public async Task<IActionResult> UpdateArtist()
+        //{
+
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.DeleteArtist)]
+        //public async Task<IActionResult> DeleteArtist()
+        //{
+
+        //}
+
+        //[HttpPost(ApiRoutes.Artists.CreateArtists)]
+        //public async Task<IActionResult> CreateArtists()
+        //{
+
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.GetArtists)]
+        //public async Task<IActionResult> GetArtists()
+        //{
+        //    var artists = await _artistService.GetAllArtistsAsync();
+        //    return Ok(artists);
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.UpdateArtists)]
+        //public async Task<IActionResult> UpdateArtists()
+        //{
+
+        //}
+
+        //[HttpGet(ApiRoutes.Artists.DeleteArtists)]
+        //public async Task<IActionResult> DeleteArtist()
+        //{
+
+        //}
     }
 }

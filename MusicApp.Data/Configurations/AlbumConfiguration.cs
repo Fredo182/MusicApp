@@ -29,11 +29,11 @@ namespace MusicApp.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(255);
 
-            builder
-                .HasOne(a => a.Artist)
-                .WithMany(ar => ar.Albums)
-                .HasForeignKey(a => a.ArtistId)
-                .IsRequired();
+            //builder
+            //    .HasOne(a => a.Artist)
+            //    .WithMany(ar => ar.Albums)
+            //    .HasForeignKey(a => a.ArtistId)
+            //    .IsRequired();
                 
 
             builder

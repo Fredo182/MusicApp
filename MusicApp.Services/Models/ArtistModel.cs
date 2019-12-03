@@ -9,8 +9,8 @@ namespace MusicApp.Services.Models
 
         public string Name { get; set; }
 
-        //public List<AlbumModel> Albums { get; set; }
+        public List<AlbumModel> Albums { get; set; }
 
-        //public List<ArtistGenreModel> ArtistGenres { get; set; }
+        public List<ArtistGenreModel> ArtistGenres { get; set; }
     }
 }

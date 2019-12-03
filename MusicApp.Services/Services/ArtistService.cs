@@ -14,9 +14,10 @@ namespace MusicApp.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ArtistService(IUnitOfWork unitOfWork)
+        public ArtistService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
         public async Task<ArtistModel> CreateArtistAsync(ArtistModel artist)
@@ -52,18 +53,7 @@ namespace MusicApp.Services.Services
         public async Task<IEnumerable<ArtistModel>> GetAllArtistsAsync()
         {
             var a = await _unitOfWork.Artists.GetAsync();
-
-            try
-            {
-                IEnumerable<ArtistModel> temp = _mapper.Map<IEnumerable<ArtistModel>>(a);
-            }
-            catch (Exception ex)
-            {
-                bool failed = true;
-            }
-            
-
-            return _mapper.Map<IEnumerable<ArtistModel>>(a);
+            return _mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistModel>>(a);
         }
 
         public async Task<ArtistModel> GetArtistAsync(ArtistModel artist)

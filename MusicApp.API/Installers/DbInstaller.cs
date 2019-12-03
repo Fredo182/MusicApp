@@ -31,6 +31,7 @@ namespace MusicApp.API.Installers
             services.AddScoped<IArtistService, ArtistService>();
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ISongService, SongService>();
+            services.AddScoped<IPlaylistService, PlaylistService>();
 
         }
     }

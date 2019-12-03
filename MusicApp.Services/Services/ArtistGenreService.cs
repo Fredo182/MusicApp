@@ -14,9 +14,10 @@ namespace MusicApp.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ArtistGenreService(IUnitOfWork unitOfWork)
+        public ArtistGenreService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
         public async Task<ArtistGenreModel> CreateArtistGenreAsync(ArtistGenreModel artistGenre)

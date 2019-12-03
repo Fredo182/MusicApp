@@ -15,6 +15,7 @@ namespace MusicApp.Services.Mapping
             CreateMap<ArtistModel, Artist>();
             CreateMap<GenreModel, Genre>();
             CreateMap<SongModel, Song>();
+            CreateMap<PlaylistModel, Playlist>();
         }
     }
 }

@@ -23,14 +23,14 @@ namespace MusicApp.Data.Repositories
         // ....
         // ....
 
-        public async Task<IEnumerable<Artist>> GetAllWithAlbumsAsync()
-        {
-            return await MusicAppDbContext.Artists.Include(a => a.Albums).ToListAsync();
-        }
+        //public async Task<IEnumerable<Artist>> GetAllWithAlbumsAsync()
+        //{
+        //    return await MusicAppDbContext.Artists.Include(a => a.Albums).ToListAsync();
+        //}
 
-        public async Task<Artist> GetWithAlbumsByIdAsync(int id)
-        {
-            return await MusicAppDbContext.Artists.Include(a => a.Albums).SingleOrDefaultAsync(a => a.ArtistId == id);
-        }
+        //public async Task<Artist> GetWithAlbumsByIdAsync(int id)
+        //{
+        //    return await MusicAppDbContext.Artists.Include(a => a.Albums).SingleOrDefaultAsync(a => a.ArtistId == id);
+        //}
     }
 }

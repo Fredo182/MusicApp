@@ -18,6 +18,7 @@ namespace MusicApp.Data.UnitOfWork
         private ArtistRepository _artistRepository;
         private GenreRepository _genreRepository;
         private SongRepository _songRepository;
+        private PlaylistRepository _playlistRepository;
 
         public UnitOfWork(MusicAppDbContext context)
         {
@@ -33,6 +34,9 @@ namespace MusicApp.Data.UnitOfWork
         public IGenreRepository Genres => _genreRepository ??= new GenreRepository(_context);
 
         public ISongRepository Songs => _songRepository ??= new SongRepository(_context);
+
+        public IPlaylistRepository Playlists => _playlistRepository ??= new PlaylistRepository(_context);
+
 
         public async Task<int> CommitAsync()
         {

@@ -16,6 +16,7 @@ namespace MusicApp.Data.UnitOfWork.Interfaces
         IArtistRepository Artists { get; }
         IGenreRepository Genres { get; }
         ISongRepository Songs { get; }
+        IPlaylistRepository Playlists { get; }
         
         Task<int> CommitAsync();
     }

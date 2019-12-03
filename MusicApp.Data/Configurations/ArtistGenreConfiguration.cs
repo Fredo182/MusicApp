@@ -21,11 +21,11 @@ namespace MusicApp.Data.Configurations
                 .Property(a => a.ArtistGenreId)
                 .ValueGeneratedOnAdd();
 
-            builder
-                .HasOne(ag => ag.Artist)
-                .WithMany(a => a.ArtistGenres)
-                .HasForeignKey(ag => ag.ArtistId)
-                .IsRequired();
+            //builder
+            //    .HasOne(ag => ag.Artist)
+            //    .WithMany(a => a.ArtistGenres)
+            //    .HasForeignKey(ag => ag.ArtistId)
+            //    .IsRequired();
 
             builder
                 .HasOne(ag => ag.Genre)
