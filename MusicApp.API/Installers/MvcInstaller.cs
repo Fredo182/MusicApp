@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MusicApp.API.Filters;
 using MusicApp.API.Installers.Interfaces;
 using MusicApp.API.Mapping;
 using MusicApp.Services.Mapping;
@@ -14,7 +16,12 @@ namespace MusicApp.API.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<ValidationFilter>();
+                })
+                .AddFluentValidation( config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             // Add AutoMapper
             services.AddAutoMapper(

@@ -29,6 +29,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Options\" />
@@ -47,5 +48,7 @@
     <Folder Include="Contracts\V1\Requests\Queries\" />
     <Folder Include="Contracts\V1\Requests\ArtistsRequests\" />
     <Folder Include="Contracts\V1\Responses\ArtistsResponses\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Validators\ArtistsValidators\" />
   </ItemGroup>
 </Project>
