@@ -15,6 +15,7 @@ namespace MusicApp.API.Mapping
 
             // Artists Mappings
             CreateMap<CreateArtistRequest, ArtistModel>();
+            CreateMap<UpdateArtistRequest, ArtistModel>();
         }
     }
 }

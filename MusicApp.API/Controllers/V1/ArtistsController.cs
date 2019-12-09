@@ -26,20 +26,36 @@ namespace MusicApp.API.Controllers.V1
         public async Task<IActionResult> CreateArtist([FromBody] CreateArtistRequest postRequest)
         {
             var post = _mapper.Map<ArtistModel>(postRequest);
-            var resModel = await _artistService.CreateArtistAsync(post);
-            return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(resModel)));
+            var artist = await _artistService.CreateArtistAsync(post);
+            return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
 
-        //[HttpGet(ApiRoutes.Artists.GetArtist)]
-        //public async Task<IActionResult> GetArtist()
+        [HttpGet(ApiRoutes.Artists.GetArtist)]
+        public async Task<IActionResult> GetArtist([FromRoute] int artistId)
+        {
+            var artist = await _artistService.GetArtistByIdAsync(artistId);
+            if (artist == null)
+                return NotFound();
+
+            return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
+        }
+
+        //[HttpPut(ApiRoutes.Artists.UpdateArtist)]
+        //public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
         //{
+        //    var artist = await _artistService.GetArtistByIdAsync(artistId);
+        //    if (artist == null)
+        //        return NotFound();
 
-        //}
+        //    var artistModel = _mapper.Map<ArtistModel>(putRequest);
+        //    artistModel.ArtistId = artistId;
 
-        //[HttpGet(ApiRoutes.Artists.UpdateArtist)]
-        //public async Task<IActionResult> UpdateArtist()
-        //{
+        //    var updated = await _artistService.UpdateArtistAsync(artistModel);
 
+        //    if (updated != null)
+        //        return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(updated)));
+
+        //    return NotFound();
         //}
 
         //[HttpGet(ApiRoutes.Artists.DeleteArtist)]

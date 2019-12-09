@@ -16,6 +16,10 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
 
         Task<TEntity> GetByIdAsync(params object[] id);
 
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+
+        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        
         Task<IEnumerable<TEntity>> GetWithRawSQLAsync(
             string query,
             params object[] parameters);

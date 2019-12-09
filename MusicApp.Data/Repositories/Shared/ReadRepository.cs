@@ -39,6 +39,16 @@ namespace MusicApp.Data.Repositories.Shared
             return await dbSet.FindAsync(id);
         }
 
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return dbSet.Where(predicate);
+        }
+
+        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await dbSet.SingleOrDefaultAsync(predicate);
+        }
+
         public async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)
         {
             return await dbSet.FromSqlRaw(query, parameters).ToListAsync();
