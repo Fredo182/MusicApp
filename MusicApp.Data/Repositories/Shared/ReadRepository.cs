@@ -49,6 +49,12 @@ namespace MusicApp.Data.Repositories.Shared
             return await dbSet.SingleOrDefaultAsync(predicate);
         }
 
+        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var exists = await dbSet.AsNoTracking().SingleOrDefaultAsync(predicate);
+            return (exists != null);
+        }
+
         public async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)
         {
             return await dbSet.FromSqlRaw(query, parameters).ToListAsync();

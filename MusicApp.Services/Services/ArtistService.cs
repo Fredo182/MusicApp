@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using MusicApp.Data.Domain;
@@ -68,6 +69,12 @@ namespace MusicApp.Services.Services
         {
             var a = await _unitOfWork.Artists.GetByIdAsync(id);
             return _mapper.Map<Artist, ArtistModel>(a);
+        }
+
+        public async Task<bool> ArtistExistsAsync(int artistId)
+        {
+            var a = await _unitOfWork.Artists.ExistsAsync(a => a.ArtistId == artistId);
+            return a;
         }
 
         public async Task<ArtistModel> UpdateArtistAsync(ArtistModel artist)

@@ -19,6 +19,8 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
         
         Task<IEnumerable<TEntity>> GetWithRawSQLAsync(
             string query,

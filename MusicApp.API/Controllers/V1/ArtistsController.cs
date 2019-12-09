@@ -40,23 +40,24 @@ namespace MusicApp.API.Controllers.V1
             return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
 
-        //[HttpPut(ApiRoutes.Artists.UpdateArtist)]
-        //public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
-        //{
-        //    var artist = await _artistService.GetArtistByIdAsync(artistId);
-        //    if (artist == null)
-        //        return NotFound();
+        [HttpPut(ApiRoutes.Artists.UpdateArtist)]
+        public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
+        {
+            var artist = await _artistService.ArtistExistsAsync(artistId);
+            if (!artist)
+                return NotFound();
 
-        //    var artistModel = _mapper.Map<ArtistModel>(putRequest);
-        //    artistModel.ArtistId = artistId;
+            var artistModel = _mapper.Map<ArtistModel>(putRequest);
+            // Remove if adding Id to request contract
+            artistModel.ArtistId = artistId;
 
-        //    var updated = await _artistService.UpdateArtistAsync(artistModel);
+            var updated = await _artistService.UpdateArtistAsync(artistModel);
 
-        //    if (updated != null)
-        //        return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(updated)));
+            if (updated != null)
+                return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(updated)));
 
-        //    return NotFound();
-        //}
+            return NotFound();
+        }
 
         //[HttpGet(ApiRoutes.Artists.DeleteArtist)]
         //public async Task<IActionResult> DeleteArtist()

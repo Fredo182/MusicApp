@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MusicApp.Services.Models;
 
@@ -23,5 +24,8 @@ namespace MusicApp.Services.Services.Interfaces
         // DELETE
         Task DeleteArtistAsync(ArtistModel artist);
         Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
+
+        // Other
+        Task<bool> ArtistExistsAsync(int id);
     }
 }
