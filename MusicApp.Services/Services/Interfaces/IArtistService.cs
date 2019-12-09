@@ -16,6 +16,7 @@ namespace MusicApp.Services.Services.Interfaces
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
         Task<IEnumerable<ArtistModel>> GetAllArtistsAsync();
+        Task<bool> ArtistExistsAsync(int id);
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);
@@ -24,8 +25,6 @@ namespace MusicApp.Services.Services.Interfaces
         // DELETE
         Task DeleteArtistAsync(ArtistModel artist);
         Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
-
-        // Other
-        Task<bool> ArtistExistsAsync(int id);
+        
     }
 }

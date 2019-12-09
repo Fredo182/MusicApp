@@ -70,6 +70,12 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Playlist, PlaylistModel>(p);
         }
 
+        public async Task<bool> PlaylistExistsAsync(int id)
+        {
+            var p = await _unitOfWork.Playlists.ExistsAsync(p => p.PlaylistId == id);
+            return p;
+        }
+
         public async Task<PlaylistModel> UpdatePlaylistAsync(PlaylistModel playlist)
         {
             var p = _mapper.Map<PlaylistModel, Playlist>(playlist);

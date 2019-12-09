@@ -15,6 +15,7 @@ namespace MusicApp.Services.Services.Interfaces
         Task<PlaylistModel> GetPlaylistByIdAsync(int id);
         Task<PlaylistModel> GetPlaylistAsync(PlaylistModel playlist);
         Task<IEnumerable<PlaylistModel>> GetAllPlaylistsAsync();
+        Task<bool> PlaylistExistsAsync(int id);
 
         // UPDATE
         Task<PlaylistModel> UpdatePlaylistAsync(PlaylistModel playlist);

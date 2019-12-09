@@ -71,9 +71,9 @@ namespace MusicApp.Services.Services
             return _mapper.Map<Artist, ArtistModel>(a);
         }
 
-        public async Task<bool> ArtistExistsAsync(int artistId)
+        public async Task<bool> ArtistExistsAsync(int id)
         {
-            var a = await _unitOfWork.Artists.ExistsAsync(a => a.ArtistId == artistId);
+            var a = await _unitOfWork.Artists.ExistsAsync(a => a.ArtistId == id);
             return a;
         }
 

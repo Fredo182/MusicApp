@@ -70,6 +70,12 @@ namespace MusicApp.Services.Services
             return _mapper.Map<ArtistGenre, ArtistGenreModel>(a);
         }
 
+        public async Task<bool> ArtistGenreExistsAsync(int id)
+        {
+            var a = await _unitOfWork.ArtistGenres.ExistsAsync(a => a.ArtistGenreId == id);
+            return a;
+        }
+
         public async Task<ArtistGenreModel> UpdateArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);

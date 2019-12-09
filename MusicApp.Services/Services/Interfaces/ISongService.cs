@@ -15,6 +15,7 @@ namespace MusicApp.Services.Services.Interfaces
         Task<SongModel> GetSongByIdAsync(int id);
         Task<SongModel> GetSongAsync(SongModel song);
         Task<IEnumerable<SongModel>> GetAllSongsAsync();
+        Task<bool> SongExistsAsync(int id);
 
         // UPDATE
         Task<SongModel> UpdateSongAsync(SongModel song);

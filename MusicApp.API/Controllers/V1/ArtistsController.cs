@@ -47,6 +47,8 @@ namespace MusicApp.API.Controllers.V1
             if (!artist)
                 return NotFound();
 
+            //TODO: Check to see that the name does not already exists
+
             var artistModel = _mapper.Map<ArtistModel>(putRequest);
             // Remove if adding Id to request contract
             artistModel.ArtistId = artistId;
