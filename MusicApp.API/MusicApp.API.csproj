@@ -45,7 +45,7 @@
     <Folder Include="Filters\" />
     <Folder Include="Helpers\" />
     <Folder Include="Contracts\V1\Requests\Queries\" />
-    <Folder Include="Services\" />
-    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Contracts\V1\Requests\ArtistsRequests\" />
+    <Folder Include="Contracts\V1\Responses\ArtistsResponses\" />
   </ItemGroup>
 </Project>

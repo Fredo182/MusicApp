@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MusicApp.API.Contracts.V1;
+using MusicApp.API.Contracts.V1.Requests.ArtistsRequests;
+using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
+using MusicApp.API.Contracts.V1.Responses.Shared;
+using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 
 namespace MusicApp.API.Controllers.V1
@@ -18,11 +22,13 @@ namespace MusicApp.API.Controllers.V1
             _mapper = mapper;
         }
 
-        //[HttpPost(ApiRoutes.Artists.CreateArtist)]
-        //public async Task<IActionResult> CreateArtist()
-        //{
-
-        //}
+        [HttpPost(ApiRoutes.Artists.CreateArtist)]
+        public async Task<IActionResult> CreateArtist([FromBody] CreateArtistRequest postRequest)
+        {
+            var post = _mapper.Map<ArtistModel>(postRequest);
+            var resModel = await _artistService.CreateArtistAsync(post);
+            return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(resModel)));
+        }
 
         //[HttpGet(ApiRoutes.Artists.GetArtist)]
         //public async Task<IActionResult> GetArtist()

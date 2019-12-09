@@ -1,5 +1,7 @@
 ﻿using System;
 using AutoMapper;
+using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
+using MusicApp.Services.Models;
 
 namespace MusicApp.API.Mapping
 {
@@ -7,6 +9,8 @@ namespace MusicApp.API.Mapping
     {
         public ModelToResponseProfile()
         {
+            // Artists Mappings
+            CreateMap<ArtistModel, ArtistResponse>();
         }
     }
 }

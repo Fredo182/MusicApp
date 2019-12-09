@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MusicApp.API.Installers.Interfaces;
 using MusicApp.API.Mapping;
-using MusicApp.API.Services;
-using MusicApp.API.Services.Interfaces;
 using MusicApp.Services.Mapping;
 
 namespace MusicApp.API.Installers
@@ -28,14 +26,6 @@ namespace MusicApp.API.Installers
                 }
             );
 
-            // UriService
-            services.AddSingleton<IUriService>(provider =>
-            {
-                var accessor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accessor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent(), "/");
-                return new UriService(absoluteUri);
-            });
         }
     }
 }
