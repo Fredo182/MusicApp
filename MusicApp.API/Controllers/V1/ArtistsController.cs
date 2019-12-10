@@ -26,6 +26,10 @@ namespace MusicApp.API.Controllers.V1
         public async Task<IActionResult> CreateArtist([FromBody] CreateArtistRequest postRequest)
         {
             var post = _mapper.Map<ArtistModel>(postRequest);
+            bool exists = await _artistService.ArtistNameExistsAsync(post.Name);
+            if (exists)
+                return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
+
             var artist = await _artistService.CreateArtistAsync(post);
             return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
@@ -43,14 +47,15 @@ namespace MusicApp.API.Controllers.V1
         [HttpPut(ApiRoutes.Artists.UpdateArtist)]
         public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
         {
-            var artist = await _artistService.ArtistExistsAsync(artistId);
-            if (!artist)
+            var exists = await _artistService.ArtistIdExistsAsync(artistId);
+            if (!exists)
                 return NotFound();
 
-            //TODO: Check to see that the name does not already exists
-
             var artistModel = _mapper.Map<ArtistModel>(putRequest);
-            // Remove if adding Id to request contract
+            exists = await _artistService.ArtistNameExistsAsync(artistModel.Name);
+            if (exists)
+                return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
+
             artistModel.ArtistId = artistId;
 
             var updated = await _artistService.UpdateArtistAsync(artistModel);
