@@ -36,11 +36,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistGenre>, IEnumerable<ArtistGenreModel>>(a);
         }
 
-        public async Task DeleteArtistGenreAsync(ArtistGenreModel artistGenre)
+        public async Task<bool> DeleteArtistGenreAsync(ArtistGenreModel artistGenre)
         {
             var a = _mapper.Map<ArtistGenreModel, ArtistGenre>(artistGenre);
             _unitOfWork.ArtistGenres.Delete(a);
-            await _unitOfWork.CommitAsync();
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteArtistGenreAsync(params object[] id)
+        {
+            _unitOfWork.ArtistGenres.Delete(id);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
         }
 
         public async Task DeleteArtistGenresAsync(IEnumerable<ArtistGenreModel> artistGenres)

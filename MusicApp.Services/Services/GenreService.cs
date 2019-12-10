@@ -36,11 +36,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<Genre>, IEnumerable<GenreModel>>(g);
         }
 
-        public async Task DeleteGenreAsync(GenreModel genre)
+        public async Task<bool> DeleteGenreAsync(GenreModel genre)
         {
             var g = _mapper.Map<GenreModel, Genre>(genre);
             _unitOfWork.Genres.Delete(g);
-            await _unitOfWork.CommitAsync();
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteGenreAsync(params object[] id)
+        {
+            _unitOfWork.Genres.Delete(id);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
         }
 
         public async Task DeleteGenresAsync(IEnumerable<GenreModel> genres)

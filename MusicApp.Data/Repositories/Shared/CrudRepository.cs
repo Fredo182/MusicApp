@@ -20,7 +20,7 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.Remove(entity);
         }
 
-        public void Delete(object id)
+        public void Delete(params object[] id)
         {
             TEntity entity = dbSet.Find(id);
             Delete(entity);

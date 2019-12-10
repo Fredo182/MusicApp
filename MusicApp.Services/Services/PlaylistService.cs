@@ -36,11 +36,19 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<Playlist>, IEnumerable<PlaylistModel>>(p);
         }
 
-        public async Task DeletePlaylistAsync(PlaylistModel playlist)
+        public async Task<bool> DeletePlaylistAsync(PlaylistModel playlist)
         {
             var p = _mapper.Map<PlaylistModel, Playlist>(playlist);
             _unitOfWork.Playlists.Delete(p);
-            await _unitOfWork.CommitAsync();
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeletePlaylistAsync(params object[] id)
+        {
+            _unitOfWork.Playlists.Delete(id);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
         }
 
         public async Task DeletePlaylisysAsync(IEnumerable<PlaylistModel> playlists)

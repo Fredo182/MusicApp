@@ -66,11 +66,20 @@ namespace MusicApp.API.Controllers.V1
             return NotFound();
         }
 
-        //[HttpGet(ApiRoutes.Artists.DeleteArtist)]
-        //public async Task<IActionResult> DeleteArtist()
-        //{
+        [HttpDelete(ApiRoutes.Artists.DeleteArtist)]
+        public async Task<IActionResult> DeleteArtist([FromRoute] int artistId)
+        {
+            var exists = await _artistService.ArtistIdExistsAsync(artistId);
+            if (!exists)
+                return NotFound();
 
-        //}
+            var deleted = await _artistService.DeleteArtistAsync(artistId);
+            if (deleted)
+                return NoContent();
+
+            return NotFound();
+
+        }
 
         //[HttpPost(ApiRoutes.Artists.CreateArtists)]
         //public async Task<IActionResult> CreateArtists()
