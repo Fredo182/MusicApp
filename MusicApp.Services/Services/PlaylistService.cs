@@ -66,7 +66,6 @@ namespace MusicApp.Services.Services
 
         public async Task<PlaylistModel> GetPlaylistAsync(PlaylistModel playlist)
         {
-            //TODO: This one needs to be updated to use filtering
             var p = _mapper.Map<Playlist>(playlist);
             p = await _unitOfWork.Playlists.GetByIdAsync(p.PlaylistId);
             return _mapper.Map<PlaylistModel>(p);
@@ -76,12 +75,6 @@ namespace MusicApp.Services.Services
         {
             var p = await _unitOfWork.Playlists.GetByIdAsync(id);
             return _mapper.Map<PlaylistModel>(p);
-        }
-
-        public async Task<bool> PlaylistExistsAsync(int id)
-        {
-            var p = await _unitOfWork.Playlists.ExistsAsync(p => p.PlaylistId == id);
-            return p;
         }
 
         public async Task<PlaylistModel> UpdatePlaylistAsync(PlaylistModel playlist)

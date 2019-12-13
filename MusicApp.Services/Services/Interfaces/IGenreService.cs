@@ -15,7 +15,6 @@ namespace MusicApp.Services.Services.Interfaces
         Task<GenreModel> GetGenreByIdAsync(int id);
         Task<GenreModel> GetGenreAsync(GenreModel genre);
         Task<IEnumerable<GenreModel>> GetAllGenresAsync();
-        Task<bool> GenreExistsAsync(int id);
 
         // UPDATE
         Task<GenreModel> UpdateGenreAsync(GenreModel genre);

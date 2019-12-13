@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -78,18 +79,6 @@ namespace MusicApp.Services.Services
             return _mapper.Map<ArtistModel>(a);
         }
 
-        public async Task<bool> ArtistIdExistsAsync(int id)
-        {
-            var a = await _unitOfWork.Artists.ExistsAsync(a => a.ArtistId == id);
-            return a;
-        }
-
-        public async Task<bool> ArtistNameExistsAsync(string name)
-        {
-            var a = await _unitOfWork.Artists.ExistsAsync(a => a.Name == name);
-            return a;
-        }
-
         public async Task<ArtistModel> UpdateArtistAsync(ArtistModel artist)
         {
             var a = _mapper.Map<Artist>(artist);
@@ -104,6 +93,48 @@ namespace MusicApp.Services.Services
             a = _unitOfWork.Artists.UpdateRange(a);
             await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
+        }
+
+        public async Task<bool> ArtistIdExistsAsync(int id)
+        {
+            var a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.ArtistId == id), false);
+            return (a != null);
+        }
+
+        public async Task<bool> ArtistExistsAsync(ArtistModel artist)
+        {
+            var a = _mapper.Map<Artist>(artist);
+            a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.ArtistId == a.ArtistId), false);
+            return (a != null);
+        }
+
+        public async Task<bool> ArtistsExistAsync(IEnumerable<ArtistModel> artists)
+        {
+            var a = _mapper.Map<IEnumerable<Artist>>(artists);
+            var ids = a.Select(x => x.ArtistId).ToList();
+            var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            return (exist.Count() == artists.Count());
+        }
+
+        public async Task<bool> ArtistNameExistsAsync(string name)
+        {
+            var a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.Name == name), false);
+            return (a != null);
+        }
+
+        public async Task<bool> ArtistNameExistsAsync(ArtistModel artist)
+        {
+            var a = _mapper.Map<Artist>(artist);
+            a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.Name == a.Name), false);
+            return (a != null);
+        }
+
+        public async Task<bool> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists)
+        {
+            var a = _mapper.Map<IEnumerable<Artist>>(artists);
+            var names = a.Select(x => x.Name).ToList();
+            var exist = await _unitOfWork.Artists.GetAsync(x => names.Contains(x.Name), null, null, false);
+            return (a != null);
         }
     }
 }

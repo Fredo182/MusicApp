@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace MusicApp.API.Controllers.V1
         public async Task<IActionResult> CreateArtist([FromBody] CreateArtistRequest postRequest)
         {
             var post = _mapper.Map<ArtistModel>(postRequest);
-            bool exists = await _artistService.ArtistNameExistsAsync(post.Name);
+            bool exists = await _artistService.ArtistNameExistsAsync(post);
             if (exists)
                 return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
 
@@ -82,9 +83,17 @@ namespace MusicApp.API.Controllers.V1
         }
 
         //[HttpPost(ApiRoutes.Artists.CreateArtists)]
-        //public async Task<IActionResult> CreateArtists()
+        //public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
         //{
+        //    var posts = _mapper.Map<IEnumerable<ArtistModel>>(postRequest);
 
+
+        //    //bool exists = await _artistService.ArtistNameExistsAsync(post.Name);
+        //    //if (exists)
+        //    //  return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
+
+        //    var artists = await _artistService.CreateArtistsAsync(posts);
+        //    return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
         //}
 
         //[HttpGet(ApiRoutes.Artists.GetArtists)]

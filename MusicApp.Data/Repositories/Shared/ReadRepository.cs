@@ -12,7 +12,7 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = this.dbSet;
 
@@ -29,9 +29,19 @@ namespace MusicApp.Data.Repositories.Shared
 
             // Apply orderBy
             if (orderBy != null)
-                return await orderBy(query).ToListAsync();
+            {
+                if (tracking)
+                    return await orderBy(query).ToListAsync();
+                else
+                    return await orderBy(query).AsNoTracking().ToListAsync();
+            }
             else
-                return await query.ToListAsync();
+            {
+                if (tracking)
+                    return await query.ToListAsync();
+                else
+                    return await query.AsNoTracking().ToListAsync();
+            }
         }
 
         public async Task<TEntity> GetByIdAsync(params object[] id)
@@ -39,20 +49,20 @@ namespace MusicApp.Data.Repositories.Shared
             return await dbSet.FindAsync(id);
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
         {
-            return dbSet.Where(predicate);
+            if (tracking)
+                return dbSet.Where(predicate);
+            else
+                return dbSet.AsNoTracking().Where(predicate);
         }
 
-        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
         {
-            return await dbSet.SingleOrDefaultAsync(predicate);
-        }
-
-        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            var exists = await dbSet.AsNoTracking().SingleOrDefaultAsync(predicate);
-            return (exists != null);
+            if (tracking)
+                return await dbSet.SingleOrDefaultAsync(predicate);
+            else
+                return await dbSet.AsNoTracking().SingleOrDefaultAsync(predicate);
         }
 
         public async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)

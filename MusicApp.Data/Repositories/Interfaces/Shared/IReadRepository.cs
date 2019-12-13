@@ -12,15 +12,13 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "");
+            string includeProperties = "", bool tracking=true);
 
         Task<TEntity> GetByIdAsync(params object[] id);
 
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool tracking=true);
 
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
-
-        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool tracking=true);
         
         Task<IEnumerable<TEntity>> GetWithRawSQLAsync(
             string query,

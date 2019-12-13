@@ -16,8 +16,6 @@ namespace MusicApp.Services.Services.Interfaces
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
         Task<IEnumerable<ArtistModel>> GetAllArtistsAsync();
-        Task<bool> ArtistIdExistsAsync(int id);
-        Task<bool> ArtistNameExistsAsync(string name);
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);
@@ -27,6 +25,17 @@ namespace MusicApp.Services.Services.Interfaces
         Task<bool> DeleteArtistAsync(ArtistModel artist);
         Task<bool> DeleteArtistAsync(params object[] id);
         Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
-        
+
+        // EXIST
+        // IDs
+        Task<bool> ArtistIdExistsAsync(int id);
+        Task<bool> ArtistExistsAsync(ArtistModel artist);
+        Task<bool> ArtistsExistAsync(IEnumerable<ArtistModel> artists);
+
+        // UNIQUE
+        Task<bool> ArtistNameExistsAsync(string name);
+        Task<bool> ArtistNameExistsAsync(ArtistModel artist);
+        Task<bool> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists);
+
     }
 }

@@ -19,11 +19,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtist = Base + "/albums/{albumId}";
             public const string UpdateArtist = Base + "/albums/{albumId}";
             public const string DeleteArtist = Base + "/albums/{albumId}";
-
-            public const string CreateArtists = Base + "/albums";
             public const string GetArtists = Base + "/albums";
-            public const string DeleteArtists = Base + "/albums";
-            public const string UpdateArtists = Base + "/albums";
+
+            //Bulk Endpoints
+            public const string CreateArtists = Base + "/albums/bulk";
+            public const string DeleteArtists = Base + "/albums/bulk";
+            public const string UpdateArtists = Base + "/albums/bulk";
         }
 
         public static class ArtistGenres
@@ -38,11 +39,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtist = Base + "/artistgenres/{artistgenreId}";
             public const string UpdateArtist = Base + "/artistgenres/{artistgenreId}";
             public const string DeleteArtist = Base + "/artistgenres/{artistgenreId}";
-
-            public const string CreateArtists = Base + "/artistgenres";
             public const string GetArtists = Base + "/artistgenres";
-            public const string DeleteArtists = Base + "/artistgenres";
-            public const string UpdateArtists = Base + "/artistgenres";
+
+            //Bulk Endpoints
+            public const string CreateArtists = Base + "/artistgenres/bulk";
+            public const string DeleteArtists = Base + "/artistgenres/bulk";
+            public const string UpdateArtists = Base + "/artistgenres/bulk";
         }
 
         public static class Artists
@@ -57,11 +59,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtist = Base + "/artists/{artistId}";
             public const string UpdateArtist = Base + "/artists/{artistId}";
             public const string DeleteArtist = Base + "/artists/{artistId}";
-
-            public const string CreateArtists = Base + "/artists";
             public const string GetArtists = Base + "/artists";
-            public const string DeleteArtists = Base + "/artists";
-            public const string UpdateArtists = Base + "/artists";
+
+            //Bulk Endpoints
+            public const string CreateArtists = Base + "/artists/bulk";
+            public const string DeleteArtists = Base + "/artists/bulk";
+            public const string UpdateArtists = Base + "/artists/bulk";
         }
 
         public static class Genres
@@ -76,11 +79,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtist = Base + "/genres/{genreId}";
             public const string UpdateArtist = Base + "/genres/{genreId}";
             public const string DeleteArtist = Base + "/genres/{genreId}";
-
-            public const string CreateArtists = Base + "/genres";
             public const string GetArtists = Base + "/genres";
-            public const string DeleteArtists = Base + "/genres";
-            public const string UpdateArtists = Base + "/genres";
+
+            //Bulk Endpoints
+            public const string CreateArtists = Base + "/genres/bulk";
+            public const string DeleteArtists = Base + "/genres/bulk";
+            public const string UpdateArtists = Base + "/genres/bulk";
         }
 
         public static class Songs
@@ -95,11 +99,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtist = Base + "/songs/{songId}";
             public const string UpdateArtist = Base + "/songs/{songId}";
             public const string DeleteArtist = Base + "/songs/{songId}";
-
-            public const string CreateArtists = Base + "/songs";
             public const string GetArtists = Base + "/songs";
-            public const string DeleteArtists = Base + "/songs";
-            public const string UpdateArtists = Base + "/songs";
+
+            //Bulk Endpoints
+            public const string CreateArtists = Base + "/songs/bulk";
+            public const string DeleteArtists = Base + "/songs/bulk";
+            public const string UpdateArtists = Base + "/songs/bulk";
         }
 
         public static class Playlists
@@ -114,11 +119,12 @@ namespace MusicApp.API.Contracts.V1
             public const string GetPlaylist = Base + "/playlists/{playlistId}";
             public const string UpdatePlaylist = Base + "/playlists/{playlistId}";
             public const string DeletePlaylist = Base + "/playlists/{playlistId}";
-
-            public const string CreatePlaylists = Base + "/playlists";
             public const string GetPlaylists = Base + "/playlists";
-            public const string DeletePlaylists = Base + "/playlists";
-            public const string UpdatePlaylists = Base + "/playlists";
+
+            //Bulk Endpoints
+            public const string CreatePlaylists = Base + "/playlists/bulk";
+            public const string DeletePlaylists = Base + "/playlists/bulk";
+            public const string UpdatePlaylists = Base + "/playlists/bulk";
         }
     }
 }

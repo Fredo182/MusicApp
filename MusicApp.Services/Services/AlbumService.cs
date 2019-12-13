@@ -71,12 +71,6 @@ namespace MusicApp.Services.Services
             return _mapper.Map<AlbumModel>(a);
         }
 
-        public async Task<bool> AlbumExistsAsync(int id)
-        {
-            var a = await _unitOfWork.Albums.ExistsAsync(a => a.AlbumId == id);
-            return a;
-        }
-
         public async Task<IEnumerable<AlbumModel>> GetAllAlbumsAsync()
         {
             var a = await _unitOfWork.Albums.GetAsync();
