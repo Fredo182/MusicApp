@@ -15,7 +15,7 @@ namespace MusicApp.Services.Services.Interfaces
         // READ
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetAllArtistsAsync();
+        Task<IEnumerable<ArtistModel>> GetArtistsAsync();
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);

@@ -84,6 +84,13 @@ namespace MusicApp.API.Controllers.V1
 
         }
 
+        //[HttpGet(ApiRoutes.Artists.GetArtists)]
+        //public async Task<IActionResult> GetArtists()
+        //{
+        //    var artists = await _artistService.GetAllArtistsAsync();
+        //    return Ok(artists);
+        //}
+
         [HttpPost(ApiRoutes.Artists.CreateArtists)]
         public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
         {
@@ -97,13 +104,6 @@ namespace MusicApp.API.Controllers.V1
             var artists = await _artistService.CreateArtistsAsync(posts);
             return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
         }
-
-        //[HttpGet(ApiRoutes.Artists.GetArtists)]
-        //public async Task<IActionResult> GetArtists()
-        //{
-        //    var artists = await _artistService.GetAllArtistsAsync();
-        //    return Ok(artists);
-        //}
 
         [HttpPut(ApiRoutes.Artists.UpdateArtists)]
         public async Task<IActionResult> UpdateArtists([FromBody] IEnumerable<UpdateArtistRequest> putRequest)

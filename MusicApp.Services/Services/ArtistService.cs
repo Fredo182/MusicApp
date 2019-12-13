@@ -38,38 +38,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<bool> DeleteArtistAsync(ArtistModel artist)
-        {
-            var a = _mapper.Map<Artist>(artist);
-            _unitOfWork.Artists.Delete(a);
-            var deleted = await _unitOfWork.CommitAsync();
-            return deleted > 0;
-        }
-
-        public async Task<bool> DeleteArtistAsync(params object[] id)
-        {
-            _unitOfWork.Artists.Delete(id);
-            var deleted = await _unitOfWork.CommitAsync();
-            return deleted > 0;
-        }
-
-        public async Task<bool> DeleteArtistsAsync(int[] ids)
-        {
-            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
-            _unitOfWork.Artists.DeleteRange(a);
-            var deleted = await _unitOfWork.CommitAsync();
-            return deleted > 0;
-        }
-
-        public async Task<bool> DeleteArtistsAsync(IEnumerable<ArtistModel> artists)
-        {
-            var a = _mapper.Map<IEnumerable<Artist>>(artists);
-            _unitOfWork.Artists.DeleteRange(a);
-            var deleted = await _unitOfWork.CommitAsync();
-            return deleted > 0;
-        }
-
-        public async Task<IEnumerable<ArtistModel>> GetAllArtistsAsync()
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync()
         {
             var a = await _unitOfWork.Artists.GetAsync();
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
@@ -102,6 +71,37 @@ namespace MusicApp.Services.Services
             a = _unitOfWork.Artists.UpdateRange(a);
             await _unitOfWork.CommitAsync();
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
+        }
+
+        public async Task<bool> DeleteArtistAsync(ArtistModel artist)
+        {
+            var a = _mapper.Map<Artist>(artist);
+            _unitOfWork.Artists.Delete(a);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteArtistAsync(params object[] id)
+        {
+            _unitOfWork.Artists.Delete(id);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteArtistsAsync(int[] ids)
+        {
+            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            _unitOfWork.Artists.DeleteRange(a);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteArtistsAsync(IEnumerable<ArtistModel> artists)
+        {
+            var a = _mapper.Map<IEnumerable<Artist>>(artists);
+            _unitOfWork.Artists.DeleteRange(a);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
         }
 
         public async Task<bool> ArtistIdExistsAsync(int id)
