@@ -24,13 +24,16 @@ namespace MusicApp.Services.Services.Interfaces
         // DELETE
         Task<bool> DeleteArtistAsync(ArtistModel artist);
         Task<bool> DeleteArtistAsync(params object[] id);
-        Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
+        Task<bool> DeleteArtistsAsync(int[] ids);
+        Task<bool> DeleteArtistsAsync(IEnumerable<ArtistModel> artists);
 
         // EXIST
         // IDs
         Task<bool> ArtistIdExistsAsync(int id);
+        Task<bool> ArtistIdsExistAsync(int[] ids);
         Task<bool> ArtistExistsAsync(ArtistModel artist);
         Task<IEnumerable<ArtistModel>> ArtistsExistAsync(IEnumerable<ArtistModel> artists);
+        Task<IEnumerable<ArtistModel>> ArtistsNotExistAsync(IEnumerable<ArtistModel> artists);
 
         // UNIQUE
         Task<bool> ArtistNameExistsAsync(string name);

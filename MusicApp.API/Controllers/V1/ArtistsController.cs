@@ -41,7 +41,7 @@ namespace MusicApp.API.Controllers.V1
         {
             var artist = await _artistService.GetArtistByIdAsync(artistId);
             if (artist == null)
-                return NotFound();
+                return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
 
             return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
@@ -49,6 +49,9 @@ namespace MusicApp.API.Controllers.V1
         [HttpPut(ApiRoutes.Artists.UpdateArtist)]
         public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
         {
+            if (artistId != putRequest.ArtistId)
+                return BadRequest(new ErrorResponse(new ErrorModel { Message = "ArtistId mismatch." }));
+
             var exists = await _artistService.ArtistIdExistsAsync(artistId);
             if (!exists)
                 return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
@@ -57,8 +60,6 @@ namespace MusicApp.API.Controllers.V1
             exists = await _artistService.ArtistNameExistsAsync(artistModel.Name);
             if (exists)
                 return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
-
-            artistModel.ArtistId = artistId;
 
             var updated = await _artistService.UpdateArtistAsync(artistModel);
 
@@ -104,16 +105,41 @@ namespace MusicApp.API.Controllers.V1
         //    return Ok(artists);
         //}
 
-        //[HttpGet(ApiRoutes.Artists.UpdateArtists)]
-        //public async Task<IActionResult> UpdateArtists()
-        //{
+        [HttpPut(ApiRoutes.Artists.UpdateArtists)]
+        public async Task<IActionResult> UpdateArtists([FromBody] IEnumerable<UpdateArtistRequest> putRequest)
+        {
+            var puts = _mapper.Map<IEnumerable<ArtistModel>>(putRequest);
+            var notExist = await _artistService.ArtistsNotExistAsync(puts);
+            if (notExist.Count() > 0)
+            {
+                var notExistingNames = notExist.Select(x => x.Name).ToList();
+                return NotFound(new ErrorResponse(new ErrorModel { Message = "The following artist do not exist. [" + string.Join(',', notExistingNames) + "]" }));
+            }
 
-        //}
+            var exist = await _artistService.ArtistNamesExistsAsync(puts);
+            if (exist.Count() > 0)
+            {
+                var existingNames = exist.Select(x => x.Name).ToList();
+                return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new names for the following. [" + string.Join(',', existingNames) + "]" }));
+            }
 
-        //[HttpGet(ApiRoutes.Artists.DeleteArtists)]
-        //public async Task<IActionResult> DeleteArtist()
-        //{
+            var artists = await _artistService.UpdateArtistsAsync(puts);
+            return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
+        }
 
-        //}
+        [HttpDelete(ApiRoutes.Artists.DeleteArtists)]
+        public async Task<IActionResult> DeleteArtists([FromBody] int[] ids)
+        {
+            var allExist = await _artistService.ArtistIdsExistAsync(ids);
+            if (!allExist)
+                return NotFound(new ErrorResponse(new ErrorModel { Message = "An Artist does not exist." }));
+
+            var deleted = await _artistService.DeleteArtistsAsync(ids);
+            if (deleted)
+                return NoContent();
+
+            return NotFound(new ErrorResponse(new ErrorModel { Message = "An Artist does not exist." }));
+
+        }
     }
 }

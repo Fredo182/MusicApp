@@ -53,11 +53,20 @@ namespace MusicApp.Services.Services
             return deleted > 0;
         }
 
-        public async Task DeleteArtistsAsync(IEnumerable<ArtistModel> artists)
+        public async Task<bool> DeleteArtistsAsync(int[] ids)
+        {
+            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            _unitOfWork.Artists.DeleteRange(a);
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> DeleteArtistsAsync(IEnumerable<ArtistModel> artists)
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             _unitOfWork.Artists.DeleteRange(a);
-            await _unitOfWork.CommitAsync();
+            var deleted = await _unitOfWork.CommitAsync();
+            return deleted > 0;
         }
 
         public async Task<IEnumerable<ArtistModel>> GetAllArtistsAsync()
@@ -101,6 +110,12 @@ namespace MusicApp.Services.Services
             return (a != null);
         }
 
+        public async Task<bool> ArtistIdsExistAsync(int[] ids)
+        {
+            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            return (a.Count() == ids.Count());
+        }
+
         public async Task<bool> ArtistExistsAsync(ArtistModel artist)
         {
             var a = _mapper.Map<Artist>(artist);
@@ -114,6 +129,16 @@ namespace MusicApp.Services.Services
             var ids = a.Select(x => x.ArtistId).ToList();
             var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
+        }
+
+        public async Task<IEnumerable<ArtistModel>> ArtistsNotExistAsync(IEnumerable<ArtistModel> artists)
+        {
+            var a = _mapper.Map<IEnumerable<Artist>>(artists);
+            var ids = a.Select(x => x.ArtistId).ToList();
+            var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            var existIds = exist.Select(x => x.ArtistId);
+            var notExist = a.Where(x => existIds.Contains(x.ArtistId) == false).ToList();
+            return _mapper.Map<IEnumerable<ArtistModel>>(notExist);
         }
 
         public async Task<bool> ArtistNameExistsAsync(string name)
