@@ -33,7 +33,8 @@ namespace MusicApp.API.Controllers.V1
                 return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
 
             var artist = await _artistService.CreateArtistAsync(post);
-            return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
+            var locationUri = ApiRoutes.Artists.Route + "/" + artist.ArtistId;
+            return Created(locationUri, new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
 
         [HttpGet(ApiRoutes.Artists.GetArtist)]
@@ -102,7 +103,8 @@ namespace MusicApp.API.Controllers.V1
                 return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new names for the following. [" + string.Join(',', existingNames) + "]" }));
             }
             var artists = await _artistService.CreateArtistsAsync(posts);
-            return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
+            var locationUri = ApiRoutes.Artists.Route;
+            return Created(locationUri, new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
         }
 
         [HttpPut(ApiRoutes.Artists.UpdateArtists)]
