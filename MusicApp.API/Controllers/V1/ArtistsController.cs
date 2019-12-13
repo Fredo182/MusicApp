@@ -46,6 +46,13 @@ namespace MusicApp.API.Controllers.V1
             return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
         }
 
+        [HttpGet(ApiRoutes.Artists.GetArtists)]
+        public async Task<IActionResult> GetArtists()
+        {
+            var artists = await _artistService.GetArtistsAsync();
+            return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
+        }
+
         [HttpPut(ApiRoutes.Artists.UpdateArtist)]
         public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
         {
@@ -83,13 +90,6 @@ namespace MusicApp.API.Controllers.V1
             return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
 
         }
-
-        //[HttpGet(ApiRoutes.Artists.GetArtists)]
-        //public async Task<IActionResult> GetArtists()
-        //{
-        //    var artists = await _artistService.GetAllArtistsAsync();
-        //    return Ok(artists);
-        //}
 
         [HttpPost(ApiRoutes.Artists.CreateArtists)]
         public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
