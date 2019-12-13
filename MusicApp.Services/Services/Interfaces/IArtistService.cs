@@ -30,12 +30,12 @@ namespace MusicApp.Services.Services.Interfaces
         // IDs
         Task<bool> ArtistIdExistsAsync(int id);
         Task<bool> ArtistExistsAsync(ArtistModel artist);
-        Task<bool> ArtistsExistAsync(IEnumerable<ArtistModel> artists);
+        Task<IEnumerable<ArtistModel>> ArtistsExistAsync(IEnumerable<ArtistModel> artists);
 
         // UNIQUE
         Task<bool> ArtistNameExistsAsync(string name);
         Task<bool> ArtistNameExistsAsync(ArtistModel artist);
-        Task<bool> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists);
+        Task<IEnumerable<ArtistModel>> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists);
 
     }
 }

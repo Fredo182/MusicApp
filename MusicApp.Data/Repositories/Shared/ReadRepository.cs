@@ -18,13 +18,13 @@ namespace MusicApp.Data.Repositories.Shared
 
             // Apply filtering
             if (predicate != null)
-                query.Where(predicate);
+                query = query.Where(predicate);
 
             // Add Include related data
             if (includeProperties != null)
             {
                 foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    query.Include(includeProperty);
+                    query = query.Include(includeProperty);
             }
 
             // Apply orderBy

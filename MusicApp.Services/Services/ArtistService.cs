@@ -108,12 +108,12 @@ namespace MusicApp.Services.Services
             return (a != null);
         }
 
-        public async Task<bool> ArtistsExistAsync(IEnumerable<ArtistModel> artists)
+        public async Task<IEnumerable<ArtistModel>> ArtistsExistAsync(IEnumerable<ArtistModel> artists)
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             var ids = a.Select(x => x.ArtistId).ToList();
             var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
-            return (exist.Count() == artists.Count());
+            return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
 
         public async Task<bool> ArtistNameExistsAsync(string name)
@@ -129,12 +129,12 @@ namespace MusicApp.Services.Services
             return (a != null);
         }
 
-        public async Task<bool> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists)
+        public async Task<IEnumerable<ArtistModel>> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists)
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             var names = a.Select(x => x.Name).ToList();
-            var exist = await _unitOfWork.Artists.GetAsync(x => names.Contains(x.Name), null, null, false);
-            return (a != null);
+            var exist = await _unitOfWork.Artists.GetAsync((x => names.Contains(x.Name)), null, null, false);
+            return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
     }
 }

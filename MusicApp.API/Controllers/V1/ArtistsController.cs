@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -82,19 +83,19 @@ namespace MusicApp.API.Controllers.V1
 
         }
 
-        //[HttpPost(ApiRoutes.Artists.CreateArtists)]
-        //public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
-        //{
-        //    var posts = _mapper.Map<IEnumerable<ArtistModel>>(postRequest);
-
-
-        //    //bool exists = await _artistService.ArtistNameExistsAsync(post.Name);
-        //    //if (exists)
-        //    //  return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
-
-        //    var artists = await _artistService.CreateArtistsAsync(posts);
-        //    return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
-        //}
+        [HttpPost(ApiRoutes.Artists.CreateArtists)]
+        public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
+        {
+            var posts = _mapper.Map<IEnumerable<ArtistModel>>(postRequest);
+            var exist = await _artistService.ArtistNamesExistsAsync(posts);
+            if (exist.Count() > 0)
+            {
+                var existingNames = exist.Select(x => x.Name).ToList();
+                return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new names for the following. [" + string.Join(',', existingNames) + "]" }));
+            }
+            var artists = await _artistService.CreateArtistsAsync(posts);
+            return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
+        }
 
         //[HttpGet(ApiRoutes.Artists.GetArtists)]
         //public async Task<IActionResult> GetArtists()

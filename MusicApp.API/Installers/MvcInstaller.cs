@@ -21,7 +21,10 @@ namespace MusicApp.API.Installers
                 {
                     options.Filters.Add<ValidationFilter>();
                 })
-                .AddFluentValidation( config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
+                .AddFluentValidation( config => {
+                    config.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    config.ImplicitlyValidateChildProperties = true;
+                });
 
             // Add AutoMapper
             services.AddAutoMapper(
