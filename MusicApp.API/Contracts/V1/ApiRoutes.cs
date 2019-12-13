@@ -11,7 +11,8 @@ namespace MusicApp.API.Contracts.V1
         {
             //base url
             public const string Route = Base + "/albums";
-            public const string Id = "/{albumId}";
+            public const string Verb = "albums";
+            public const string Id = "{albumId}";
 
             //Endpoints
             public const string CreateArtist = Base + "/albums";
@@ -29,7 +30,8 @@ namespace MusicApp.API.Contracts.V1
         {
             //base url
             public const string Route = Base + "/artistgenres";
-            public const string Id = "/{artistgenreId}";
+            public const string Verb = "artistgenres";
+            public const string Id = "{artistgenreId}";
 
             //Endpoints
             public const string CreateArtist = Base + "/artistgenres";
@@ -47,7 +49,8 @@ namespace MusicApp.API.Contracts.V1
         {
             //base url
             public const string Route = Base + "/artists";
-            public const string Id = "/{artistId}";
+            public const string Verb = "artists";
+            public const string Id = "{artistId}";
 
             //Endpoints
             public const string CreateArtist = Base + "/artists";
@@ -65,7 +68,8 @@ namespace MusicApp.API.Contracts.V1
         {
             //base url
             public const string Route = Base + "/genres";
-            public const string Id = "/{genreId}";
+            public const string Verb = "genres";
+            public const string Id = "{genreId}";
 
             //Endpoints
             public const string CreateArtist = Base + "/genres";
@@ -83,7 +87,8 @@ namespace MusicApp.API.Contracts.V1
         {
             //base url
             public const string Route = Base + "/songs";
-            public const string Id = "/{songId}";
+            public const string Verb = "songs";
+            public const string Id = "{songId}";
 
             //Endpoints
             public const string CreateArtist = Base + "/songs";
@@ -95,6 +100,25 @@ namespace MusicApp.API.Contracts.V1
             public const string GetArtists = Base + "/songs";
             public const string DeleteArtists = Base + "/songs";
             public const string UpdateArtists = Base + "/songs";
+        }
+
+        public static class Playlists
+        {
+            //base url
+            public const string Route = Base + "/playlists";
+            public const string Verb = "playlists";
+            public const string Id = "{playlistId}";
+
+            //Endpoints
+            public const string CreatePlaylist = Base + "/playlists";
+            public const string GetPlaylist = Base + "/playlists/{playlistId}";
+            public const string UpdatePlaylist = Base + "/playlists/{playlistId}";
+            public const string DeletePlaylist = Base + "/playlists/{playlistId}";
+
+            public const string CreatePlaylists = Base + "/playlists";
+            public const string GetPlaylists = Base + "/playlists";
+            public const string DeletePlaylists = Base + "/playlists";
+            public const string UpdatePlaylists = Base + "/playlists";
         }
     }
 }

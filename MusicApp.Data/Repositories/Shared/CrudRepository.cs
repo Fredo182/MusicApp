@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MusicApp.Data.Repositories.Interfaces.Shared;
@@ -31,6 +32,12 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.RemoveRange(entities);
         }
 
+        public async Task DeleteRangeAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var entities = await GetAsync(predicate);
+            dbSet.RemoveRange(entities);
+        }
+
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             await dbSet.AddAsync(entity);
@@ -54,5 +61,6 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.UpdateRange(entities);
             return entities;
         }
+
     }
 }

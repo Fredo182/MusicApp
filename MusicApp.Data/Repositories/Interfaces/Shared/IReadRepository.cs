@@ -10,7 +10,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
     {
         //READ
         Task<IEnumerable<TEntity>> GetAsync(
-            Expression<Func<TEntity, bool>> filter = null,
+            Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "");
 

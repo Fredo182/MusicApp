@@ -22,23 +22,23 @@ namespace MusicApp.Services.Services
 
         public async Task<SongModel> CreateSongAsync(SongModel song)
         {
-            var s = _mapper.Map<SongModel, Song>(song);
+            var s = _mapper.Map<Song>(song);
             s = await _unitOfWork.Songs.AddAsync(s);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<Song, SongModel>(s);
+            return _mapper.Map<SongModel>(s);
         }
 
         public async Task<IEnumerable<SongModel>> CreateSongsAsync(IEnumerable<SongModel> songs)
         {
-            var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
+            var s = _mapper.Map<IEnumerable<Song>>(songs);
             s = await _unitOfWork.Songs.AddRangeAsync(s);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
+            return _mapper.Map<IEnumerable<SongModel>>(s);
         }
 
         public async Task<bool> DeleteSongAsync(SongModel song)
         {
-            var s = _mapper.Map<SongModel, Song>(song);
+            var s = _mapper.Map<Song>(song);
             _unitOfWork.Songs.Delete(s);
             var deleted = await _unitOfWork.CommitAsync();
             return deleted > 0;
@@ -53,7 +53,7 @@ namespace MusicApp.Services.Services
 
         public async Task DeleteSongsAsync(IEnumerable<SongModel> songs)
         {
-            var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
+            var s = _mapper.Map<IEnumerable<Song>>(songs);
             _unitOfWork.Songs.DeleteRange(s);
             await _unitOfWork.CommitAsync();
         }
@@ -61,21 +61,20 @@ namespace MusicApp.Services.Services
         public async Task<IEnumerable<SongModel>> GetAllSongsAsync()
         {
             var s = await _unitOfWork.Songs.GetAsync();
-            return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
+            return _mapper.Map<IEnumerable<SongModel>>(s);
         }
 
         public async Task<SongModel> GetSongAsync(SongModel song)
         {
-            //TODO: This one needs to be updated to use filtering
-            var s = _mapper.Map<SongModel, Song>(song);
+            var s = _mapper.Map<Song>(song);
             s = await _unitOfWork.Songs.GetByIdAsync(s.SongId);
-            return _mapper.Map<Song, SongModel>(s);
+            return _mapper.Map<SongModel>(s);
         }
 
         public async Task<SongModel> GetSongByIdAsync(int id)
         {
             var s = await _unitOfWork.Songs.GetByIdAsync(id);
-            return _mapper.Map<Song, SongModel>(s);
+            return _mapper.Map<SongModel>(s);
         }
 
         public async Task<bool> SongExistsAsync(int id)
@@ -86,18 +85,18 @@ namespace MusicApp.Services.Services
 
         public async Task<SongModel> UpdateSongAsync(SongModel song)
         {
-            var s = _mapper.Map<SongModel, Song>(song);
+            var s = _mapper.Map<Song>(song);
             s = _unitOfWork.Songs.Update(s);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<Song, SongModel>(s);
+            return _mapper.Map<SongModel>(s);
         }
 
         public async Task<IEnumerable<SongModel>> UpdateSongsAsync(IEnumerable<SongModel> songs)
         {
-            var s = _mapper.Map<IEnumerable<SongModel>, IEnumerable<Song>>(songs);
+            var s = _mapper.Map<IEnumerable<Song>>(songs);
             s = _unitOfWork.Songs.UpdateRange(s);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<IEnumerable<Song>, IEnumerable<SongModel>>(s);
+            return _mapper.Map<IEnumerable<SongModel>>(s);
         }
 
     }

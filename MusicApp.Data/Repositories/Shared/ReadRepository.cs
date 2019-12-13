@@ -12,13 +12,13 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
 
             // Apply filtering
-            if (filter != null)
-                query.Where(filter);
+            if (predicate != null)
+                query.Where(predicate);
 
             // Add Include related data
             if (includeProperties != null)

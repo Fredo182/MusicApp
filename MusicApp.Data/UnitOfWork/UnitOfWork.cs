@@ -47,5 +47,10 @@ namespace MusicApp.Data.UnitOfWork
         {
             _context.Dispose();
         }
+
+        public void BeginTransaction()
+        {
+            _context.Database.BeginTransaction();
+        }
     }
 }

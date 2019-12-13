@@ -49,7 +49,7 @@ namespace MusicApp.API.Controllers.V1
         {
             var exists = await _artistService.ArtistIdExistsAsync(artistId);
             if (!exists)
-                return NotFound();
+                return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
 
             var artistModel = _mapper.Map<ArtistModel>(putRequest);
             exists = await _artistService.ArtistNameExistsAsync(artistModel.Name);
@@ -71,13 +71,13 @@ namespace MusicApp.API.Controllers.V1
         {
             var exists = await _artistService.ArtistIdExistsAsync(artistId);
             if (!exists)
-                return NotFound();
+                return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
 
             var deleted = await _artistService.DeleteArtistAsync(artistId);
             if (deleted)
                 return NoContent();
 
-            return NotFound();
+            return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
 
         }
 

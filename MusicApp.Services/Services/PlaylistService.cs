@@ -22,23 +22,23 @@ namespace MusicApp.Services.Services
 
         public async Task<PlaylistModel> CreatePlaylistAsync(PlaylistModel playlist)
         {
-            var p = _mapper.Map<PlaylistModel, Playlist>(playlist);
+            var p = _mapper.Map<Playlist>(playlist);
             p = await _unitOfWork.Playlists.AddAsync(p);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<Playlist, PlaylistModel>(p);
+            return _mapper.Map<PlaylistModel>(p);
         }
 
         public async Task<IEnumerable<PlaylistModel>> CreatePlaylistsAsync(IEnumerable<PlaylistModel> playlists)
         {
-            var p = _mapper.Map<IEnumerable<PlaylistModel>, IEnumerable<Playlist>>(playlists);
+            var p = _mapper.Map<IEnumerable<Playlist>>(playlists);
             p = await _unitOfWork.Playlists.AddRangeAsync(p);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<IEnumerable<Playlist>, IEnumerable<PlaylistModel>>(p);
+            return _mapper.Map<IEnumerable<PlaylistModel>>(p);
         }
 
         public async Task<bool> DeletePlaylistAsync(PlaylistModel playlist)
         {
-            var p = _mapper.Map<PlaylistModel, Playlist>(playlist);
+            var p = _mapper.Map<Playlist>(playlist);
             _unitOfWork.Playlists.Delete(p);
             var deleted = await _unitOfWork.CommitAsync();
             return deleted > 0;
@@ -53,7 +53,7 @@ namespace MusicApp.Services.Services
 
         public async Task DeletePlaylisysAsync(IEnumerable<PlaylistModel> playlists)
         {
-            var p = _mapper.Map<IEnumerable<PlaylistModel>, IEnumerable<Playlist>>(playlists);
+            var p = _mapper.Map<IEnumerable<Playlist>>(playlists);
             _unitOfWork.Playlists.DeleteRange(p);
             await _unitOfWork.CommitAsync();
         }
@@ -61,21 +61,21 @@ namespace MusicApp.Services.Services
         public async Task<IEnumerable<PlaylistModel>> GetAllPlaylistsAsync()
         {
             var p = await _unitOfWork.Playlists.GetAsync();
-            return _mapper.Map<IEnumerable<Playlist>, IEnumerable<PlaylistModel>>(p);
+            return _mapper.Map<IEnumerable<PlaylistModel>>(p);
         }
 
         public async Task<PlaylistModel> GetPlaylistAsync(PlaylistModel playlist)
         {
             //TODO: This one needs to be updated to use filtering
-            var p = _mapper.Map<PlaylistModel, Playlist>(playlist);
+            var p = _mapper.Map<Playlist>(playlist);
             p = await _unitOfWork.Playlists.GetByIdAsync(p.PlaylistId);
-            return _mapper.Map<Playlist, PlaylistModel>(p);
+            return _mapper.Map<PlaylistModel>(p);
         }
 
         public async Task<PlaylistModel> GetPlaylistByIdAsync(int id)
         {
             var p = await _unitOfWork.Playlists.GetByIdAsync(id);
-            return _mapper.Map<Playlist, PlaylistModel>(p);
+            return _mapper.Map<PlaylistModel>(p);
         }
 
         public async Task<bool> PlaylistExistsAsync(int id)
@@ -86,18 +86,18 @@ namespace MusicApp.Services.Services
 
         public async Task<PlaylistModel> UpdatePlaylistAsync(PlaylistModel playlist)
         {
-            var p = _mapper.Map<PlaylistModel, Playlist>(playlist);
+            var p = _mapper.Map<Playlist>(playlist);
             p = _unitOfWork.Playlists.Update(p);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<Playlist, PlaylistModel>(p);
+            return _mapper.Map<PlaylistModel>(p);
         }
 
         public async Task<IEnumerable<PlaylistModel>> UpdatePlaylistsAsync(IEnumerable<PlaylistModel> playlists)
         {
-            var p = _mapper.Map<IEnumerable<PlaylistModel>, IEnumerable<Playlist>>(playlists);
+            var p = _mapper.Map<IEnumerable<Playlist>>(playlists);
             p = _unitOfWork.Playlists.UpdateRange(p);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<IEnumerable<Playlist>, IEnumerable<PlaylistModel>>(p);
+            return _mapper.Map<IEnumerable<PlaylistModel>>(p);
         }
     }
 }

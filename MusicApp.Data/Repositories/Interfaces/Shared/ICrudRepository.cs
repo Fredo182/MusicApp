@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MusicApp.Data.Repositories.Interfaces.Shared
@@ -17,6 +18,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         //DELETE
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
+        Task DeleteRangeAsync(Expression<Func<TEntity, bool>> predicate);
         void Delete(params object[] id);
     }
 }

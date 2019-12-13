@@ -11,6 +11,7 @@ namespace MusicApp.API.Validators.ArtistsValidators
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(255);
+
         }
     }
 }
