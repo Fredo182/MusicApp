@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MusicApp.Data.Helpers;
 
 namespace MusicApp.Data.Repositories.Interfaces.Shared
 {
@@ -12,7 +13,17 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "", bool tracking=true);
+            string includeProperties = "",
+            bool tracking=true
+        );
+
+        Task<PagedResult<TEntity>> GetPagedAsync(
+            Pagination pagination,
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string includeProperties = "",
+            bool tracking = true
+        );
 
         Task<TEntity> GetByIdAsync(params object[] id);
 

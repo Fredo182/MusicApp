@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using MusicApp.Data.Domain;
+using MusicApp.Data.Helpers;
 using MusicApp.Data.UnitOfWork.Interfaces;
+using MusicApp.Services.Helpers;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 
@@ -42,6 +44,14 @@ namespace MusicApp.Services.Services
         {
             var a = await _unitOfWork.Artists.GetAsync();
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
+        }
+
+        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination)
+        {
+            var p = _mapper.Map<Pagination>(pagination);
+            var a = await _unitOfWork.Artists.GetPagedAsync(p);
+            var result = new PagedResultModel<ArtistModel>(a.PageState, _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
+            return result;
         }
 
         public async Task<ArtistModel> GetArtistAsync(ArtistModel artist)
@@ -161,5 +171,6 @@ namespace MusicApp.Services.Services
             var exist = await _unitOfWork.Artists.GetAsync((x => names.Contains(x.Name)), null, null, false);
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
+
     }
 }

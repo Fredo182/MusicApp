@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MusicApp.Services.Helpers;
 using MusicApp.Services.Models;
 
 namespace MusicApp.Services.Services.Interfaces
@@ -16,6 +17,7 @@ namespace MusicApp.Services.Services.Interfaces
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
         Task<IEnumerable<ArtistModel>> GetArtistsAsync();
+        Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination);
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);

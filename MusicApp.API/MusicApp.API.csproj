@@ -44,7 +44,6 @@
     <Folder Include="Controllers\V1\" />
     <Folder Include="Contracts\V1\Responses\Shared\" />
     <Folder Include="Filters\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Contracts\V1\Requests\Queries\" />
     <Folder Include="Contracts\V1\Requests\ArtistsRequests\" />
     <Folder Include="Contracts\V1\Responses\ArtistsResponses\" />

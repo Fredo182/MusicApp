@@ -28,5 +28,6 @@
     <Folder Include="Repositories\Interfaces\Shared\" />
     <Folder Include="UnitOfWork\" />
     <Folder Include="UnitOfWork\Interfaces\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>
