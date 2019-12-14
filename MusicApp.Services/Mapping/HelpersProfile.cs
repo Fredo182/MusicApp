@@ -11,7 +11,6 @@ namespace MusicApp.Services.Mapping
         {
             CreateMap<Pagination, PaginationModel>();
             CreateMap<PaginationModel, Pagination>();
-
         }
     }
 }

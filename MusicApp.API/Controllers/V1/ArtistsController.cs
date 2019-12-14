@@ -50,11 +50,18 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Artists.GetArtists)]
-        public async Task<IActionResult> GetArtists([FromQuery]PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetArtists([FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
         {
-            var paginationRequest = true;
-            if (paginationQuery != null && (paginationQuery.PageNumber == null || paginationQuery.PageSize == null || paginationQuery.PageNumber < 1 || paginationQuery.PageSize < 1))
-                paginationRequest = false;
+            var paginationRequest = false;
+            if ((paginationQuery.PageNumber != null || paginationQuery.PageSize != null))
+                paginationRequest = true;
+
+            var orderByRequest = false;
+            if (orderByQuery != null && (!string.IsNullOrEmpty(orderByQuery.OrderBy)))
+            {
+                var orderby = _mapper.Map<OrderByModel>(orderByQuery);
+                orderByRequest = true;
+            }
 
             if (paginationRequest)
             {
