@@ -52,13 +52,22 @@ namespace MusicApp.API.Controllers.V1
         [HttpGet(ApiRoutes.Artists.GetArtists)]
         public async Task<IActionResult> GetArtists([FromQuery]PaginationQuery paginationQuery)
         {
-            if (paginationQuery != null && (paginationQuery.PageNumber < 1 || paginationQuery.PageSize < 0))
-                paginationQuery = new PaginationQuery();
+            var paginationRequest = true;
+            if (paginationQuery != null && (paginationQuery.PageNumber == null || paginationQuery.PageSize == null || paginationQuery.PageNumber < 1 || paginationQuery.PageSize < 1))
+                paginationRequest = false;
 
-            var pagination = _mapper.Map<PaginationModel>(paginationQuery);
-            var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination);
-            var artistsResponse = _mapper.Map<List<ArtistResponse>>(artistsPagedResponse.Result);
-            return Ok(new PagedResponse<ArtistResponse>(artistsResponse, artistsPagedResponse.PageState));
+            if (paginationRequest)
+            {
+                var pagination = _mapper.Map<PaginationModel>(paginationQuery);
+                var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination);
+                var artistsResponse = _mapper.Map<List<ArtistResponse>>(artistsPagedResponse.Result);
+                return Ok(new PagedResponse<ArtistResponse>(artistsResponse, artistsPagedResponse.PageState));
+            }
+            else
+            {
+                var artists = await _artistService.GetArtistsAsync();
+                return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
+            }
         }
 
         [HttpPut(ApiRoutes.Artists.UpdateArtist)]
