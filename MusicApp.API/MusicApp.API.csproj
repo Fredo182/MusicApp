@@ -49,5 +49,6 @@
     <Folder Include="Contracts\V1\Responses\ArtistsResponses\" />
     <Folder Include="Validators\" />
     <Folder Include="Validators\ArtistsValidators\" />
+    <Folder Include="Contracts\V1\Requests\Queries\Shared\" />
   </ItemGroup>
 </Project>

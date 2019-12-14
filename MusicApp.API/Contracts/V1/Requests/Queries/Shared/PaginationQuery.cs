@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.API.Contracts.V1.Requests.Queries
+namespace MusicApp.API.Contracts.V1.Requests.Queries.Shared
 {
     public class PaginationQuery
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using MusicApp.API.Contracts.V1.Requests.Queries;
+using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
 using MusicApp.Services.Helpers;
 
 namespace MusicApp.API.Mapping
