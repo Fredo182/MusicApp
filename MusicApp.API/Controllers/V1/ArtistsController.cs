@@ -6,7 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MusicApp.API.Contracts.V1;
 using MusicApp.API.Contracts.V1.Requests.ArtistsRequests;
-using MusicApp.API.Contracts.V1.Requests.Queries.ArtistsQueries;
+using MusicApp.API.Contracts.V1.Requests.Queries;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
 using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
 using MusicApp.API.Contracts.V1.Responses.Shared;

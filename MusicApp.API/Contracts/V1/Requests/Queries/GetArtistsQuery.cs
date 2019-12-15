@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.API.Contracts.V1.Requests.Queries.ArtistsQueries
+namespace MusicApp.API.Contracts.V1.Requests.Queries
 {
     public class GetArtistsQuery
     {
