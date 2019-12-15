@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MusicApp.Services.Helpers;
+using MusicApp.Services.Models.Shared;
 
 namespace MusicApp.API.Contracts.V1.Responses.Shared
 {

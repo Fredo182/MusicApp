@@ -1,12 +1,10 @@
 ﻿using System;
-namespace MusicApp.Data.Helpers
+namespace MusicApp.Services.Models.Shared
 {
-    public class Pagination
+    public class PaginationModel
     {
         public int PageNumber { get; set; }
 
         public int PageSize { get; set; }
     }
-
-
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.Services.Helpers
+namespace MusicApp.Services.Models.Shared
 {
     public class OrderByModel
     {

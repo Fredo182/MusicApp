@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MusicApp.Data.Helpers
+namespace MusicApp.Data.Domain.Shared
 {
     public class PaginationState
     {

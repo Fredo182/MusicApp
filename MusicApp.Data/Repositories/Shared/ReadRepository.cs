@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MusicApp.Data.Helpers;
+using MusicApp.Data.Domain.Shared;
 using MusicApp.Data.Repositories.Interfaces.Shared;
 
 namespace MusicApp.Data.Repositories.Shared

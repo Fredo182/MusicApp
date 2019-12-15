@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using MusicApp.Data.Helpers;
+using MusicApp.Data.Domain.Shared;
 
 namespace MusicApp.Data.Repositories.Interfaces.Shared
 {

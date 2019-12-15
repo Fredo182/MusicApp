@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using MusicApp.Services.Helpers;
+using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 
 namespace MusicApp.Services.Services.Interfaces

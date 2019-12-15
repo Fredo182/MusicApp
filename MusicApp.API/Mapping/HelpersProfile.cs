@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
-using MusicApp.Services.Helpers;
+using MusicApp.Services.Models.Shared;
 
 namespace MusicApp.API.Mapping
 {

@@ -13,7 +13,7 @@
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Mapping\" />
-    <Folder Include="Helpers\" />
+    <Folder Include="Models\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MusicApp.Data\MusicApp.Data.csproj" />

@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using MusicApp.Data.Domain;
-using MusicApp.Data.Helpers;
+using MusicApp.Data.Domain.Shared;
 using MusicApp.Data.UnitOfWork.Interfaces;
-using MusicApp.Services.Helpers;
+using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 

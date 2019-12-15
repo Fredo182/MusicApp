@@ -6,10 +6,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MusicApp.API.Contracts.V1;
 using MusicApp.API.Contracts.V1.Requests.ArtistsRequests;
+using MusicApp.API.Contracts.V1.Requests.Queries.ArtistsQueries;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
 using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
 using MusicApp.API.Contracts.V1.Responses.Shared;
-using MusicApp.Services.Helpers;
+using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 
@@ -50,7 +51,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Artists.GetArtists)]
-        public async Task<IActionResult> GetArtists([FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetArtists([FromQuery] GetArtistsQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
         {
             var paginationRequest = false;
             if ((paginationQuery.PageNumber != null || paginationQuery.PageSize != null))
