@@ -10,9 +10,9 @@ using MusicApp.API.Contracts.V1.Requests.Queries;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
 using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
 using MusicApp.API.Contracts.V1.Responses.Shared;
-using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
+using MusicApp.Services.Models.Queries.Shared;
 
 namespace MusicApp.API.Controllers.V1
 {

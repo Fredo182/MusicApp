@@ -14,6 +14,8 @@
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Mapping\" />
     <Folder Include="Models\Shared\" />
+    <Folder Include="Models\Queries\" />
+    <Folder Include="Models\Queries\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MusicApp.Data\MusicApp.Data.csproj" />

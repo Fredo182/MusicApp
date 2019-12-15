@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
+using MusicApp.Services.Models.Queries.Shared;
 
 namespace MusicApp.Services.Services.Interfaces
 {

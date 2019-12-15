@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using MusicApp.Data.Domain;
-using MusicApp.Data.Domain.Shared;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
+using MusicApp.Services.Models.Queries.Shared;
+using MusicApp.Data.Domain.Queries.Shared;
 
 namespace MusicApp.Services.Services
 {

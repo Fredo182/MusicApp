@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
-using MusicApp.Data.Domain.Shared;
-using MusicApp.Services.Models.Shared;
+using MusicApp.Data.Domain.Queries.Shared;
+using MusicApp.Services.Models.Queries.Shared;
 
 namespace MusicApp.Services.Mapping
 {
