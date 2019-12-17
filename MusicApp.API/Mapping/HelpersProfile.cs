@@ -1,6 +1,8 @@
 ﻿using System;
 using AutoMapper;
+using MusicApp.API.Contracts.V1.Requests.Queries;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
+using MusicApp.Services.Models.Queries;
 using MusicApp.Services.Models.Queries.Shared;
 
 namespace MusicApp.API.Mapping
@@ -31,7 +33,9 @@ namespace MusicApp.API.Mapping
     {
         public HelpersProfile()
         {
-            CreateMap<PaginationQuery, PaginationModel>();
+            CreateMap<PaginationQuery, PaginationModel>()
+                .ForMember(dest => dest.Valid, opt => opt.MapFrom( s => (s.PageNumber != null && s.PageSize != null)));
+
             CreateMap<OrderByQuery, OrderByModel>()
                 .ForMember(dest => dest.OrderBy, opt => {
                     opt.PreCondition(src => !string.IsNullOrEmpty(src.OrderBy));
@@ -41,6 +45,8 @@ namespace MusicApp.API.Mapping
                     opt.PreCondition(src => !string.IsNullOrEmpty(src.OrderBy));
                     opt.MapFrom<OrderyByTypeQueryResolver>();
                 });
+
+            CreateMap<GetArtistsQuery, GetArtistsModel>();
         }
     }
 }

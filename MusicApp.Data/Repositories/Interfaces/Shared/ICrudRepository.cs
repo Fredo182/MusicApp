@@ -18,7 +18,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         //DELETE
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
-        Task DeleteRangeAsync(Expression<Func<TEntity, bool>> predicate);
+        Task DeleteRangeAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates);
         void Delete(params object[] id);
     }
 }

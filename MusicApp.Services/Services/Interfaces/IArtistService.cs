@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MusicApp.Services.Models.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Models.Queries.Shared;
+using MusicApp.Services.Models.Queries;
 
 namespace MusicApp.Services.Services.Interfaces
 {
@@ -17,8 +18,8 @@ namespace MusicApp.Services.Services.Interfaces
         // READ
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetArtistsAsync();
-        Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination);
+        Task<IEnumerable<ArtistModel>> GetArtistsAsync(GetArtistsModel filter = null);
+        Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, GetArtistsModel filter = null);
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);

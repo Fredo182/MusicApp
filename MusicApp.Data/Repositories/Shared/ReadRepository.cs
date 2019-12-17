@@ -14,13 +14,19 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = this.dbSet;
 
             // Apply filtering
-            if (predicate != null)
-                query = query.Where(predicate);
+            if (filters != null)
+            {
+                foreach (var filter in filters)
+                {
+                    query = query.Where(filter);
+                }
+                //query = query.Where(filters.ElementAt(0));
+            }
 
             // Add Include related data
             if (includeProperties != null)
@@ -46,7 +52,7 @@ namespace MusicApp.Data.Repositories.Shared
             }
         }
 
-        public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, Expression < Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             var result = new PagedResult<TEntity>();
             result.PageState.PageNumber = pagination.PageNumber;
@@ -56,8 +62,13 @@ namespace MusicApp.Data.Repositories.Shared
             IQueryable<TEntity> query = this.dbSet;
 
             // Apply filtering
-            if (predicate != null)
-                query = query.Where(predicate);
+            if (filters != null)
+            {
+                foreach (var filter in filters)
+                {
+                    query = query.Where(filter);
+                }
+            }
 
             // Add Include related data
             if (includeProperties != null)

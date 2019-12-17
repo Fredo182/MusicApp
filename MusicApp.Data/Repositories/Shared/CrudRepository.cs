@@ -32,9 +32,9 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.RemoveRange(entities);
         }
 
-        public async Task DeleteRangeAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task DeleteRangeAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates)
         {
-            var entities = await GetAsync(predicate);
+            var entities = await GetAsync(predicates);
             dbSet.RemoveRange(entities);
         }
 

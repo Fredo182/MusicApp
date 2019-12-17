@@ -11,6 +11,8 @@ using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 using MusicApp.Services.Models.Queries.Shared;
 using MusicApp.Data.Domain.Queries.Shared;
+using MusicApp.Data.Domain.Queries;
+using MusicApp.Services.Models.Queries;
 
 namespace MusicApp.Services.Services
 {
@@ -41,16 +43,18 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync()
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(GetArtistsModel filter = null)
         {
-            var a = await _unitOfWork.Artists.GetAsync();
+            var f = ArtistFilterExpressions(_mapper.Map<GetArtists>(filter));
+            var a = await _unitOfWork.Artists.GetAsync(f);
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination)
+        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, GetArtistsModel filter = null)
         {
             var p = _mapper.Map<Pagination>(pagination);
-            var a = await _unitOfWork.Artists.GetPagedAsync(p);
+            var f = ArtistFilterExpressions(_mapper.Map<GetArtists>(filter));
+            var a = await _unitOfWork.Artists.GetPagedAsync(p, f);
             var result = new PagedResultModel<ArtistModel>(a.PageState, _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
         }
@@ -101,7 +105,8 @@ namespace MusicApp.Services.Services
 
         public async Task<bool> DeleteArtistsAsync(int[] ids)
         {
-            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            var f = new List<Expression<Func<Artist, bool>>>() {(x => ids.Contains(x.ArtistId))};
+            var a = await _unitOfWork.Artists.GetAsync(f, null, null, false);
             _unitOfWork.Artists.DeleteRange(a);
             var deleted = await _unitOfWork.CommitAsync();
             return deleted > 0;
@@ -123,7 +128,8 @@ namespace MusicApp.Services.Services
 
         public async Task<bool> ArtistIdsExistAsync(int[] ids)
         {
-            var a = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => ids.Contains(x.ArtistId)) };
+            var a = await _unitOfWork.Artists.GetAsync(f, null, null, false);
             return (a.Count() == ids.Count());
         }
 
@@ -138,7 +144,8 @@ namespace MusicApp.Services.Services
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             var ids = a.Select(x => x.ArtistId).ToList();
-            var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => ids.Contains(x.ArtistId)) };
+            var exist = await _unitOfWork.Artists.GetAsync(f, null, null, false);
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
 
@@ -146,7 +153,8 @@ namespace MusicApp.Services.Services
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             var ids = a.Select(x => x.ArtistId).ToList();
-            var exist = await _unitOfWork.Artists.GetAsync(x => ids.Contains(x.ArtistId), null, null, false);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => ids.Contains(x.ArtistId)) };
+            var exist = await _unitOfWork.Artists.GetAsync(f, null, null, false);
             var existIds = exist.Select(x => x.ArtistId);
             var notExist = a.Where(x => existIds.Contains(x.ArtistId) == false).ToList();
             return _mapper.Map<IEnumerable<ArtistModel>>(notExist);
@@ -169,8 +177,23 @@ namespace MusicApp.Services.Services
         {
             var a = _mapper.Map<IEnumerable<Artist>>(artists);
             var names = a.Select(x => x.Name).ToList();
-            var exist = await _unitOfWork.Artists.GetAsync((x => names.Contains(x.Name)), null, null, false);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => names.Contains(x.Name)) };
+            var exist = await _unitOfWork.Artists.GetAsync(f, null, null, false);
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
+        }
+
+        private List<Expression<Func<Artist, bool>>> ArtistFilterExpressions(GetArtists filter)
+        {
+            List<Expression<Func<Artist, bool>>> filters = new List<Expression<Func<Artist, bool>>>();
+            if (filter != null)
+            {
+                if (filter.ArtistId != null)
+                    filters.Add((s => s.ArtistId == filter.ArtistId));
+
+                if (!string.IsNullOrEmpty(filter.Name))
+                    filters.Add((s => s.Name == filter.Name));
+            }
+            return filters;
         }
 
     }

@@ -12,7 +12,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
     {
         //READ
         Task<IEnumerable<TEntity>> GetAsync(
-            Expression<Func<TEntity, bool>> predicate = null,
+            IEnumerable<Expression<Func<TEntity, bool>>> filters = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "",
             bool tracking=true
@@ -20,7 +20,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
 
         Task<PagedResult<TEntity>> GetPagedAsync(
             Pagination pagination,
-            Expression<Func<TEntity, bool>> predicate = null,
+            IEnumerable<Expression<Func<TEntity, bool>>> filters = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "",
             bool tracking = true

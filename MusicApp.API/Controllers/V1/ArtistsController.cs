@@ -13,6 +13,7 @@ using MusicApp.API.Contracts.V1.Responses.Shared;
 using MusicApp.Services.Models;
 using MusicApp.Services.Services.Interfaces;
 using MusicApp.Services.Models.Queries.Shared;
+using MusicApp.Services.Models.Queries;
 
 namespace MusicApp.API.Controllers.V1
 {
@@ -53,27 +54,27 @@ namespace MusicApp.API.Controllers.V1
         [HttpGet(ApiRoutes.Artists.GetArtists)]
         public async Task<IActionResult> GetArtists([FromQuery] GetArtistsQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
         {
-            var paginationRequest = false;
-            if ((paginationQuery.PageNumber != null || paginationQuery.PageSize != null))
-                paginationRequest = true;
 
-            var orderByRequest = false;
-            if (orderByQuery != null && (!string.IsNullOrEmpty(orderByQuery.OrderBy)))
-            {
-                var orderby = _mapper.Map<OrderByModel>(orderByQuery);
-                orderByRequest = true;
-            }
+            var pagination = _mapper.Map<PaginationModel>(paginationQuery);
 
-            if (paginationRequest)
+            //var orderByRequest = false;
+            //if (orderByQuery != null && (!string.IsNullOrEmpty(orderByQuery.OrderBy)))
+            //{
+            //    var orderby = _mapper.Map<OrderByModel>(orderByQuery);
+            //    orderByRequest = true;
+            //}
+
+            var filter = _mapper.Map<GetArtistsModel>(filterQuery);
+
+            if (pagination.Valid)
             {
-                var pagination = _mapper.Map<PaginationModel>(paginationQuery);
-                var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination);
+                var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination, filter);
                 var artistsResponse = _mapper.Map<List<ArtistResponse>>(artistsPagedResponse.Result);
                 return Ok(new PagedResponse<ArtistResponse>(artistsResponse, artistsPagedResponse.PageState));
             }
             else
             {
-                var artists = await _artistService.GetArtistsAsync();
+                var artists = await _artistService.GetArtistsAsync(filter);
                 return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
             }
         }
