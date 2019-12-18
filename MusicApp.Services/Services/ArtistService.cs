@@ -43,17 +43,17 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(GetArtistsModel filter = null)
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null)
         {
-            var f = ArtistFilterExpressions(_mapper.Map<GetArtists>(filter));
+            var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var a = await _unitOfWork.Artists.GetAsync(f);
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, GetArtistsModel filter = null)
+        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null)
         {
             var p = _mapper.Map<Pagination>(pagination);
-            var f = ArtistFilterExpressions(_mapper.Map<GetArtists>(filter));
+            var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var a = await _unitOfWork.Artists.GetPagedAsync(p, f);
             var result = new PagedResultModel<ArtistModel>(a.PageState, _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
@@ -182,7 +182,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
 
-        private List<Expression<Func<Artist, bool>>> ArtistFilterExpressions(GetArtists filter)
+        private List<Expression<Func<Artist, bool>>> ArtistFilterExpressions(ArtistFilter filter)
         {
             List<Expression<Func<Artist, bool>>> filters = new List<Expression<Func<Artist, bool>>>();
             if (filter != null)

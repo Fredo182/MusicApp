@@ -46,7 +46,7 @@ namespace MusicApp.API.Mapping
                     opt.MapFrom<OrderyByTypeQueryResolver>();
                 });
 
-            CreateMap<GetArtistsQuery, GetArtistsModel>();
+            CreateMap<ArtistFilterQuery, ArtistFilterModel>();
         }
     }
 }

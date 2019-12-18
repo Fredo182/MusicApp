@@ -13,7 +13,7 @@ namespace MusicApp.Services.Mapping
         {
             CreateMap<PaginationModel, Pagination>();
 
-            CreateMap<GetArtistsModel, GetArtists>();
+            CreateMap<ArtistFilterModel, ArtistFilter>();
         }
     }
 }

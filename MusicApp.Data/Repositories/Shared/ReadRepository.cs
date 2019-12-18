@@ -25,7 +25,6 @@ namespace MusicApp.Data.Repositories.Shared
                 {
                     query = query.Where(filter);
                 }
-                //query = query.Where(filters.ElementAt(0));
             }
 
             // Add Include related data

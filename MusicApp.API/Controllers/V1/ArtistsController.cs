@@ -29,7 +29,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Artists.CreateArtist)]
-        public async Task<IActionResult> CreateArtist([FromBody] CreateArtistRequest postRequest)
+        public async Task<IActionResult> CreateArtist([FromBody] ArtistCreateRequest postRequest)
         {
             var post = _mapper.Map<ArtistModel>(postRequest);
             bool exists = await _artistService.ArtistNameExistsAsync(post);
@@ -52,7 +52,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Artists.GetArtists)]
-        public async Task<IActionResult> GetArtists([FromQuery] GetArtistsQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetArtists([FromQuery] ArtistFilterQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
         {
 
             var pagination = _mapper.Map<PaginationModel>(paginationQuery);
@@ -64,7 +64,7 @@ namespace MusicApp.API.Controllers.V1
             //    orderByRequest = true;
             //}
 
-            var filter = _mapper.Map<GetArtistsModel>(filterQuery);
+            var filter = _mapper.Map<ArtistFilterModel>(filterQuery);
 
             if (pagination.Valid)
             {
@@ -80,7 +80,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Artists.UpdateArtist)]
-        public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] UpdateArtistRequest putRequest)
+        public async Task<IActionResult> UpdateArtist([FromRoute] int artistId, [FromBody] ArtistUpdateRequest putRequest)
         {
             if (artistId != putRequest.ArtistId)
                 return BadRequest(new ErrorResponse(new ErrorModel { Message = "ArtistId mismatch." }));
@@ -118,7 +118,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Artists.CreateArtists)]
-        public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<CreateArtistRequest> postRequest)
+        public async Task<IActionResult> CreateArtists([FromBody] IEnumerable<ArtistCreateRequest> postRequest)
         {
             var posts = _mapper.Map<IEnumerable<ArtistModel>>(postRequest);
             var exist = await _artistService.ArtistNamesExistsAsync(posts);
@@ -133,7 +133,7 @@ namespace MusicApp.API.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Artists.UpdateArtists)]
-        public async Task<IActionResult> UpdateArtists([FromBody] IEnumerable<UpdateArtistRequest> putRequest)
+        public async Task<IActionResult> UpdateArtists([FromBody] IEnumerable<ArtistUpdateRequest> putRequest)
         {
             var puts = _mapper.Map<IEnumerable<ArtistModel>>(putRequest);
             var notExist = await _artistService.ArtistsNotExistAsync(puts);

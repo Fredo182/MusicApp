@@ -1,7 +1,7 @@
 ﻿using System;
 namespace MusicApp.Data.Domain.Queries
 {
-    public class GetArtists
+    public class ArtistFilter
     {
         public int? ArtistId { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using System;
-namespace MusicApp.Services.Models.Queries
+namespace MusicApp.API.Contracts.V1.Requests.Queries
 {
-    public class GetArtistsModel
+    public class ArtistFilterQuery
     {
         public int? ArtistId { get; set; }
 

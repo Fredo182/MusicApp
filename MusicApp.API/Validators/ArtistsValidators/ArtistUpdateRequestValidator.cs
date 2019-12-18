@@ -5,9 +5,9 @@ using MusicApp.API.Contracts.V1.Requests.ArtistsRequests;
 
 namespace MusicApp.API.Validators.ArtistsValidators
 {
-    public class UpdateArtistRequestValidator : AbstractValidator<UpdateArtistRequest>
+    public class ArtistUpdateRequestValidator : AbstractValidator<ArtistUpdateRequest>
     {
-        public UpdateArtistRequestValidator()
+        public ArtistUpdateRequestValidator()
         {
             RuleFor(x => x.ArtistId)
                 .NotEmpty();
@@ -18,12 +18,12 @@ namespace MusicApp.API.Validators.ArtistsValidators
 
         }
 
-        public class UpdateArtistsRequestValidator : AbstractValidator<IEnumerable<UpdateArtistRequest>>
+        public class ArtistsUpdateRequestValidator : AbstractValidator<IEnumerable<ArtistUpdateRequest>>
         {
-            public UpdateArtistsRequestValidator()
+            public ArtistsUpdateRequestValidator()
             {
                 RuleForEach(x => x)
-                    .SetValidator(new UpdateArtistRequestValidator());
+                    .SetValidator(new ArtistUpdateRequestValidator());
             }
         }
     }
