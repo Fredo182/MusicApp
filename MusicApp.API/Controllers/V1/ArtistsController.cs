@@ -57,6 +57,9 @@ namespace MusicApp.API.Controllers.V1
 
             var pagination = _mapper.Map<PaginationModel>(paginationQuery);
 
+            var orderBy = _mapper.Map<IEnumerable<ArtistOrderByModel>>(orderByQuery);
+
+
             //var orderByRequest = false;
             //if (orderByQuery != null && (!string.IsNullOrEmpty(orderByQuery.OrderBy)))
             //{
