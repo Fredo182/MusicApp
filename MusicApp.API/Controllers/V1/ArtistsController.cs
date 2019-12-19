@@ -59,14 +59,6 @@ namespace MusicApp.API.Controllers.V1
 
             var orderBy = _mapper.Map<IEnumerable<ArtistOrderByModel>>(orderByQuery);
 
-
-            //var orderByRequest = false;
-            //if (orderByQuery != null && (!string.IsNullOrEmpty(orderByQuery.OrderBy)))
-            //{
-            //    var orderby = _mapper.Map<OrderByModel>(orderByQuery);
-            //    orderByRequest = true;
-            //}
-
             var filter = _mapper.Map<ArtistFilterModel>(filterQuery);
 
             if (pagination.Valid)

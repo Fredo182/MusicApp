@@ -1,34 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using MusicApp.API.Contracts.V1.Requests.Queries;
 using MusicApp.API.Contracts.V1.Requests.Queries.Shared;
+using MusicApp.API.Helpers;
 using MusicApp.Services.Models.Queries;
 using MusicApp.Services.Models.Queries.Shared;
 
 namespace MusicApp.API.Mapping
 {
-    public class OrderyByQueryResolver : IValueResolver<OrderByQuery, OrderByModel, string>
-    {
-        public string Resolve(OrderByQuery source, OrderByModel destination, string member, ResolutionContext context)
-        {
-            if (((source.OrderBy[0] == '+') || (source.OrderBy[0] == '-')) && source.OrderBy.Length > 1)
-                return source.OrderBy.Substring(1);
-            else
-                return source.OrderBy;
-        }
-    }
-
-    public class OrderyByTypeQueryResolver : IValueResolver<OrderByQuery, OrderByModel, string>
-    {
-        public string Resolve(OrderByQuery source, OrderByModel destination, string member, ResolutionContext context)
-        {
-            if (source.OrderBy[0] == '-')
-                return "desc";
-            else
-                return "asc";
-        }
-    }
-
     public class HelpersProfile : Profile
     {
         public HelpersProfile()
@@ -36,17 +16,8 @@ namespace MusicApp.API.Mapping
             CreateMap<PaginationQuery, PaginationModel>()
                 .ForMember(dest => dest.Valid, opt => opt.MapFrom( s => (s.PageNumber != null && s.PageSize != null)));
 
-            CreateMap<OrderByQuery, OrderByModel>()
-                .ForMember(dest => dest.OrderBy, opt => {
-                    opt.PreCondition(src => !string.IsNullOrEmpty(src.OrderBy));
-                    opt.MapFrom<OrderyByQueryResolver>();
-                })
-                .ForMember(dest => dest.OrderType, opt => {
-                    opt.PreCondition(src => !string.IsNullOrEmpty(src.OrderBy));
-                    opt.MapFrom<OrderyByTypeQueryResolver>();
-                });
-
             CreateMap<ArtistFilterQuery, ArtistFilterModel>();
+            CreateMap<OrderByQuery, IEnumerable<ArtistOrderByModel>>().ConstructUsing(x => OrderByQueryParser<ArtistOrderByModel>.Parse(x.OrderBy));
         }
     }
 }

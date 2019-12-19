@@ -51,5 +51,6 @@
     <Folder Include="Validators\ArtistsValidators\" />
     <Folder Include="Contracts\V1\Requests\Queries\Shared\" />
     <Folder Include="Validators\Shared\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>
