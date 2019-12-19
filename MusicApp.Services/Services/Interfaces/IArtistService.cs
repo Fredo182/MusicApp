@@ -18,7 +18,7 @@ namespace MusicApp.Services.Services.Interfaces
         // READ
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null);
+        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
         Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null);
 
         // UPDATE

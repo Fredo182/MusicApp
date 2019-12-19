@@ -54,11 +54,8 @@ namespace MusicApp.API.Controllers.V1
         [HttpGet(ApiRoutes.Artists.GetArtists)]
         public async Task<IActionResult> GetArtists([FromQuery] ArtistFilterQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
         {
-
             var pagination = _mapper.Map<PaginationModel>(paginationQuery);
-
             var orderBy = _mapper.Map<IEnumerable<ArtistOrderByModel>>(orderByQuery);
-
             var filter = _mapper.Map<ArtistFilterModel>(filterQuery);
 
             if (pagination.Valid)

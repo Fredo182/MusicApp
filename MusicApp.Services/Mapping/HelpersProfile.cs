@@ -14,6 +14,7 @@ namespace MusicApp.Services.Mapping
             CreateMap<PaginationModel, Pagination>();
 
             CreateMap<ArtistFilterModel, ArtistFilter>();
+            CreateMap<ArtistOrderByModel, ArtistOrderBy>();
         }
     }
 }
