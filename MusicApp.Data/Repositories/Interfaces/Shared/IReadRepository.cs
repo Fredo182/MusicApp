@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MusicApp.Data.Domain.Queries.Shared;
 using MusicApp.Data.Domain.Shared;
+using MusicApp.Data.Helpers;
 
 namespace MusicApp.Data.Repositories.Interfaces.Shared
 {
@@ -13,7 +14,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         //READ
         Task<IEnumerable<TEntity>> GetAsync(
             IEnumerable<Expression<Func<TEntity, bool>>> filters = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            IEnumerable<IOrderByClause<TEntity>> orderBy = null,
             string includeProperties = "",
             bool tracking=true
         );
@@ -21,7 +22,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
         Task<PagedResult<TEntity>> GetPagedAsync(
             Pagination pagination,
             IEnumerable<Expression<Func<TEntity, bool>>> filters = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            IEnumerable<IOrderByClause<TEntity>> orderBy = null,
             string includeProperties = "",
             bool tracking = true
         );

@@ -13,7 +13,7 @@ using MusicApp.Services.Models.Queries.Shared;
 using MusicApp.Data.Domain.Queries.Shared;
 using MusicApp.Data.Domain.Queries;
 using MusicApp.Services.Models.Queries;
-using System.Reflection;
+using MusicApp.Data.Helpers;
 
 namespace MusicApp.Services.Services
 {
@@ -47,15 +47,17 @@ namespace MusicApp.Services.Services
         public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
         {
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
-            var a = await _unitOfWork.Artists.GetAsync(f);
+            var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
+            var a = await _unitOfWork.Artists.GetAsync(f, o);
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null)
+        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
         {
             var p = _mapper.Map<Pagination>(pagination);
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
-            var a = await _unitOfWork.Artists.GetPagedAsync(p, f);
+            var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
+            var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o);
             var result = new PagedResultModel<ArtistModel>(a.PageState, _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
         }
@@ -197,31 +199,22 @@ namespace MusicApp.Services.Services
             return filters;
         }
 
-        private Func<IQueryable<Artist>, IOrderedQueryable<Artist>> GetOrderByFunc(string orderColumn, string orderType)
+        private IEnumerable<IOrderByClause<Artist>> ArtistOrderByList(IEnumerable<ArtistOrderBy> artistOrderByList)
         {
-            Type typeQueryable = typeof(IQueryable<Artist>);
-            ParameterExpression argQueryable = Expression.Parameter(typeQueryable, "p");
-            var outerExpression = Expression.Lambda(argQueryable, argQueryable);
-            string[] props = orderColumn.Split('.');
-            IQueryable<Artist> query = new List<Artist>().AsQueryable<Artist>();
-            Type type = typeof(Artist);
-            ParameterExpression arg = Expression.Parameter(type, "x");
-
-            Expression expr = arg;
-            foreach (string prop in props)
+            List<IOrderByClause<Artist>> orderBylist = new List<IOrderByClause<Artist>>();
+            if (artistOrderByList != null)
             {
-                PropertyInfo pi = type.GetProperty(prop, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-                expr = Expression.Property(expr, pi);
-                type = pi.PropertyType;
+                foreach (var orderBy in artistOrderByList)
+                {
+                    if (orderBy.ArtistId != null)
+                        orderBylist.Add(new OrderByClause<Artist, int>(a => a.ArtistId, orderBy.OrderType));
+                    else if (orderBy.Name != null)
+                        orderBylist.Add(new OrderByClause<Artist, string>(a => a.Name, orderBy.OrderType));
+                }
             }
-            LambdaExpression lambda = Expression.Lambda(expr, arg);
-            string methodName = orderType == "desc" ? "OrderByDescending" : "OrderBy";
-
-            MethodCallExpression resultExp =
-                Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(Artist), type }, outerExpression.Body, Expression.Quote(lambda));
-            var finalLambda = Expression.Lambda(resultExp, argQueryable);
-            return (Func<IQueryable<Artist>, IOrderedQueryable<Artist>>)finalLambda.Compile();
+            return orderBylist;
         }
+
 
     }
 }

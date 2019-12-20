@@ -66,7 +66,7 @@ namespace MusicApp.API.Controllers.V1
             }
             else
             {
-                var artists = await _artistService.GetArtistsAsync(filter);
+                var artists = await _artistService.GetArtistsAsync(filter, orderBy);
                 return Ok(new Response<IEnumerable<ArtistResponse>>(_mapper.Map<IEnumerable<ArtistResponse>>(artists)));
             }
         }

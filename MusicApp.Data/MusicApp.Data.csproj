@@ -31,5 +31,6 @@
     <Folder Include="Domain\Shared\" />
     <Folder Include="Domain\Queries\" />
     <Folder Include="Domain\Queries\Shared\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

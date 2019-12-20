@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MusicApp.Data.Domain.Queries.Shared;
 using MusicApp.Data.Domain.Shared;
+using MusicApp.Data.Helpers;
 using MusicApp.Data.Repositories.Interfaces.Shared;
 
 namespace MusicApp.Data.Repositories.Shared
@@ -14,7 +15,7 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = this.dbSet;
 
@@ -37,10 +38,17 @@ namespace MusicApp.Data.Repositories.Shared
             // Apply orderBy
             if (orderBy != null)
             {
+                bool isFirstSort = true;
+                orderBy.ToList().ForEach(o =>
+                {
+                    query = o.ApplySort(query, isFirstSort);
+                    isFirstSort = false;
+                });
+
                 if (tracking)
-                    return await orderBy(query).ToListAsync();
+                    return await query.ToListAsync();
                 else
-                    return await orderBy(query).AsNoTracking().ToListAsync();
+                    return await query.AsNoTracking().ToListAsync();
             }
             else
             {
@@ -51,7 +59,7 @@ namespace MusicApp.Data.Repositories.Shared
             }
         }
 
-        public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             var result = new PagedResult<TEntity>();
             result.PageState.PageNumber = pagination.PageNumber;
@@ -92,10 +100,17 @@ namespace MusicApp.Data.Repositories.Shared
             // Apply orderBy
             if (orderBy != null)
             {
+                bool isFirstSort = true;
+                orderBy.ToList().ForEach(o =>
+                {
+                    query = o.ApplySort(query, isFirstSort);
+                    isFirstSort = false;
+                });
+
                 if (tracking)
-                    result.Result = await orderBy(query).Skip(skip).Take(take).ToListAsync();
+                    result.Result = await query.Skip(skip).Take(take).ToListAsync();
                 else
-                    result.Result =  await orderBy(query).AsNoTracking().Skip(skip).Take(take).ToListAsync();  
+                    result.Result =  await query.AsNoTracking().Skip(skip).Take(take).ToListAsync();  
             }
             else
             {
