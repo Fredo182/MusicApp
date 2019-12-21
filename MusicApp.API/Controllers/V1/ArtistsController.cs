@@ -60,7 +60,7 @@ namespace MusicApp.API.Controllers.V1
 
             if (pagination.Valid)
             {
-                var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination, filter);
+                var artistsPagedResponse = await _artistService.GetPagedArtistsAsync(pagination, filter, orderBy);
                 var artistsResponse = _mapper.Map<List<ArtistResponse>>(artistsPagedResponse.Result);
                 return Ok(new PagedResponse<ArtistResponse>(artistsResponse, artistsPagedResponse.PageState));
             }

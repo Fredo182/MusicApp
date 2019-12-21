@@ -44,19 +44,12 @@ namespace MusicApp.Data.Repositories.Shared
                     query = o.ApplySort(query, isFirstSort);
                     isFirstSort = false;
                 });
+            }
 
-                if (tracking)
-                    return await query.ToListAsync();
-                else
-                    return await query.AsNoTracking().ToListAsync();
-            }
+            if (tracking)
+                return await query.ToListAsync();
             else
-            {
-                if (tracking)
-                    return await query.ToListAsync();
-                else
-                    return await query.AsNoTracking().ToListAsync();
-            }
+                return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
@@ -106,19 +99,13 @@ namespace MusicApp.Data.Repositories.Shared
                     query = o.ApplySort(query, isFirstSort);
                     isFirstSort = false;
                 });
-
-                if (tracking)
-                    result.Result = await query.Skip(skip).Take(take).ToListAsync();
-                else
-                    result.Result =  await query.AsNoTracking().Skip(skip).Take(take).ToListAsync();  
             }
+            
+            if (tracking)
+                result.Result = await query.Skip(skip).Take(take).ToListAsync();
             else
-            {
-                if (tracking)
-                    result.Result = await query.Skip(skip).Take(take).ToListAsync();
-                else
-                    result.Result =  await query.AsNoTracking().Skip(skip).Take(take).ToListAsync();
-            }
+                result.Result =  await query.AsNoTracking().Skip(skip).Take(take).ToListAsync();
+            
 
             return result;
         }
