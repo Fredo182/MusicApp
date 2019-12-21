@@ -26,15 +26,9 @@ namespace MusicApp.API.Installers
                     config.ImplicitlyValidateChildProperties = true;
                 });
 
-            // Add AutoMapper
-            services.AddAutoMapper(
-                new Assembly[] {
-                    typeof(ModelToResponseProfile).GetTypeInfo().Assembly,
-                    typeof(RequestToModelProfile).GetTypeInfo().Assembly,
-                    typeof(DomainToModelProfile).GetTypeInfo().Assembly,
-                    typeof(ModelToDomainProfile).GetTypeInfo().Assembly
-                }
-            );
+            // Add assemblies to automapper
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            services.AddAutoMapper(assemblies);
 
         }
     }
