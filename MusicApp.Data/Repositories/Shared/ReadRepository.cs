@@ -15,7 +15,7 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        protected IQueryable<TEntity> GetQueryable(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = this.dbSet;
 
@@ -47,37 +47,25 @@ namespace MusicApp.Data.Repositories.Shared
             }
 
             if (tracking)
-                return await query.ToListAsync();
+                return query;
             else
-                return await query.AsNoTracking().ToListAsync();
+                return query.AsNoTracking();
+        }
+
+
+        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        {
+            return await GetQueryable(filters, orderBy, includeProperties, tracking).ToListAsync();
         }
 
         public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
+            IQueryable<TEntity> query = GetQueryable(filters, orderBy, includeProperties, tracking);
+
             var result = new PagedResult<TEntity>();
             result.PageState.PageNumber = pagination.PageNumber;
             result.PageState.PageSize = pagination.PageSize;
 
-
-            IQueryable<TEntity> query = this.dbSet;
-
-            // Apply filtering
-            if (filters != null)
-            {
-                foreach (var filter in filters)
-                {
-                    query = query.Where(filter);
-                }
-            }
-
-            // Add Include related data
-            if (includeProperties != null)
-            {
-                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    query = query.Include(includeProperty);
-            }
-
-            // Set skip for pagination
             var skip = 0;
             var take = 0;
             if (pagination != null)
@@ -90,23 +78,8 @@ namespace MusicApp.Data.Repositories.Shared
             var pageCount = (double)result.PageState.Total / pagination.PageSize;
             result.PageState.TotalPages = (int)Math.Ceiling(pageCount);
 
-            // Apply orderBy
-            if (orderBy != null)
-            {
-                bool isFirstSort = true;
-                orderBy.ToList().ForEach(o =>
-                {
-                    query = o.ApplySort(query, isFirstSort);
-                    isFirstSort = false;
-                });
-            }
+            result.Result = await query.Skip(skip).Take(take).ToListAsync();
             
-            if (tracking)
-                result.Result = await query.Skip(skip).Take(take).ToListAsync();
-            else
-                result.Result =  await query.AsNoTracking().Skip(skip).Take(take).ToListAsync();
-            
-
             return result;
         }
 
@@ -115,25 +88,31 @@ namespace MusicApp.Data.Repositories.Shared
             return await dbSet.FindAsync(id);
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
+        public async Task<TEntity> GetOneAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, string includeProperties = "", bool tracking = true)
         {
-            if (tracking)
-                return dbSet.Where(predicate);
-            else
-                return dbSet.AsNoTracking().Where(predicate);
+            return await GetQueryable(filters, null, includeProperties, tracking).SingleOrDefaultAsync();
         }
 
-        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
+        public async Task<TEntity> GetFirstAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
-            if (tracking)
-                return await dbSet.SingleOrDefaultAsync(predicate);
-            else
-                return await dbSet.AsNoTracking().SingleOrDefaultAsync(predicate);
+            return await GetQueryable(filters, orderBy, includeProperties, tracking).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetCountAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
+        {
+            return await GetQueryable(filters, null, null, tracking).CountAsync();
+        }
+
+        public async Task<bool> GetExistsAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
+        {
+            return await GetQueryable(filters, null, null, tracking).AnyAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)
         {
             return await dbSet.FromSqlRaw(query, parameters).ToListAsync();
         }
+
+        
     }
 }

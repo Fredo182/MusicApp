@@ -125,8 +125,8 @@ namespace MusicApp.Services.Services
 
         public async Task<bool> ArtistIdExistsAsync(int id)
         {
-            var a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.ArtistId == id), false);
-            return (a != null);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
+            return await _unitOfWork.Artists.GetExistsAsync(f, false);
         }
 
         public async Task<bool> ArtistIdsExistAsync(int[] ids)
@@ -139,8 +139,8 @@ namespace MusicApp.Services.Services
         public async Task<bool> ArtistExistsAsync(ArtistModel artist)
         {
             var a = _mapper.Map<Artist>(artist);
-            a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.ArtistId == a.ArtistId), false);
-            return (a != null);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == a.ArtistId) };
+            return await _unitOfWork.Artists.GetExistsAsync(f, false);
         }
 
         public async Task<IEnumerable<ArtistModel>> ArtistsExistAsync(IEnumerable<ArtistModel> artists)
@@ -165,15 +165,15 @@ namespace MusicApp.Services.Services
 
         public async Task<bool> ArtistNameExistsAsync(string name)
         {
-            var a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.Name == name), false);
-            return (a != null);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.Name == name) };
+            return await _unitOfWork.Artists.GetExistsAsync(f, false);
         }
 
         public async Task<bool> ArtistNameExistsAsync(ArtistModel artist)
         {
             var a = _mapper.Map<Artist>(artist);
-            a = await _unitOfWork.Artists.SingleOrDefaultAsync((x => x.Name == a.Name), false);
-            return (a != null);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.Name == a.Name) };
+            return await _unitOfWork.Artists.GetExistsAsync(f, false);
         }
 
         public async Task<IEnumerable<ArtistModel>> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists)
