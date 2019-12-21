@@ -7,6 +7,4 @@ namespace MusicApp.Data.Domain.Queries.Shared
 
         public int PageSize { get; set; }
     }
-
-
 }

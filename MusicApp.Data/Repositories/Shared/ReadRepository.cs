@@ -58,25 +58,15 @@ namespace MusicApp.Data.Repositories.Shared
             return await GetQueryable(filters, orderBy, includeProperties, tracking).ToListAsync();
         }
 
-        public virtual async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public virtual async Task<PaginationResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = GetQueryable(filters, orderBy, includeProperties, tracking);
 
-            var result = new PagedResult<TEntity>();
-            result.PageState.PageNumber = pagination.PageNumber;
-            result.PageState.PageSize = pagination.PageSize;
-
-            var skip = 0;
-            var take = 0;
-            if (pagination != null)
-            {
-                skip = (pagination.PageNumber - 1) * pagination.PageSize;
-                take = pagination.PageSize;
-            }
-
+            var result = new PaginationResult<TEntity>(pagination);
+            var skip = (pagination.PageNumber - 1) * pagination.PageSize;
+            var take = pagination.PageSize;
             result.PageState.Total = query.Count();
-            var pageCount = (double)result.PageState.Total / pagination.PageSize;
-            result.PageState.TotalPages = (int)Math.Ceiling(pageCount);
+            result.PageState.TotalPages = (int)Math.Ceiling((double)result.PageState.Total / pagination.PageSize);
 
             result.Result = await query.Skip(skip).Take(take).ToListAsync();
             

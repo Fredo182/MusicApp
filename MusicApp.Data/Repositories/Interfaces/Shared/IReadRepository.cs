@@ -13,7 +13,7 @@ namespace MusicApp.Data.Repositories.Interfaces.Shared
     {
         //READ
         Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking=true);
-        Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true);
+        Task<PaginationResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true);
         Task<TEntity> GetByIdAsync(params object[] id);
         Task<TEntity> GetOneAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, string includeProperties = "", bool tracking=true);
         Task<TEntity> GetFirstAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true);

@@ -52,13 +52,13 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PagedResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
         {
             var p = _mapper.Map<Pagination>(pagination);
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
             var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o);
-            var result = new PagedResultModel<ArtistModel>(a.PageState, _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
+            var result = new PaginationResultModel<ArtistModel>(_mapper.Map<PaginationStateModel>(a.PageState), _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
         }
 
