@@ -11,7 +11,7 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public CrudRepository(DbContext context) : base(context){}
 
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             if (context.Entry(entity).State == EntityState.Detached)
             {
@@ -21,42 +21,42 @@ namespace MusicApp.Data.Repositories.Shared
             dbSet.Remove(entity);
         }
 
-        public void Delete(params object[] id)
+        public virtual void Delete(params object[] id)
         {
             TEntity entity = dbSet.Find(id);
             Delete(entity);
         }
 
-        public void DeleteRange(IEnumerable<TEntity> entities)
+        public virtual void DeleteRange(IEnumerable<TEntity> entities)
         {
             dbSet.RemoveRange(entities);
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates)
+        public virtual async Task DeleteRangeAsync(IEnumerable<Expression<Func<TEntity, bool>>> predicates)
         {
             var entities = await GetAsync(predicates);
             dbSet.RemoveRange(entities);
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             await dbSet.AddAsync(entity);
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
+        public virtual async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
         {
             await dbSet.AddRangeAsync(entities);
             return entities;
         }
 
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             dbSet.Update(entity);
             return entity;
         }
 
-        public IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities)
+        public virtual IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities)
         {
             dbSet.UpdateRange(entities);
             return entities;

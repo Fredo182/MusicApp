@@ -15,7 +15,7 @@ namespace MusicApp.Data.Repositories.Shared
     {
         public ReadRepository(DbContext context) : base(context){}
 
-        protected IQueryable<TEntity> GetQueryable(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        protected virtual IQueryable<TEntity> GetQueryable(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = this.dbSet;
 
@@ -53,12 +53,12 @@ namespace MusicApp.Data.Repositories.Shared
         }
 
 
-        public async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             return await GetQueryable(filters, orderBy, includeProperties, tracking).ToListAsync();
         }
 
-        public async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public virtual async Task<PagedResult<TEntity>> GetPagedAsync(Pagination pagination, IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             IQueryable<TEntity> query = GetQueryable(filters, orderBy, includeProperties, tracking);
 
@@ -83,32 +83,32 @@ namespace MusicApp.Data.Repositories.Shared
             return result;
         }
 
-        public async Task<TEntity> GetByIdAsync(params object[] id)
+        public virtual async Task<TEntity> GetByIdAsync(params object[] id)
         {
             return await dbSet.FindAsync(id);
         }
 
-        public async Task<TEntity> GetOneAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, string includeProperties = "", bool tracking = true)
+        public virtual async Task<TEntity> GetOneAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, string includeProperties = "", bool tracking = true)
         {
             return await GetQueryable(filters, null, includeProperties, tracking).SingleOrDefaultAsync();
         }
 
-        public async Task<TEntity> GetFirstAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
+        public virtual async Task<TEntity> GetFirstAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, IEnumerable<IOrderByClause<TEntity>> orderBy = null, string includeProperties = "", bool tracking = true)
         {
             return await GetQueryable(filters, orderBy, includeProperties, tracking).FirstOrDefaultAsync();
         }
 
-        public async Task<int> GetCountAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
+        public virtual async Task<int> GetCountAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
         {
             return await GetQueryable(filters, null, null, tracking).CountAsync();
         }
 
-        public async Task<bool> GetExistsAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
+        public virtual async Task<bool> GetExistsAsync(IEnumerable<Expression<Func<TEntity, bool>>> filters = null, bool tracking = true)
         {
             return await GetQueryable(filters, null, null, tracking).AnyAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)
+        public virtual async Task<IEnumerable<TEntity>> GetWithRawSQLAsync(string query, params object[] parameters)
         {
             return await dbSet.FromSqlRaw(query, parameters).ToListAsync();
         }
