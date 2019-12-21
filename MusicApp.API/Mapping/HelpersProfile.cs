@@ -14,7 +14,9 @@ namespace MusicApp.API.Mapping
         public HelpersProfile()
         {
             CreateMap<PaginationQuery, PaginationModel>()
-                .ForMember(dest => dest.Valid, opt => opt.MapFrom( s => (s.PageNumber != null && s.PageSize != null)));
+                .ForMember(dest => dest.Valid, opt => opt.MapFrom( s =>
+                    ( s.PageNumber != null && s.PageSize != null && s.PageNumber > 0 && s.PageSize > 0)
+                ));
 
             CreateMap<ArtistFilterQuery, ArtistFilterModel>();
             CreateMap<OrderByQuery, IEnumerable<ArtistOrderByModel>>().ConstructUsing(x => OrderByQueryParser<ArtistOrderByModel>.Parse(x.OrderBy));
