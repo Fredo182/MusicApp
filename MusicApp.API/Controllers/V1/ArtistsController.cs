@@ -37,7 +37,7 @@ namespace MusicApp.API.Controllers.V1
                 var post = _mapper.Map<ArtistModel>(postRequest);
                 bool exists = await _artistService.ArtistNameExistsAsync(post);
                 if (exists)
-                    return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
+                    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExists));
 
                 var artist = await _artistService.CreateArtistAsync(post);
                 var locationUri = ApiRoutes.Artists.Route + "/" + artist.ArtistId;
@@ -45,7 +45,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedCreate));
             }
         }
 
@@ -56,13 +56,13 @@ namespace MusicApp.API.Controllers.V1
             {
                 var artist = await _artistService.GetArtistByIdAsync(artistId);
                 if (artist == null)
-                    return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
 
                 return Ok(new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
 
@@ -89,7 +89,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
 
@@ -99,16 +99,16 @@ namespace MusicApp.API.Controllers.V1
             try
             {
                 if (artistId != putRequest.ArtistId)
-                    return BadRequest(new ErrorResponse(new ErrorModel { Message = "ArtistId mismatch." }));
+                    return BadRequest(new ErrorResponse(ErrorMessages.Artist.MismatchId));
 
                 var exists = await _artistService.ArtistIdExistsAsync(artistId);
                 if (!exists)
-                    return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
 
                 var artistModel = _mapper.Map<ArtistModel>(putRequest);
                 exists = await _artistService.ArtistNameExistsAsync(artistModel.Name);
                 if (exists)
-                    return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new name." }));
+                    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExists));
 
                 var updated = await _artistService.UpdateArtistAsync(artistModel);
 
@@ -119,7 +119,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedUpdate));
             }
         }
 
@@ -130,17 +130,17 @@ namespace MusicApp.API.Controllers.V1
             {
                 var exists = await _artistService.ArtistIdExistsAsync(artistId);
                 if (!exists)
-                    return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
 
                 var deleted = await _artistService.DeleteArtistAsync(artistId);
                 if (deleted)
                     return NoContent();
 
-                return NotFound(new ErrorResponse(new ErrorModel { Message = "Artist does not exist." }));
+                return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedDelete));
             }            
         }
 
@@ -154,7 +154,7 @@ namespace MusicApp.API.Controllers.V1
                 if (exist.Count() > 0)
                 {
                     var existingNames = exist.Select(x => x.Name).ToList();
-                    return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new names for the following. [" + string.Join(',', existingNames) + "]" }));
+                    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExistsBulk, existingNames));
                 }
                 var artists = await _artistService.CreateArtistsAsync(posts);
                 var locationUri = ApiRoutes.Artists.Route;
@@ -162,7 +162,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedCreateBulk));
             }
         }
 
@@ -176,14 +176,14 @@ namespace MusicApp.API.Controllers.V1
                 if (notExist.Count() > 0)
                 {
                     var notExistingNames = notExist.Select(x => x.Name).ToList();
-                    return NotFound(new ErrorResponse(new ErrorModel { Message = "The following artist do not exist. [" + string.Join(',', notExistingNames) + "]" }));
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExistBulk, notExistingNames));
                 }
 
                 var exist = await _artistService.ArtistNamesExistsAsync(puts);
                 if (exist.Count() > 0)
                 {
                     var existingNames = exist.Select(x => x.Name).ToList();
-                    return BadRequest(new ErrorResponse(new ErrorModel { FieldName = "Name", Message = "Artist name already exists. Please enter new names for the following. [" + string.Join(',', existingNames) + "]" }));
+                    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExistsBulk, existingNames));
                 }
 
                 var artists = await _artistService.UpdateArtistsAsync(puts);
@@ -191,7 +191,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.Artist.FailedUpdateBulk);
             }
         }
 
@@ -202,17 +202,17 @@ namespace MusicApp.API.Controllers.V1
             {
                 var allExist = await _artistService.ArtistIdsExistAsync(ids);
                 if (!allExist)
-                    return NotFound(new ErrorResponse(new ErrorModel { Message = "An Artist does not exist." }));
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExistBulk));
 
                 var deleted = await _artistService.DeleteArtistsAsync(ids);
                 if (deleted)
                     return NoContent();
 
-                return NotFound(new ErrorResponse(new ErrorModel { Message = "An Artist does not exist." }));
+                return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExistBulk));
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(new ErrorModel { Message = ex.Message }));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedDeleteBulk));
             }
         }
     }
