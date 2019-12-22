@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicApp.API.Contracts.V1.Responses.Shared
 {
@@ -38,6 +39,9 @@ namespace MusicApp.API.Contracts.V1.Responses.Shared
 
         public ErrorResponse(string message, IEnumerable<string> dynamicMessage)
         {
+            if (dynamicMessage.Count() > 0)
+                message += Environment.NewLine;
+
             foreach (var m in dynamicMessage)
                 message += Environment.NewLine + m;
 
