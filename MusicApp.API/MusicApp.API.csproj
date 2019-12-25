@@ -52,5 +52,6 @@
     <Folder Include="Contracts\V1\Requests\Queries\Shared\" />
     <Folder Include="Validators\Shared\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Contracts\V1\Requests\Shared\" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using MusicApp.Data.Domain.Shared;
 
 namespace MusicApp.Data.Domain
 {
-    public class Artist
+    public class Artist : BaseDomain
     {
         public int ArtistId { get; set; }
 
@@ -12,6 +12,7 @@ namespace MusicApp.Data.Domain
 
         public ICollection<Album> Albums { get; set; }
 
-        public ICollection<ArtistGenre> ArtistGenres { get; set; } 
+        public ICollection<ArtistGenre> ArtistGenres { get; set; }
+
     }
 }

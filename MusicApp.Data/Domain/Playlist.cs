@@ -1,7 +1,9 @@
 ﻿using System;
+using MusicApp.Data.Domain.Shared;
+
 namespace MusicApp.Data.Domain
 {
-    public class Playlist
+    public class Playlist : BaseDomain
     {
         public int PlaylistId { get; set; }
 

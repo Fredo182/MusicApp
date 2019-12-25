@@ -80,6 +80,9 @@ namespace MusicApp.Services.Services
             var a = _mapper.Map<Artist>(artist);
             a = _unitOfWork.Artists.Update(a);
             await _unitOfWork.CommitAsync();
+
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == a.ArtistId) };
+            a = await _unitOfWork.Artists.GetOneAsync(f, null, false);
             return _mapper.Map<ArtistModel>(a);
         }
 

@@ -15,6 +15,7 @@ using MusicApp.Services.Services.Interfaces;
 using MusicApp.Services.Models.Queries.Shared;
 using MusicApp.Services.Models.Queries;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace MusicApp.API.Controllers.V1
 {
@@ -119,6 +120,9 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
+                if (ex.GetType() == typeof(DbUpdateConcurrencyException))
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.ConcurrencyIssue));
+
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedUpdate));
             }
         }
@@ -191,6 +195,9 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
+                if (ex.GetType() == typeof(DbUpdateConcurrencyException))
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.ConcurrencyIssueBulk));
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.Artist.FailedUpdateBulk);
             }
         }

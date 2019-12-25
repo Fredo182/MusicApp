@@ -1,7 +1,9 @@
 ﻿using System;
+using MusicApp.Data.Domain.Shared;
+
 namespace MusicApp.Data.Domain
 {
-    public class ArtistGenre
+    public class ArtistGenre : BaseDomain
     {
         public int ArtistGenreId { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MusicApp.Data.Migrations
 {
@@ -12,6 +13,11 @@ namespace MusicApp.Data.Migrations
                 {
                     ArtistId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Name = table.Column<string>(maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -25,6 +31,11 @@ namespace MusicApp.Data.Migrations
                 {
                     GenreId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Name = table.Column<string>(maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -33,11 +44,34 @@ namespace MusicApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Playlists",
+                columns: table => new
+                {
+                    PlaylistId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Playlists", x => x.PlaylistId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Albums",
                 columns: table => new
                 {
                     AlbumId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     ArtistId = table.Column<int>(nullable: false)
                 },
@@ -58,6 +92,11 @@ namespace MusicApp.Data.Migrations
                 {
                     ArtistGenreId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     ArtistId = table.Column<int>(nullable: false),
                     GenreId = table.Column<int>(nullable: false)
                 },
@@ -84,6 +123,11 @@ namespace MusicApp.Data.Migrations
                 {
                     SongId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     AlbumId = table.Column<int>(nullable: false)
                 },
@@ -128,6 +172,11 @@ namespace MusicApp.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Playlists_Name",
+                table: "Playlists",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Songs_AlbumId",
                 table: "Songs",
                 column: "AlbumId");
@@ -143,6 +192,9 @@ namespace MusicApp.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ArtistGenres");
+
+            migrationBuilder.DropTable(
+                name: "Playlists");
 
             migrationBuilder.DropTable(
                 name: "Songs");

@@ -20,6 +20,9 @@ namespace MusicApp.API.Contracts.V1
 
             public const string DoesNotExistBulk =  "Artist(s) do not exist.";
             public const string NameExistsBulk =    "Artist(s) name(s) already exist.";
+
+            public const string ConcurrencyIssue = "The Artist you attempted to edit has been modified by another user.";
+            public const string ConcurrencyIssueBulk = "Artist(s) you attempted to edit have been modified by another user.";
         }
     }
 }

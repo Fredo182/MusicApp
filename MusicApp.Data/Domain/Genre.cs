@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using MusicApp.Data.Domain.Shared;
 
 namespace MusicApp.Data.Domain
 {
-    public class Genre
+    public class Genre : BaseDomain
     {
         public int GenreId { get; set; }
 

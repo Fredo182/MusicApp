@@ -1,7 +1,9 @@
 ﻿using System;
+using MusicApp.Services.Models.Shared;
+
 namespace MusicApp.Services.Models
 {
-    public class SongModel
+    public class SongModel : BaseModel
     {
         public int SongId { get; set; }
 
