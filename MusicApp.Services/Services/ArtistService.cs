@@ -44,34 +44,36 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "")
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "", bool tracking = true)
         {
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
-            var a = await _unitOfWork.Artists.GetAsync(f, o, includes);
+            var a = await _unitOfWork.Artists.GetAsync(f, o, includes, tracking);
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "")
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "", bool tracking = true)
         {
             var p = _mapper.Map<Pagination>(pagination);
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
-            var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o, includes);
+            var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o, includes, tracking);
             var result = new PaginationResultModel<ArtistModel>(_mapper.Map<PaginationStateModel>(a.PageState), _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
         }
 
-        public async Task<ArtistModel> GetArtistAsync(ArtistModel artist)
+        public async Task<ArtistModel> GetArtistAsync(ArtistModel artist, string includes = "", bool tracking = true)
         {
             var a = _mapper.Map<Artist>(artist);
-            a = await _unitOfWork.Artists.GetByIdAsync(a.ArtistId);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == a.ArtistId) };
+            a = await _unitOfWork.Artists.GetOneAsync(f, includes, tracking);
             return _mapper.Map<ArtistModel>(a);
         }
 
-        public async Task<ArtistModel> GetArtistByIdAsync(int id)
+        public async Task<ArtistModel> GetArtistByIdAsync(int id, string includes = "", bool tracking = true)
         {
-            var a = await _unitOfWork.Artists.GetByIdAsync(id);
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
+            var a = await _unitOfWork.Artists.GetOneAsync(f, includes, tracking);
             return _mapper.Map<ArtistModel>(a);
         }
 
@@ -126,6 +128,7 @@ namespace MusicApp.Services.Services
             return deleted > 0;
         }
 
+        // Exist/Not Exist Checks
         public async Task<bool> ArtistIdExistsAsync(int id)
         {
             var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
@@ -166,6 +169,7 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(notExist);
         }
 
+        // Unique Columm Checks
         public async Task<bool> ArtistNameExistsAsync(string name)
         {
             var f = new List<Expression<Func<Artist, bool>>>() { (x => x.Name == name) };
@@ -188,43 +192,38 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
 
-        // Inlcudes
-        public async Task<ArtistModel> GetArtistAlbumsAsync(int id)
+        // Get Model with includes
+        public async Task<ArtistModel> GetArtistAlbumsAsync(int id, bool tracking = true)
         {
-            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
-            var a = await _unitOfWork.Artists.GetOneAsync(f, "Albums");
-            return _mapper.Map<ArtistModel>(a);
+            return await this.GetArtistByIdAsync(id, "Albums", tracking);
         }
 
-        public async Task<ArtistModel> GetArtistAlbumsSongsAsync(int id)
+        public async Task<ArtistModel> GetArtistAlbumsSongsAsync(int id, bool tracking = true)
         {
-            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
-            var a = await _unitOfWork.Artists.GetOneAsync(f, "Albums,Albums.Songs");
-            return _mapper.Map<ArtistModel>(a);
+            return await this.GetArtistByIdAsync(id, "Albums,Albums.Songs", tracking);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true)
         {
-            return await this.GetArtistsAsync(filter, orderByList, "Albums");
+            return await this.GetArtistsAsync(filter, orderByList, "Albums", tracking);
         }
 
-        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true)
         {
-            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums");
+            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums", tracking);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true)
         {
-            return await this.GetArtistsAsync(filter, orderByList, "Albums,Albums.Songs");
+            return await this.GetArtistsAsync(filter, orderByList, "Albums,Albums.Songs", tracking);
         }
 
-        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true)
         {
-            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums,Albums.Songs");
+            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums,Albums.Songs", tracking);
         }
 
-
-        // Private Helpers
+        // Filter and OrderBy Private Functions
         private List<Expression<Func<Artist, bool>>> ArtistFilterExpressions(ArtistFilter filter)
         {
             List<Expression<Func<Artist, bool>>> filters = new List<Expression<Func<Artist, bool>>>();

@@ -16,10 +16,10 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<ArtistModel>> CreateArtistsAsync(IEnumerable<ArtistModel> artists);
 
         // READ
-        Task<ArtistModel> GetArtistByIdAsync(int id);
-        Task<ArtistModel> GetArtistAsync(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes="");
-        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes ="");
+        Task<ArtistModel> GetArtistByIdAsync(int id, string includes = "", bool tracking = true);
+        Task<ArtistModel> GetArtistAsync(ArtistModel artist, string includes = "", bool tracking = true);
+        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "", bool tracking = true);
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes ="", bool tracking = true);
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);
@@ -45,12 +45,12 @@ namespace MusicApp.Services.Services.Interfaces
         Task<IEnumerable<ArtistModel>> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists);
 
         // READ WITH INCLUDES
-        Task<ArtistModel> GetArtistAlbumsAsync(int id);
-        Task<ArtistModel> GetArtistAlbumsSongsAsync(int id);
-        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
-        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
-        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
-        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
+        Task<ArtistModel> GetArtistAlbumsAsync(int id, bool tracking = true);
+        Task<ArtistModel> GetArtistAlbumsSongsAsync(int id, bool tracking = true);
+        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true);
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true);
+        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true);
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, bool tracking = true);
 
     }
 }
