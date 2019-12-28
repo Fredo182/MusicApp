@@ -16,6 +16,8 @@ namespace MusicApp.API.Validators.ArtistsValidators
                 .NotEmpty()
                 .MaximumLength(255);
 
+            RuleFor(x => x.ConcurrencyStamp)
+                .NotEmpty();
         }
 
         public class ArtistsUpdateRequestValidator : AbstractValidator<IEnumerable<ArtistUpdateRequest>>

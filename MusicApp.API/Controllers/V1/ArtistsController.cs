@@ -222,5 +222,96 @@ namespace MusicApp.API.Controllers.V1
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedDeleteBulk));
             }
         }
+
+
+        //Incldues
+
+        [HttpGet(ApiRoutes.Artists.GetArtistAlbums)]
+        public async Task<IActionResult> GetArtistAlbums([FromRoute] int artistId)
+        {
+            try
+            {
+                var artist = await _artistService.GetArtistAlbumsAsync(artistId);
+                if (artist == null)
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
+
+                return Ok(new Response<ArtistAlbumsResponse>(_mapper.Map<ArtistAlbumsResponse>(artist)));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
+            }
+        }
+
+        [HttpGet(ApiRoutes.Artists.GetArtistAlbumsSongs)]
+        public async Task<IActionResult> GetArtistAlbumsSongs([FromRoute] int artistId)
+        {
+            try
+            {
+                var artist = await _artistService.GetArtistAlbumsSongsAsync(artistId);
+                if (artist == null)
+                    return NotFound(new ErrorResponse(ErrorMessages.Artist.DoesNotExist));
+
+                return Ok(new Response<ArtistAlbumsSongsResponse>(_mapper.Map<ArtistAlbumsSongsResponse>(artist)));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
+            }
+        }
+
+        [HttpGet(ApiRoutes.Artists.GetArtistsAlbums)]
+        public async Task<IActionResult> GetArtistsAlbums([FromQuery] ArtistFilterQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
+        {
+            try
+            {
+                var pagination = _mapper.Map<PaginationModel>(paginationQuery);
+                var orderBy = _mapper.Map<IEnumerable<ArtistOrderByModel>>(orderByQuery);
+                var filter = _mapper.Map<ArtistFilterModel>(filterQuery);
+
+                if (pagination.Valid)
+                {
+                    var artistsPaginationResult = await _artistService.GetPagedArtistsAlbumsAsync(pagination, filter, orderBy);
+                    var artistsResponse = _mapper.Map<List<ArtistAlbumsResponse>>(artistsPaginationResult.Result);
+                    return Ok(new PagedResponse<ArtistAlbumsResponse>(artistsResponse, artistsPaginationResult.PageState));
+                }
+                else
+                {
+                    var artists = await _artistService.GetArtistsAlbumsAsync(filter, orderBy);
+                    return Ok(new Response<IEnumerable<ArtistAlbumsResponse>>(_mapper.Map<IEnumerable<ArtistAlbumsResponse>>(artists)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
+            }
+        }
+
+        [HttpGet(ApiRoutes.Artists.GetArtistsAlbumsSongs)]
+        public async Task<IActionResult> GetArtistsAlbumsSongs([FromQuery] ArtistFilterQuery filterQuery, [FromQuery] OrderByQuery orderByQuery, [FromQuery]PaginationQuery paginationQuery)
+        {
+            try
+            {
+                var pagination = _mapper.Map<PaginationModel>(paginationQuery);
+                var orderBy = _mapper.Map<IEnumerable<ArtistOrderByModel>>(orderByQuery);
+                var filter = _mapper.Map<ArtistFilterModel>(filterQuery);
+
+                if (pagination.Valid)
+                {
+                    var artistsPaginationResult = await _artistService.GetPagedArtistsAlbumsSongsAsync(pagination, filter, orderBy);
+                    var artistsResponse = _mapper.Map<List<ArtistAlbumsSongsResponse>>(artistsPaginationResult.Result);
+                    return Ok(new PagedResponse<ArtistAlbumsSongsResponse>(artistsResponse, artistsPaginationResult.PageState));
+                }
+                else
+                {
+                    var artists = await _artistService.GetArtistsAlbumsSongsAsync(filter, orderBy);
+                    return Ok(new Response<IEnumerable<ArtistAlbumsSongsResponse>>(_mapper.Map<IEnumerable<ArtistAlbumsSongsResponse>>(artists)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
+            }
+        }
     }
 }

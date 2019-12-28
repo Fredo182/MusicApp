@@ -18,8 +18,8 @@ namespace MusicApp.Services.Services.Interfaces
         // READ
         Task<ArtistModel> GetArtistByIdAsync(int id);
         Task<ArtistModel> GetArtistAsync(ArtistModel artist);
-        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
-        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
+        Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes="");
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes ="");
 
         // UPDATE
         Task<ArtistModel> UpdateArtistAsync(ArtistModel artist);
@@ -43,6 +43,14 @@ namespace MusicApp.Services.Services.Interfaces
         Task<bool> ArtistNameExistsAsync(string name);
         Task<bool> ArtistNameExistsAsync(ArtistModel artist);
         Task<IEnumerable<ArtistModel>> ArtistNamesExistsAsync(IEnumerable<ArtistModel> artists);
+
+        // READ WITH INCLUDES
+        Task<ArtistModel> GetArtistAlbumsAsync(int id);
+        Task<ArtistModel> GetArtistAlbumsSongsAsync(int id);
+        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
+        Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
+        Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null);
 
     }
 }

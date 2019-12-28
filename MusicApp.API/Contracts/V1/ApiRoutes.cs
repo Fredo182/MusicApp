@@ -61,6 +61,12 @@ namespace MusicApp.API.Contracts.V1
             public const string DeleteArtist = Base + "/artists/{artistId}";
             public const string GetArtists = Base + "/artists";
 
+            //Endpoints with includes
+            public const string GetArtistAlbums = Base + "/artists/{artistId}/albums";
+            public const string GetArtistAlbumsSongs = Base + "/artists/{artistId}/albums/songs";
+            public const string GetArtistsAlbums = Base + "/artists/albums";
+            public const string GetArtistsAlbumsSongs = Base + "/artists/albums/songs";
+
             //Bulk Endpoints
             public const string CreateArtists = Base + "/artists/bulk";
             public const string DeleteArtists = Base + "/artists/bulk";

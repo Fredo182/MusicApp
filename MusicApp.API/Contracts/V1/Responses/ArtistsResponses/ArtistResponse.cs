@@ -8,6 +8,5 @@ namespace MusicApp.API.Contracts.V1.Responses.ArtistsResponses
         public int ArtistId { get; set; }
 
         public string Name { get; set; }
-
     }
 }

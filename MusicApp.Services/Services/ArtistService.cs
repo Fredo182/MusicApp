@@ -44,20 +44,20 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "")
         {
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
-            var a = await _unitOfWork.Artists.GetAsync(f, o);
+            var a = await _unitOfWork.Artists.GetAsync(f, o, includes);
             return _mapper.Map<IEnumerable<ArtistModel>>(a);
         }
 
-        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null, string includes = "")
         {
             var p = _mapper.Map<Pagination>(pagination);
             var f = ArtistFilterExpressions(_mapper.Map<ArtistFilter>(filter));
             var o = ArtistOrderByList(_mapper.Map<IEnumerable<ArtistOrderBy>>(orderByList));
-            var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o);
+            var a = await _unitOfWork.Artists.GetPagedAsync(p, f, o, includes);
             var result = new PaginationResultModel<ArtistModel>(_mapper.Map<PaginationStateModel>(a.PageState), _mapper.Map<IEnumerable<ArtistModel>>(a.Result));
             return result;
         }
@@ -188,6 +188,43 @@ namespace MusicApp.Services.Services
             return _mapper.Map<IEnumerable<ArtistModel>>(exist);
         }
 
+        // Inlcudes
+        public async Task<ArtistModel> GetArtistAlbumsAsync(int id)
+        {
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
+            var a = await _unitOfWork.Artists.GetOneAsync(f, "Albums");
+            return _mapper.Map<ArtistModel>(a);
+        }
+
+        public async Task<ArtistModel> GetArtistAlbumsSongsAsync(int id)
+        {
+            var f = new List<Expression<Func<Artist, bool>>>() { (x => x.ArtistId == id) };
+            var a = await _unitOfWork.Artists.GetOneAsync(f, "Albums,Albums.Songs");
+            return _mapper.Map<ArtistModel>(a);
+        }
+
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        {
+            return await this.GetArtistsAsync(filter, orderByList, "Albums");
+        }
+
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        {
+            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums");
+        }
+
+        public async Task<IEnumerable<ArtistModel>> GetArtistsAlbumsSongsAsync(ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        {
+            return await this.GetArtistsAsync(filter, orderByList, "Albums,Albums.Songs");
+        }
+
+        public async Task<PaginationResultModel<ArtistModel>> GetPagedArtistsAlbumsSongsAsync(PaginationModel pagination, ArtistFilterModel filter = null, IEnumerable<ArtistOrderByModel> orderByList = null)
+        {
+            return await this.GetPagedArtistsAsync(pagination, filter, orderByList, "Albums,Albums.Songs");
+        }
+
+
+        // Private Helpers
         private List<Expression<Func<Artist, bool>>> ArtistFilterExpressions(ArtistFilter filter)
         {
             List<Expression<Func<Artist, bool>>> filters = new List<Expression<Func<Artist, bool>>>();
