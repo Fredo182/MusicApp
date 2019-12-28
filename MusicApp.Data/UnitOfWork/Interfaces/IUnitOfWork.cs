@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MusicApp.Data.Repositories.Interfaces;
+using MusicApp.Data.UnitOfWork.Shared.Interfaces;
 
 namespace MusicApp.Data.UnitOfWork.Interfaces
 {
@@ -17,7 +18,9 @@ namespace MusicApp.Data.UnitOfWork.Interfaces
         IGenreRepository Genres { get; }
         ISongRepository Songs { get; }
         IPlaylistRepository Playlists { get; }
-        
+
+        IDatabaseTransaction BeginTransaction();
         Task<int> CommitAsync();
+
     }
 }

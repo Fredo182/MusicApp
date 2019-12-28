@@ -32,5 +32,7 @@
     <Folder Include="Domain\Queries\" />
     <Folder Include="Domain\Queries\Shared\" />
     <Folder Include="Helpers\" />
+    <Folder Include="UnitOfWork\Shared\" />
+    <Folder Include="UnitOfWork\Shared\Interfaces\" />
   </ItemGroup>
 </Project>

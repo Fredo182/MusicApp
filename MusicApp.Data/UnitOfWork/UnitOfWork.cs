@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using MusicApp.Data.Repositories;
 using MusicApp.Data.Repositories.Interfaces;
 using MusicApp.Data.UnitOfWork.Interfaces;
+using MusicApp.Data.UnitOfWork.Shared;
+using MusicApp.Data.UnitOfWork.Shared.Interfaces;
 
 namespace MusicApp.Data.UnitOfWork
 {
@@ -37,6 +39,10 @@ namespace MusicApp.Data.UnitOfWork
 
         public IPlaylistRepository Playlists => _playlistRepository ??= new PlaylistRepository(_context);
 
+        public IDatabaseTransaction BeginTransaction()
+        {
+            return new DatabaseTransaction(_context);
+        }
 
         public async Task<int> CommitAsync()
         {
@@ -46,11 +52,6 @@ namespace MusicApp.Data.UnitOfWork
         public void Dispose()
         {
             _context.Dispose();
-        }
-
-        public void BeginTransaction()
-        {
-            _context.Database.BeginTransaction();
         }
     }
 }
