@@ -1,7 +1,7 @@
 ﻿using System;
 using MusicApp.API.Contracts.V1.Responses.Shared;
 
-namespace MusicApp.API.Contracts.V1.Responses.AlbumsReponses
+namespace MusicApp.API.Contracts.V1.Responses.AlbumsResponses
 {
     public class AlbumResponse : BaseResponse
     {

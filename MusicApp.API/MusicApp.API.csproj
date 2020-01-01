@@ -53,7 +53,7 @@
     <Folder Include="Validators\Shared\" />
     <Folder Include="Helpers\" />
     <Folder Include="Contracts\V1\Requests\Shared\" />
-    <Folder Include="Contracts\V1\Responses\AlbumsReponses\" />
+    <Folder Include="Contracts\V1\Responses\AlbumsResponses\" />
     <Folder Include="Contracts\V1\Responses\SongsReponses\" />
   </ItemGroup>
 </Project>

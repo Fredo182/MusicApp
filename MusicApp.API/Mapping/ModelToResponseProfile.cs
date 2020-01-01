@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using MusicApp.API.Contracts.V1.Responses.AlbumsReponses;
+using MusicApp.API.Contracts.V1.Responses.AlbumsResponses;
 using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
 using MusicApp.API.Contracts.V1.Responses.SongsReponses;
 using MusicApp.Services.Models;
