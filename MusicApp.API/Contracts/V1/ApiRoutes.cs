@@ -7,6 +7,20 @@ namespace MusicApp.API.Contracts.V1
         public const string Version = "v1";
         public const string Base = Root + "/" + Version;
 
+        public static class Account
+        {
+            public const string Route = Base + "/account";
+            public const string Verb = "account";
+
+            public const string Register = Route + "/register";
+            public const string Login = Route + "/login";
+            public const string Logout = Route + "/logout";
+            public const string ConfirmEmail = Route + "/confirmemail";
+            public const string ChangePassword = Route + "/changepassword";
+            public const string ForgotPassword = Route + "/forgotpassword";
+            public const string ResetPassword = Route + "/resetpassword";
+        }
+
         public static class Albums
         {
             //base url

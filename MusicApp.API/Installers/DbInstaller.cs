@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MusicApp.API.Installers.Interfaces;
+using MusicApp.API.Security.TokenProviders;
 using MusicApp.Data;
-using MusicApp.Data.Domain;
 using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.UnitOfWork;
 using MusicApp.Data.UnitOfWork.Interfaces;
@@ -26,7 +26,8 @@ namespace MusicApp.API.Installers
             );
 
             // Add Identity Services
-            services.AddIdentity<User, Role>(options => {
+            services.AddIdentity<User, Role>(options =>
+            {
 
                 //User Options
                 options.User.RequireUniqueEmail = true;
@@ -39,15 +40,33 @@ namespace MusicApp.API.Installers
                 options.Password.RequireUppercase = false;
 
                 //Account Lockout Options
-                options.Lockout.AllowedForNewUsers = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
+                //options.Lockout.AllowedForNewUsers = true;
+                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                //options.Lockout.MaxFailedAccessAttempts = 5;
 
                 //SingIn options
                 options.SignIn.RequireConfirmedEmail = true;
-                
+
+                //Token Providers
+                options.Tokens.EmailConfirmationTokenProvider = "EmailConfirmationTokenProvider";
+                options.Tokens.PasswordResetTokenProvider = "PasswordResetTokenProvider";
+
             })
-            .AddEntityFrameworkStores<MusicAppDbContext>();
+            .AddEntityFrameworkStores<MusicAppDbContext>()
+            .AddDefaultTokenProviders()
+            .AddTokenProvider<EmailConfirmationTokenProvider<User>>("EmailConfirmationTokenProvider")
+            .AddTokenProvider<PasswordResetTokenProvider<User>>("PasswordResetTokenProvider");
+
+            services.Configure<EmailConfirmationTokenProviderOptions>(o =>
+            {
+                o.TokenLifespan = TimeSpan.FromDays(5);
+            });
+
+            services.Configure<PasswordResetTokenProviderOptions>(o =>
+            {
+                o.TokenLifespan = TimeSpan.FromHours(1);
+            });
+
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

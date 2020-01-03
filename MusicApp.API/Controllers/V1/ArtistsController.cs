@@ -24,12 +24,13 @@ namespace MusicApp.API.Controllers.V1
     {
         private readonly IArtistService _artistService;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<ArtistsController> _logger;
 
-        public ArtistsController(IArtistService artistService, IMapper mapper)
+        public ArtistsController(IArtistService artistService, IMapper mapper, ILogger<ArtistsController> logger)
         {
             _artistService = artistService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost(ApiRoutes.Artists.CreateArtist)]

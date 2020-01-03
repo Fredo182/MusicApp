@@ -1,0 +1,16 @@
+﻿using System;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace MusicApp.API.Security.TokenProviders
+{
+    public class EmailConfirmationTokenProvider<TUser> : DataProtectorTokenProvider<TUser> where TUser : class
+    {
+        public EmailConfirmationTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<EmailConfirmationTokenProviderOptions> options, ILogger<EmailConfirmationTokenProvider<TUser>> logger)
+            : base(dataProtectionProvider, options, logger)
+        {
+        }
+    }
+}

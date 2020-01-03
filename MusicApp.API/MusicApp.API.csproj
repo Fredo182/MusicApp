@@ -32,6 +32,7 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Options\" />
@@ -57,5 +58,8 @@
     <Folder Include="Contracts\V1\Requests\Shared\" />
     <Folder Include="Contracts\V1\Responses\AlbumsResponses\" />
     <Folder Include="Contracts\V1\Responses\SongsReponses\" />
+    <Folder Include="Contracts\V1\Requests\AccountsRequests\" />
+    <Folder Include="Security\" />
+    <Folder Include="Security\TokenProviders\" />
   </ItemGroup>
 </Project>

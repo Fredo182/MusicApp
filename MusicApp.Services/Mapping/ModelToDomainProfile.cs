@@ -1,9 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using MusicApp.Data.Domain;
+using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.Domain.Queries;
 using MusicApp.Data.Domain.Queries.Shared;
 using MusicApp.Services.Models;
+using MusicApp.Services.Models.Authorization;
 using MusicApp.Services.Models.Queries;
 using MusicApp.Services.Models.Queries.Shared;
 
@@ -19,6 +21,15 @@ namespace MusicApp.Services.Mapping
             //Queries
             CreateMap<ArtistFilterModel, ArtistFilter>();
             CreateMap<ArtistOrderByModel, ArtistOrderBy>();
+
+            //Authorization
+            CreateMap<UserModel, User>();
+            CreateMap<RoleModel, Role>();
+            CreateMap<UserClaimModel, UserClaim>();
+            CreateMap<UserLoginModel, UserLogin>();
+            CreateMap<UserRoleModel, UserRole>();
+            CreateMap<UserTokenModel, UserToken>();
+            CreateMap<RoleClaimModel, RoleClaim>();
 
             // Model to Domain
             CreateMap<AlbumModel, Album>();
