@@ -1,9 +1,12 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MusicApp.API.Installers.Interfaces;
 using MusicApp.Data;
+using MusicApp.Data.Domain;
+using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.UnitOfWork;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Services;
@@ -21,6 +24,30 @@ namespace MusicApp.API.Installers
             services.AddDbContextPool<MusicAppDbContext>( options =>
                 options.UseSqlServer( connection , x => x.MigrationsAssembly("MusicApp.Data"))
             );
+
+            // Add Identity Services
+            services.AddIdentity<User, Role>(options => {
+
+                //User Options
+                options.User.RequireUniqueEmail = true;
+
+                //Password Options
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+                //Account Lockout Options
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+                //SingIn options
+                options.SignIn.RequireConfirmedEmail = true;
+                
+            })
+            .AddEntityFrameworkStores<MusicAppDbContext>();
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -1,11 +1,14 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MusicApp.Data.Configurations;
+using MusicApp.Data.Configurations.Authorization;
 using MusicApp.Data.Domain;
+using MusicApp.Data.Domain.Authorization;
 
 namespace MusicApp.Data
 {
-    public class MusicAppDbContext : DbContext
+    public class MusicAppDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
 
         public DbSet<Artist> Artists { get; set; }
@@ -25,8 +28,11 @@ namespace MusicApp.Data
             : base(options)
         { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
+            // Call the OnModelCreating for the base Identity tables
+            base.OnModelCreating(builder);
+
             // Fluent API model configuration below. Some things can only be configured through Fluent API.
             // Check Documention for these scenarios such as indexes
 
@@ -34,24 +40,35 @@ namespace MusicApp.Data
             //...
             //...
 
-            modelBuilder
+            // Authorization
+            builder
+                .ApplyConfiguration(new UserConfiguration());
+            builder
+                .ApplyConfiguration(new RoleConfiguration());
+            builder
+                .ApplyConfiguration(new UserRoleConfiguration());
+            builder
+                .ApplyConfiguration(new UserClaimConfiguration());
+            builder
+                .ApplyConfiguration(new UserLoginConfiguration());
+            builder
+                .ApplyConfiguration(new UserTokenConfiguration());
+            builder
+                .ApplyConfiguration(new RoleClaimConfiguration());
+
+
+            builder
                 .ApplyConfiguration(new ArtistConfiguration());
-
-            modelBuilder
+            builder
                 .ApplyConfiguration(new AlbumConfiguration());
-
-            modelBuilder
+            builder
                 .ApplyConfiguration(new SongConfiguration());
-
-            modelBuilder
+            builder
                 .ApplyConfiguration(new GenreConfiguration());
-
-            modelBuilder
+            builder
                 .ApplyConfiguration(new ArtistGenreConfiguration());
-
-            modelBuilder
+            builder
                 .ApplyConfiguration(new PlaylistConfiguration());
-
         }
         
 

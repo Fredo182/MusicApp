@@ -6,6 +6,61 @@ namespace MusicApp.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("CREATE TRIGGER [dbo].[User_UPDATE] ON [dbo].[Users] " +
+                "FOR INSERT, UPDATE AS " +
+                "BEGIN " +
+                    "SET NOCOUNT ON; " +
+
+                    "IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN; " +
+
+                    "DECLARE @Id INT " +
+
+                    "SELECT @Id = INSERTED.UserId " +
+                    "FROM INSERTED " +
+
+                    "UPDATE dbo.Users " +
+                    "SET ModifiedDateTime = SYSDATETIMEOFFSET() " +
+                    "WHERE UserId = @Id " +
+                "END"
+                );
+
+            migrationBuilder.Sql("CREATE TRIGGER [dbo].[Role_UPDATE] ON [dbo].[Roles] " +
+                "FOR INSERT, UPDATE AS " +
+                "BEGIN " +
+                    "SET NOCOUNT ON; " +
+
+                    "IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN; " +
+
+                    "DECLARE @Id INT " +
+
+                    "SELECT @Id = INSERTED.RoleId " +
+                    "FROM INSERTED " +
+
+                    "UPDATE dbo.Roles " +
+                    "SET ModifiedDateTime = SYSDATETIMEOFFSET() " +
+                    "WHERE RoleId = @Id " +
+                "END"
+                );
+
+            migrationBuilder.Sql("CREATE TRIGGER [dbo].[UserRole_UPDATE] ON [dbo].[UserRoles] " +
+                "FOR INSERT, UPDATE AS " +
+                "BEGIN " +
+                    "SET NOCOUNT ON; " +
+
+                    "IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN; " +
+
+                    "DECLARE @RoleId INT " +
+                    "DECLARE @UserId INT " +
+
+                    "SELECT @RoleId = INSERTED.RoleId, @UserId = INSERTED.UserId " +
+                    "FROM INSERTED " +
+
+                    "UPDATE dbo.UserRoles " +
+                    "SET ModifiedDateTime = SYSDATETIMEOFFSET() " +
+                    "WHERE RoleId = @RoleId AND UserId = @UserId " +
+                "END"
+                );
+
             migrationBuilder.Sql("CREATE TRIGGER [dbo].[Album_UPDATE] ON [dbo].[Albums] " +
                 "FOR INSERT, UPDATE AS " +
                 "BEGIN " +
@@ -114,12 +169,13 @@ namespace MusicApp.Data.Migrations
                 "END"
                 );
 
-
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DROP TRIGGER [dbo].[User_UPDATE]");
+            migrationBuilder.Sql("DROP TRIGGER [dbo].[Role_UPDATE]");
+            migrationBuilder.Sql("DROP TRIGGER [dbo].[UserRole_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[Album_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[Artist_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[ArtistGenre_UPDATE]");
