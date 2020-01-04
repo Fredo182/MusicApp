@@ -12,7 +12,9 @@ namespace MusicApp.API.Mapping
         public RequestToModelProfile()
         {
             // Account Mappings
-            CreateMap<AccountRegisterRequest, UserModel>();
+            CreateMap<AccountRegisterRequest, UserModel>()
+                //UserName will be the same as the email address
+                .ForMember(x => x.UserName, opt => opt.MapFrom( d => d.Email ));
             CreateMap<AccountLoginRequest, UserModel>();
 
             // Artists Mappings

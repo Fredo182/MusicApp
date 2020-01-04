@@ -53,6 +53,14 @@ namespace MusicApp.API.Contracts.V1.Responses.Shared
             Errors.Add(error);
         }
 
+        public ErrorResponse(IEnumerable<string> errors)
+        {
+            foreach (var error in errors)
+            {
+                Errors.Add(new ErrorModel() { Message = error });
+            }
+        }
+
         public List<ErrorModel> Errors { get; set; } = new List<ErrorModel>();
     }
 }

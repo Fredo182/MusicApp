@@ -49,7 +49,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedCreate);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedCreate));
             }
         }
@@ -67,7 +67,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
@@ -95,7 +95,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
@@ -129,7 +129,7 @@ namespace MusicApp.API.Controllers.V1
                 if (ex.GetType() == typeof(DbUpdateConcurrencyException))
                     return BadRequest(new ErrorResponse(ErrorMessages.Artist.ConcurrencyIssue));
 
-                _logger.LogError(ex, ErrorMessages.Artist.FailedUpdate);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedUpdate));
             }
         }
@@ -151,7 +151,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedDelete);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedDelete));
             }            
         }
@@ -174,7 +174,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedCreateBulk);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedCreateBulk));
             }
         }
@@ -207,7 +207,7 @@ namespace MusicApp.API.Controllers.V1
                 if (ex.GetType() == typeof(DbUpdateConcurrencyException))
                     return BadRequest(new ErrorResponse(ErrorMessages.Artist.ConcurrencyIssueBulk));
 
-                _logger.LogError(ex, ErrorMessages.Artist.FailedUpdateBulk);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.Artist.FailedUpdateBulk);
             }
         }
@@ -229,7 +229,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedDeleteBulk);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedDeleteBulk));
             }
         }
@@ -250,7 +250,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
@@ -268,7 +268,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
@@ -296,7 +296,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }
@@ -324,7 +324,7 @@ namespace MusicApp.API.Controllers.V1
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.Artist.FailedRead);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Artist.FailedRead));
             }
         }

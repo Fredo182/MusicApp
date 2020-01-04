@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models.Authorization;
+using MusicApp.Services.Security.Options;
 using MusicApp.Services.Services.Interfaces;
 using MusicApp.Services.Services.Responses;
 
@@ -16,17 +21,20 @@ namespace MusicApp.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly JwtSettings _jwtSettings;
 
-        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, JwtSettings jwtSettings)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _emailService = emailService;
+            _jwtSettings = jwtSettings;
         }
 
         public async Task<AccountResponse> RegisterAsync(UserModel user, string password)
         {
             var u = _mapper.Map<User>(user);
+            //Do I need to check if the emal already exists?
             var result = await _unitOfWork.UserManager.CreateAsync(u, password);
             if (result.Succeeded)
             {
@@ -122,6 +130,27 @@ namespace MusicApp.Services.Services
             {
                 return new AccountResponse() { Errors = result.Errors };
             }
+        }
+
+        private SecurityToken GetToken(string email, int userid)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim(JwtRegisteredClaimNames.Sub, email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, email),
+                    new Claim("id", userid.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return token;
         }
 
         //// Cookie Sign In

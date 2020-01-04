@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MusicApp.API.Options
+namespace MusicApp.Services.Security.Options
 {
     public class JwtSettings
     {

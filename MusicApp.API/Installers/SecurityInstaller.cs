@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MusicApp.API.Installers.Interfaces;
-using MusicApp.API.Options;
+using MusicApp.Services.Security.Options;
 
 namespace MusicApp.API.Installers
 {
