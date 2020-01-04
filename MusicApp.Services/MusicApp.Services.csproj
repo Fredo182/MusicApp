@@ -22,7 +22,7 @@
     <Folder Include="Models\Queries\Shared\" />
     <Folder Include="Models\Authorization\" />
     <Folder Include="Models\Authorization\Shared\" />
-    <Folder Include="Services\Shared\" />
+    <Folder Include="Services\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MusicApp.Data\MusicApp.Data.csproj" />

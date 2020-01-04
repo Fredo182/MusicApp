@@ -7,7 +7,7 @@ using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models.Authorization;
 using MusicApp.Services.Services.Interfaces;
-using MusicApp.Services.Services.Shared;
+using MusicApp.Services.Services.Responses;
 
 namespace MusicApp.Services.Services
 {
@@ -24,7 +24,7 @@ namespace MusicApp.Services.Services
             _emailService = emailService;
         }
 
-        public async Task<ServiceResponse> RegisterAsync(UserModel user, string password)
+        public async Task<AccountResponse> RegisterAsync(UserModel user, string password)
         {
             var u = _mapper.Map<User>(user);
             var result = await _unitOfWork.UserManager.CreateAsync(u, password);
@@ -37,52 +37,54 @@ namespace MusicApp.Services.Services
                 if (sent)
                 {
                     await _unitOfWork.CommitAsync();
-                    return new ServiceResponse();
+                    return new AccountResponse(){ Success = true };
                 }
                 else
                 {
-                    return new ServiceResponse("Confirmation Email failed to send.");
+                    return new AccountResponse() { SendConfirmEmailFailed = true };
                 }
             }
             else
             {
-                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+                return new AccountResponse() { Errors = result.Errors };
             }
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(string email, string password, bool persistent, bool lockout=false, bool confirmEmail=true)
+        public async Task<AccountResponse<string>> PasswordSignInAsync(string email, string password, bool persistent, bool lockout=false, bool confirmEmail=true)
         {
+            
             if (confirmEmail)
             {
                 var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
                 if (user != null && !user.EmailConfirmed && (await _unitOfWork.UserManager.CheckPasswordAsync(user, password)))
-                    return null;
+                    return new AccountResponse<string>() { EmailNotConfirmed = true };
             }
 
-            SignInResult r = await _unitOfWork.SignInManager.PasswordSignInAsync(email, password, persistent, lockout);
-            return r;
+            //TODO: do the token stuff here
+            //SignInResult r = await _unitOfWork.SignInManager.PasswordSignInAsync(email, password, persistent, lockout);
+            return new AccountResponse<string>("token:123456789");
         }
 
-        public async Task<ServiceResponse> ConfirmEmailAsync(UserModel user, string token)
+        public async Task<AccountResponse> ConfirmEmailAsync(int userid, string token)
         {
-            var u = _mapper.Map<User>(user);
-            u = await _unitOfWork.UserManager.FindByEmailAsync(user.Email);
+            //User manager doesnt have int as key. It will be converted later on in the call
+            var u = await _unitOfWork.UserManager.FindByIdAsync(userid.ToString());
             if (u == null)
-                return new ServiceResponse("User was not found");
+                return new AccountResponse() { UserNotFound = true };
 
             IdentityResult result = await _unitOfWork.UserManager.ConfirmEmailAsync(u, token);
             if (result.Succeeded)
             {
                 await _unitOfWork.CommitAsync();
-                return new ServiceResponse();
+                return new AccountResponse() { Success = true };
             }
             else
             {
-                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+                return new AccountResponse() { Errors = result.Errors };
             }
         }
 
-        public async Task ForgotPasswordAsync(string email)
+        public async Task<AccountResponse> ForgotPasswordAsync(string email)
         {
             var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
             if (u != null && await _unitOfWork.UserManager.IsEmailConfirmedAsync(u))
@@ -94,25 +96,31 @@ namespace MusicApp.Services.Services
                 if (sent)
                 {
                     await _unitOfWork.CommitAsync();
+                    return new AccountResponse() { Success = true };
+                }
+                else
+                {
+                    return new AccountResponse() { SendResetPasswordFailed = true };
                 }
             }
+            return new AccountResponse() { Success = true };
         }
 
-        public async Task<ServiceResponse> ResetPasswordAsync(string email, string token, string password)
+        public async Task<AccountResponse> ResetPasswordAsync(string email, string token, string password)
         {
             var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
             if (u == null)
-                return new ServiceResponse("User was not found");
+                return new AccountResponse() { UserNotFound = true };
 
             IdentityResult result = await _unitOfWork.UserManager.ResetPasswordAsync(u, token, password);
             if (result.Succeeded)
             {
                 await _unitOfWork.CommitAsync();
-                return new ServiceResponse();
+                return new AccountResponse() { Success = true };
             }
             else
             {
-                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+                return new AccountResponse() { Errors = result.Errors };
             }
         }
 
