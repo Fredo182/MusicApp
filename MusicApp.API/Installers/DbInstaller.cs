@@ -7,6 +7,7 @@ using MusicApp.API.Installers.Interfaces;
 using MusicApp.API.Security.TokenProviders;
 using MusicApp.Data;
 using MusicApp.Data.Domain.Authorization;
+using MusicApp.Data.Identity.Stores;
 using MusicApp.Data.UnitOfWork;
 using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Services;
@@ -24,6 +25,10 @@ namespace MusicApp.API.Installers
             services.AddDbContextPool<MusicAppDbContext>( options =>
                 options.UseSqlServer( connection , x => x.MigrationsAssembly("MusicApp.Data"))
             );
+
+            // Add Custom Stores
+            services.AddScoped<IUserStore<User>, ApplicationUserStore>();
+            services.AddScoped<IRoleStore<Role>, ApplicationRoleStore>();
 
             // Add Identity Services
             services.AddIdentity<User, Role>(options =>

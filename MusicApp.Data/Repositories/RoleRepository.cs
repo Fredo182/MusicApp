@@ -4,7 +4,7 @@ using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.Repositories.Interfaces;
 using MusicApp.Data.Repositories.Shared;
 
-namespace MusicApp.Data.Repositories.Authorization
+namespace MusicApp.Data.Repositories
 {
     public class RoleRepository : CrudRepository<Role>, IRoleRepository
     {

@@ -1,112 +1,134 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using MusicApp.Data.Domain.Authorization;
+using MusicApp.Data.UnitOfWork.Interfaces;
 using MusicApp.Services.Models.Authorization;
 using MusicApp.Services.Services.Interfaces;
+using MusicApp.Services.Services.Shared;
 
 namespace MusicApp.Services.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger<AccountService> _logger;
+        private readonly IEmailService _emailService;
 
-
-        public AccountService(UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IMapper mapper, ILogger<AccountService> logger)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _logger = logger;
+            _emailService = emailService;
         }
 
-        public async Task<IdentityResult> RegisterAsync(UserModel user, string password)
+        public async Task<ServiceResponse> RegisterAsync(UserModel user, string password)
         {
             var u = _mapper.Map<User>(user);
-            IdentityResult r = await _userManager.CreateAsync(u, password);
-
-            if (r.Succeeded)
+            var result = await _unitOfWork.UserManager.CreateAsync(u, password);
+            if (result.Succeeded)
             {
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(u);
-                _logger.LogInformation("Email Confirmation Token: " + token + " UserId: " + u.Id);
-
-                //TODO create a link for the email with token and userid
+                var token = await _unitOfWork.UserManager.GenerateEmailConfirmationTokenAsync(u);
+                //TODO: Fix this url
+                var url = "?token=" + token + "&id" + u.Id;
+                var sent = _emailService.SendConfirmEmail(u.Email, url);
+                if (sent)
+                {
+                    await _unitOfWork.CommitAsync();
+                    return new ServiceResponse();
+                }
+                else
+                {
+                    return new ServiceResponse("Confirmation Email failed to send.");
+                }
             }
-            return r;
+            else
+            {
+                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+            }
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(string email, string password, bool persistent, bool lockout, bool confirmEmail)
+        public async Task<SignInResult> PasswordSignInAsync(string email, string password, bool persistent, bool lockout=false, bool confirmEmail=true)
         {
             if (confirmEmail)
             {
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user != null && !user.EmailConfirmed && (await _userManager.CheckPasswordAsync(user, password)))
-                    //"User needs to confirm email"
+                var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
+                if (user != null && !user.EmailConfirmed && (await _unitOfWork.UserManager.CheckPasswordAsync(user, password)))
                     return null;
             }
 
-            SignInResult r = await _signInManager.PasswordSignInAsync(email, password, persistent, lockout);
+            SignInResult r = await _unitOfWork.SignInManager.PasswordSignInAsync(email, password, persistent, lockout);
             return r;
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(UserModel user, string token)
+        public async Task<ServiceResponse> ConfirmEmailAsync(UserModel user, string token)
         {
             var u = _mapper.Map<User>(user);
-            u = await _userManager.FindByEmailAsync(user.Email);
-
+            u = await _unitOfWork.UserManager.FindByEmailAsync(user.Email);
             if (u == null)
-                return null;
+                return new ServiceResponse("User was not found");
 
-            IdentityResult r = await _userManager.ConfirmEmailAsync(u, token);
-            return r;
+            IdentityResult result = await _unitOfWork.UserManager.ConfirmEmailAsync(u, token);
+            if (result.Succeeded)
+            {
+                await _unitOfWork.CommitAsync();
+                return new ServiceResponse();
+            }
+            else
+            {
+                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+            }
         }
 
         public async Task ForgotPasswordAsync(string email)
         {
-            var u = await _userManager.FindByEmailAsync(email);
-
-            if (u != null && await _userManager.IsEmailConfirmedAsync(u))
+            var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
+            if (u != null && await _unitOfWork.UserManager.IsEmailConfirmedAsync(u))
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(u);
-                _logger.LogInformation("Password Reset Token: " + token + " Email: " + email);
-
-                //TODO create a link for the email with password token and email
+                var token = await _unitOfWork.UserManager.GeneratePasswordResetTokenAsync(u);
+                //TODO: Fix this url
+                var url = "?token=" + token;
+                var sent = _emailService.SendPasswordReset(u.Email, url);
+                if (sent)
+                {
+                    await _unitOfWork.CommitAsync();
+                }
             }
         }
 
-        public async Task<IdentityResult> ResetPasswordAsync(string email, string token, string password)
+        public async Task<ServiceResponse> ResetPasswordAsync(string email, string token, string password)
         {
-            var u = await _userManager.FindByEmailAsync(email);
-
+            var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
             if (u == null)
-                return null;
+                return new ServiceResponse("User was not found");
 
-            IdentityResult r = await _userManager.ResetPasswordAsync(u, token, password);
-            return r;
+            IdentityResult result = await _unitOfWork.UserManager.ResetPasswordAsync(u, token, password);
+            if (result.Succeeded)
+            {
+                await _unitOfWork.CommitAsync();
+                return new ServiceResponse();
+            }
+            else
+            {
+                return new ServiceResponse(result.Errors.Select(e => e.Description).ToList());
+            }
         }
 
-        // Cookie Sign In
-        public async Task SignInAsync(UserModel user, bool persistent)
-        {
-            var u = _mapper.Map<User>(user);
-            await _signInManager.SignInAsync(u, persistent);
-        }
+        //// Cookie Sign In
+        //public async Task SignInAsync(UserModel user, bool persistent)
+        //{
+        //    var u = _mapper.Map<User>(user);
+        //    await _signInManager.SignInAsync(u, persistent);
+        //}
 
-        // Cookie Sign Out
-        public async Task SignOutAsync(UserModel user, bool persistent)
-        {
-            var u = _mapper.Map<User>(user);
-            await _signInManager.SignOutAsync();
-        }
+        //// Cookie Sign Out
+        //public async Task SignOutAsync(UserModel user, bool persistent)
+        //{
+        //    var u = _mapper.Map<User>(user);
+        //    await _signInManager.SignOutAsync();
+        //}
 
 
     }

@@ -5,6 +5,7 @@ namespace MusicApp.Services.Services.Interfaces
 {
     public interface IEmailService
     {
-        bool SendConfirmationEmail(string email, string token);
+        bool SendConfirmEmail(string email, string url);
+        bool SendPasswordReset(string email, string url);
     }
 }

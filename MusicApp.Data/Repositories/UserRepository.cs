@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.Repositories.Interfaces;
 using MusicApp.Data.Repositories.Shared;
 
-namespace MusicApp.Data.Repositories.Authorization
+namespace MusicApp.Data.Repositories
 {
     public class UserRepository : CrudRepository<User>, IUserRepository
     {

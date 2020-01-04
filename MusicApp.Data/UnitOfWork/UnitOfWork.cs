@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using MusicApp.Data.Domain.Authorization;
 using MusicApp.Data.Repositories;
 using MusicApp.Data.Repositories.Interfaces;
 using MusicApp.Data.UnitOfWork.Interfaces;
@@ -14,7 +16,15 @@ namespace MusicApp.Data.UnitOfWork
         // DbContext
         private readonly MusicAppDbContext _context;
 
+        // Identity Stores
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly SignInManager<User> _signInManager;
+
         // Repositories
+        private UserRepository _userRepository;
+        private RoleRepository _roleRepository;
+
         private AlbumRepository _albumRepository;
         private ArtistGenreRepository _artistgenreRepository;
         private ArtistRepository _artistRepository;
@@ -22,10 +32,23 @@ namespace MusicApp.Data.UnitOfWork
         private SongRepository _songRepository;
         private PlaylistRepository _playlistRepository;
 
-        public UnitOfWork(MusicAppDbContext context)
+        public UnitOfWork(MusicAppDbContext context, UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager)
         {
             this._context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
+
+        public UserManager<User> UserManager => _userManager;
+
+        public RoleManager<Role> RoleManager => _roleManager;
+
+        public SignInManager<User> SignInManager => _signInManager;
+
+        public IUserRepository Users => _userRepository ??= new UserRepository(_context);
+
+        public IRoleRepository Roles => _roleRepository ??= new RoleRepository(_context);
 
         public IAlbumRepository Albums => _albumRepository ??= new AlbumRepository(_context);
 
