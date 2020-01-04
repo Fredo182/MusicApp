@@ -72,6 +72,8 @@ namespace MusicApp.API.Installers
                 o.TokenLifespan = TimeSpan.FromHours(1);
             });
 
+            // Account Service for authentication
+            services.AddScoped<IAccountService, AccountService>();
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -83,6 +85,9 @@ namespace MusicApp.API.Installers
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ISongService, SongService>();
             services.AddScoped<IPlaylistService, PlaylistService>();
+
+            //Other Services
+            services.AddScoped<IEmailService, EmailService>();
 
         }
     }

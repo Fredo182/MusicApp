@@ -8,13 +8,16 @@ using MusicApp.API.Contracts.V1;
 using MusicApp.API.Contracts.V1.Requests.AccountsRequests;
 using MusicApp.API.Contracts.V1.Requests.Queries;
 using MusicApp.API.Contracts.V1.Responses.Shared;
+using MusicApp.Services.Services.Interfaces;
 
 namespace MusicApp.API.Controllers.V1
 {
     public class AccountsController : ControllerBase
     {
+        //private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        
 
         public AccountsController(IMapper mapper, ILogger logger)
         {
