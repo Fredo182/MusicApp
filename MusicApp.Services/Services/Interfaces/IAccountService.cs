@@ -8,10 +8,10 @@ namespace MusicApp.Services.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<AccountResponse> RegisterAsync(UserModel user, string password);
-        Task<AccountResponse<string>> PasswordSignInAsync(string email, string password, bool persistent, bool lockout = false, bool confirmEmail = true);
-        Task<AccountResponse> ConfirmEmailAsync(int userid, string token);
-        Task<AccountResponse> ForgotPasswordAsync(string email);
-        Task<AccountResponse> ResetPasswordAsync(string email, string token, string password);
+        Task<AccountServiceResponse> RegisterAsync(UserModel user, string password);
+        Task<AccountServiceResponse> LoginAsync(string email, string password, bool confirmEmail = true);
+        Task<AccountServiceResponse> ConfirmEmailAsync(int userid, string token);
+        Task<AccountServiceResponse> ForgotPasswordAsync(string email);
+        Task<AccountServiceResponse> ResetPasswordAsync(string email, string token, string password);
     }
 }

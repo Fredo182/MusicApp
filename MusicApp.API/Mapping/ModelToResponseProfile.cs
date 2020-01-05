@@ -1,9 +1,11 @@
 ﻿using System;
 using AutoMapper;
+using MusicApp.API.Contracts.V1.Responses.AccountsResponses;
 using MusicApp.API.Contracts.V1.Responses.AlbumsResponses;
 using MusicApp.API.Contracts.V1.Responses.ArtistsResponses;
 using MusicApp.API.Contracts.V1.Responses.SongsReponses;
 using MusicApp.Services.Models;
+using MusicApp.Services.Services.Responses;
 
 namespace MusicApp.API.Mapping
 {
@@ -11,6 +13,9 @@ namespace MusicApp.API.Mapping
     {
         public ModelToResponseProfile()
         {
+            // Service Responses
+            CreateMap<AccountServiceResponse, AccountLoginResponse>();
+
             // Artists Mappings
             CreateMap<ArtistModel, ArtistResponse>();
             CreateMap<ArtistModel, ArtistAlbumsResponse>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using MusicApp.API.Contracts.V1;
 using MusicApp.API.Contracts.V1.Requests.AccountsRequests;
 using MusicApp.API.Contracts.V1.Requests.Queries;
+using MusicApp.API.Contracts.V1.Responses.AccountsResponses;
 using MusicApp.API.Contracts.V1.Responses.Shared;
 using MusicApp.API.Helpers;
 using MusicApp.Services.Models.Authorization;
@@ -47,26 +49,28 @@ namespace MusicApp.API.Controllers.V1
             }
         }
 
-        //[HttpPost(ApiRoutes.Account.Login)]
-        //public async Task<IActionResult> Login([FromBody] AccountLoginRequest postRequest)
-        //{
-        //    try
-        //    {
-        //        //var post = _mapper.Map<ArtistModel>(postRequest);
-        //        //bool exists = await _artistService.ArtistNameExistsAsync(post);
-        //        //if (exists)
-        //        //    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExists));
-
-        //        //var artist = await _artistService.CreateArtistAsync(post);
-        //        //var locationUri = ApiRoutes.Artists.Route + "/" + artist.ArtistId;
-        //        //return Created(locationUri, new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ErrorMessages.Account.FailedLogin);
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedLogin));
-        //    }
-        //}
+        [HttpPost(ApiRoutes.Account.Login)]
+        public async Task<IActionResult> Login([FromBody] AccountLoginRequest request)
+        {
+            try
+            {
+                var response = await _accountService.LoginAsync(request.Email, request.Password);
+                if (response.Success)
+                    return Ok(_mapper.Map<AccountLoginResponse>(response));
+                else
+                {
+                    if (response.EmailNotConfirmed)
+                        return BadRequest(new ErrorResponse(ErrorMessages.Account.EmailNotConfirmed));
+                    else
+                        return BadRequest(new ErrorResponse(ErrorMessages.Account.FailedLogin));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ErrorMessages.Account.FailedLogin);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedLogin));
+            }
+        }
 
         [HttpGet(ApiRoutes.Account.ConfirmEmail)]
         public async Task<IActionResult> ConfirmEmail([FromQuery] AccountConfirmEmailQuery query)
@@ -86,46 +90,53 @@ namespace MusicApp.API.Controllers.V1
             }
         }
 
-        //[HttpPost(ApiRoutes.Account.ForgotPassword)]
-        //public async Task<IActionResult> ForgotPassword([FromBody] AccountForgotPasswordRequest postRequest)
-        //{
-        //    try
-        //    {
-        //        //var post = _mapper.Map<ArtistModel>(postRequest);
-        //        //bool exists = await _artistService.ArtistNameExistsAsync(post);
-        //        //if (exists)
-        //        //    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExists));
+        [HttpPost(ApiRoutes.Account.ForgotPassword)]
+        public async Task<IActionResult> ForgotPassword([FromBody] AccountForgotPasswordRequest request)
+        {
+            try
+            {
+                var response = await _accountService.ForgotPasswordAsync(request.Email);
+                if (response.Success)
+                    return Ok();
+                else
+                {
+                    if (response.SendResetPasswordFailed)
+                    {
+                        _logger.LogError(ErrorMessages.Account.FailedPasswordResetSent);
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ErrorMessages.Account.FailedPasswordReset);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
+            }
+        }
 
-        //        //var artist = await _artistService.CreateArtistAsync(post);
-        //        //var locationUri = ApiRoutes.Artists.Route + "/" + artist.ArtistId;
-        //        //return Created(locationUri, new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ErrorMessages.Account.FailedPasswordReset);
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
-        //    }
-        //}
-
-        //[HttpPost(ApiRoutes.Account.ResetPassword)]
-        //public async Task<IActionResult> ResetPassword([FromBody] AccountResetPasswordRequest postRequest)
-        //{
-        //    try
-        //    {
-        //        //var post = _mapper.Map<ArtistModel>(postRequest);
-        //        //bool exists = await _artistService.ArtistNameExistsAsync(post);
-        //        //if (exists)
-        //        //    return BadRequest(new ErrorResponse(ErrorMessages.Artist.NameExists));
-
-        //        //var artist = await _artistService.CreateArtistAsync(post);
-        //        //var locationUri = ApiRoutes.Artists.Route + "/" + artist.ArtistId;
-        //        //return Created(locationUri, new Response<ArtistResponse>(_mapper.Map<ArtistResponse>(artist)));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ErrorMessages.Account.FailedPasswordReset);
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
-        //    }
-        //}
+        [HttpPost(ApiRoutes.Account.ResetPassword)]
+        public async Task<IActionResult> ResetPassword([FromBody] AccountResetPasswordRequest request)
+        {
+            try
+            {
+                var response = await _accountService.ResetPasswordAsync(request.Email, request.Token, request.Password);
+                if (response.Success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    if (response.Errors.Any())
+                        return BadRequest(new ErrorResponse(AccountErrorsToResponse.Parse(response)));
+                    else
+                        return BadRequest(new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ErrorMessages.Account.FailedPasswordReset);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
+            }
+        }
     }
 }

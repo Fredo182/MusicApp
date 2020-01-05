@@ -31,7 +31,7 @@ namespace MusicApp.Services.Services
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<AccountResponse> RegisterAsync(UserModel user, string password)
+        public async Task<AccountServiceResponse> RegisterAsync(UserModel user, string password)
         {
             var u = _mapper.Map<User>(user);
             //Do I need to check if the emal already exists?
@@ -45,54 +45,60 @@ namespace MusicApp.Services.Services
                 if (sent)
                 {
                     await _unitOfWork.CommitAsync();
-                    return new AccountResponse(){ Success = true };
+                    return new AccountServiceResponse(){ Success = true };
                 }
                 else
                 {
-                    return new AccountResponse() { SendConfirmEmailFailed = true };
+                    return new AccountServiceResponse() { SendConfirmEmailFailed = true };
                 }
             }
             else
             {
-                return new AccountResponse() { Errors = result.Errors };
+                return new AccountServiceResponse() { Errors = result.Errors };
             }
         }
 
-        public async Task<AccountResponse<string>> PasswordSignInAsync(string email, string password, bool persistent, bool lockout=false, bool confirmEmail=true)
+        public async Task<AccountServiceResponse> LoginAsync(string email, string password, bool confirmEmail=true)
         {
-            
+
+            var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
+            // What happens when user doesnt exist?
             if (confirmEmail)
             {
-                var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
                 if (user != null && !user.EmailConfirmed && (await _unitOfWork.UserManager.CheckPasswordAsync(user, password)))
-                    return new AccountResponse<string>() { EmailNotConfirmed = true };
+                    return new AccountServiceResponse() { EmailNotConfirmed = true };
             }
 
-            //TODO: do the token stuff here
-            //SignInResult r = await _unitOfWork.SignInManager.PasswordSignInAsync(email, password, persistent, lockout);
-            return new AccountResponse<string>("token:123456789");
+            var userHasValidPassword = await _unitOfWork.UserManager.CheckPasswordAsync(user, password);
+
+            if (!userHasValidPassword || user == null)
+                return new AccountServiceResponse() { Success = false };
+
+            var token = GenerateTokenForUser(user);
+
+            return new AccountServiceResponse(token);
         }
 
-        public async Task<AccountResponse> ConfirmEmailAsync(int userid, string token)
+        public async Task<AccountServiceResponse> ConfirmEmailAsync(int userid, string token)
         {
             //User manager doesnt have int as key. It will be converted later on in the call
             var u = await _unitOfWork.UserManager.FindByIdAsync(userid.ToString());
             if (u == null)
-                return new AccountResponse() { UserNotFound = true };
+                return new AccountServiceResponse() { UserNotFound = true };
 
             IdentityResult result = await _unitOfWork.UserManager.ConfirmEmailAsync(u, token);
             if (result.Succeeded)
             {
                 await _unitOfWork.CommitAsync();
-                return new AccountResponse() { Success = true };
+                return new AccountServiceResponse() { Success = true };
             }
             else
             {
-                return new AccountResponse() { Errors = result.Errors };
+                return new AccountServiceResponse() { Errors = result.Errors };
             }
         }
 
-        public async Task<AccountResponse> ForgotPasswordAsync(string email)
+        public async Task<AccountServiceResponse> ForgotPasswordAsync(string email)
         {
             var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
             if (u != null && await _unitOfWork.UserManager.IsEmailConfirmedAsync(u))
@@ -104,45 +110,45 @@ namespace MusicApp.Services.Services
                 if (sent)
                 {
                     await _unitOfWork.CommitAsync();
-                    return new AccountResponse() { Success = true };
+                    return new AccountServiceResponse() { Success = true };
                 }
                 else
                 {
-                    return new AccountResponse() { SendResetPasswordFailed = true };
+                    return new AccountServiceResponse() { SendResetPasswordFailed = true };
                 }
             }
-            return new AccountResponse() { Success = true };
+            return new AccountServiceResponse() { Success = true };
         }
 
-        public async Task<AccountResponse> ResetPasswordAsync(string email, string token, string password)
+        public async Task<AccountServiceResponse> ResetPasswordAsync(string email, string token, string password)
         {
             var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
             if (u == null)
-                return new AccountResponse() { UserNotFound = true };
+                return new AccountServiceResponse() { Success = false };
 
             IdentityResult result = await _unitOfWork.UserManager.ResetPasswordAsync(u, token, password);
             if (result.Succeeded)
             {
                 await _unitOfWork.CommitAsync();
-                return new AccountResponse() { Success = true };
+                return new AccountServiceResponse() { Success = true };
             }
             else
             {
-                return new AccountResponse() { Errors = result.Errors };
+                return new AccountServiceResponse() { Errors = result.Errors };
             }
         }
 
-        private SecurityToken GetToken(string email, int userid)
+        private string GenerateTokenForUser(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, email),
-                    new Claim("id", userid.ToString())
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim("id", user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -150,22 +156,10 @@ namespace MusicApp.Services.Services
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return token;
+            return tokenHandler.WriteToken(token);
         }
 
-        //// Cookie Sign In
-        //public async Task SignInAsync(UserModel user, bool persistent)
-        //{
-        //    var u = _mapper.Map<User>(user);
-        //    await _signInManager.SignInAsync(u, persistent);
-        //}
-
-        //// Cookie Sign Out
-        //public async Task SignOutAsync(UserModel user, bool persistent)
-        //{
-        //    var u = _mapper.Map<User>(user);
-        //    await _signInManager.SignOutAsync();
-        //}
+        
 
 
     }

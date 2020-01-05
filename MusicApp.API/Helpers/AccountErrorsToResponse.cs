@@ -10,7 +10,7 @@ namespace MusicApp.API.Helpers
     public static class AccountErrorsToResponse
     {
         // This parses the identity errors with error messages in contracts for v1
-        public static IEnumerable<string> Parse(AccountResponse response)
+        public static IEnumerable<string> Parse(AccountServiceResponse response)
         {
             List<string> result = new List<string>();
             if (response.EmailNotConfirmed)

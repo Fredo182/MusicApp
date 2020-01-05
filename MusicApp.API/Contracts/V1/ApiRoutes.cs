@@ -15,10 +15,10 @@ namespace MusicApp.API.Contracts.V1
             public const string Register = Route + "/register";
             public const string Login = Route + "/login";
             public const string Logout = Route + "/logout";
-            public const string ConfirmEmail = Route + "/confirmemail";
-            public const string ChangePassword = Route + "/changepassword";
-            public const string ForgotPassword = Route + "/forgotpassword";
-            public const string ResetPassword = Route + "/resetpassword";
+            public const string ConfirmEmail = Route + "/email/confirm";
+            public const string ChangePassword = Route + "/password/change";
+            public const string ForgotPassword = Route + "/password/forgot";
+            public const string ResetPassword = Route + "/password/reset";
         }
 
         public static class Albums

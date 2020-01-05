@@ -65,5 +65,6 @@
     <Folder Include="Contracts\V1\Requests\AccountsRequests\" />
     <Folder Include="Security\" />
     <Folder Include="Security\TokenProviders\" />
+    <Folder Include="Contracts\V1\Responses\AccountsResponses\" />
   </ItemGroup>
 </Project>
