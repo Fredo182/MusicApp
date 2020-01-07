@@ -40,7 +40,7 @@ namespace MusicApp.API.Controllers.V1
                 if (response.Success)
                     return Ok();
                 else
-                    return BadRequest(new ErrorResponse(AccountErrorsToResponse.Parse(response)));
+                    return BadRequest(new ErrorResponse(AccountErrorsToResponse.ParseIdentityErrors(response)));
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace MusicApp.API.Controllers.V1
                 if(response.Success)
                     return Ok();
                 else
-                    return BadRequest(new ErrorResponse(AccountErrorsToResponse.Parse(response)));
+                    return BadRequest(new ErrorResponse(AccountErrorsToResponse.ParseIdentityErrors(response)));
             }
             catch (Exception ex)
             {
@@ -96,15 +96,6 @@ namespace MusicApp.API.Controllers.V1
             try
             {
                 var response = await _accountService.ForgotPasswordAsync(request.Email);
-                if (response.Success)
-                    return Ok();
-                else
-                {
-                    if (response.SendResetPasswordFailed)
-                    {
-                        _logger.LogError(ErrorMessages.Account.FailedPasswordResetSent);
-                    }
-                }
                 return Ok();
             }
             catch (Exception ex)
@@ -127,7 +118,7 @@ namespace MusicApp.API.Controllers.V1
                 else
                 {
                     if (response.Errors.Any())
-                        return BadRequest(new ErrorResponse(AccountErrorsToResponse.Parse(response)));
+                        return BadRequest(new ErrorResponse(AccountErrorsToResponse.ParseIdentityErrors(response)));
                     else
                         return BadRequest(new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
                 }
@@ -138,5 +129,9 @@ namespace MusicApp.API.Controllers.V1
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedPasswordReset));
             }
         }
+
+        //TODO Add a resend Email Confirmation with Token
+
+        //TODO Add change password
     }
 }

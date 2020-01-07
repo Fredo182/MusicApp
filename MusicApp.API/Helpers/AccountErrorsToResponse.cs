@@ -26,6 +26,22 @@ namespace MusicApp.API.Helpers
             return result;
         }
 
+        public static IEnumerable<string> ParseIdentityErrors(AccountServiceResponse response)
+        {
+            List<string> result = new List<string>();
+            if (response.EmailNotConfirmed)
+                result.Add(ErrorMessages.Account.EmailNotConfirmed);
+            else if (response.SendConfirmEmailFailed)
+                result.Add(ErrorMessages.Account.FailedConfirmEmailSent);
+            else if (response.SendResetPasswordFailed)
+                result.Add(ErrorMessages.Account.FailedPasswordResetSent);
+            else if (response.UserNotFound)
+                result.Add(ErrorMessages.Account.UserNotFound);
+            else if (response.Errors.Any())
+                result.AddRange(response.Errors.Select(x => x.Description).ToList());
+            return result;
+        }
+
         // This parses the identity errors with error messages in contracts for v1
         public static IEnumerable<string> Parse(IEnumerable<IdentityError> errors)
         {

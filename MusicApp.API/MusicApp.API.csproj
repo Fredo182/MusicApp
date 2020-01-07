@@ -66,5 +66,7 @@
     <Folder Include="Security\" />
     <Folder Include="Security\TokenProviders\" />
     <Folder Include="Contracts\V1\Responses\AccountsResponses\" />
+    <Folder Include="Validators\AccountsValidators\" />
+    <Folder Include="Validators\AccountsValidators\Queries\" />
   </ItemGroup>
 </Project>

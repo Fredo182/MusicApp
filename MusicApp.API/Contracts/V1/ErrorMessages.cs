@@ -43,7 +43,7 @@ namespace MusicApp.API.Contracts.V1
             public const string DefaultError =                      "An unknown failure has occured.";
             public const string ConcurrencyFailure =                "The model you attempted to edit has been modified by another user.";
             public const string PasswordMismatch =                  "The passwords do not match.";
-            public const string InvalidToken =                      "The token is no longer valid.";
+            public const string InvalidToken =                      "Invalid Token.";
             public const string RecoveryCodeRedemptionFailed =      "Recovery code was not redeemed.";
             public const string LoginAlreadyAssociated =            "The external login has already been associated with the account.";
             public const string InvalidUserName =                   "The username is invalid.";

@@ -34,23 +34,15 @@ namespace MusicApp.Services.Services
         public async Task<AccountServiceResponse> RegisterAsync(UserModel user, string password)
         {
             var u = _mapper.Map<User>(user);
-            //Do I need to check if the emal already exists?
             var result = await _unitOfWork.UserManager.CreateAsync(u, password);
             if (result.Succeeded)
             {
+                await _unitOfWork.CommitAsync();
                 var token = await _unitOfWork.UserManager.GenerateEmailConfirmationTokenAsync(u);
                 //TODO: Fix this url
                 var url = "?token=" + token + "&id" + u.Id;
                 var sent = _emailService.SendConfirmEmail(u.Email, url);
-                if (sent)
-                {
-                    await _unitOfWork.CommitAsync();
-                    return new AccountServiceResponse(){ Success = true };
-                }
-                else
-                {
-                    return new AccountServiceResponse() { SendConfirmEmailFailed = true };
-                }
+                return new AccountServiceResponse(){ Success = true };
             }
             else
             {
@@ -62,7 +54,6 @@ namespace MusicApp.Services.Services
         {
 
             var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
-            // What happens when user doesnt exist?
             if (confirmEmail)
             {
                 if (user != null && !user.EmailConfirmed && (await _unitOfWork.UserManager.CheckPasswordAsync(user, password)))
@@ -84,7 +75,7 @@ namespace MusicApp.Services.Services
             //User manager doesnt have int as key. It will be converted later on in the call
             var u = await _unitOfWork.UserManager.FindByIdAsync(userid.ToString());
             if (u == null)
-                return new AccountServiceResponse() { UserNotFound = true };
+                return new AccountServiceResponse() { Success = false };
 
             IdentityResult result = await _unitOfWork.UserManager.ConfirmEmailAsync(u, token);
             if (result.Succeeded)
@@ -107,15 +98,7 @@ namespace MusicApp.Services.Services
                 //TODO: Fix this url
                 var url = "?token=" + token;
                 var sent = _emailService.SendPasswordReset(u.Email, url);
-                if (sent)
-                {
-                    await _unitOfWork.CommitAsync();
-                    return new AccountServiceResponse() { Success = true };
-                }
-                else
-                {
-                    return new AccountServiceResponse() { SendResetPasswordFailed = true };
-                }
+                return new AccountServiceResponse() { Success = true };
             }
             return new AccountServiceResponse() { Success = true };
         }
@@ -158,9 +141,6 @@ namespace MusicApp.Services.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
-        
-
 
     }
 }
