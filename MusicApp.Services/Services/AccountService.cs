@@ -121,6 +121,29 @@ namespace MusicApp.Services.Services
             }
         }
 
+        public async Task<AccountServiceResponse> ChangePasswordAsync(string email, string currentPassword, string newPassword)
+        {
+            var u = await _unitOfWork.UserManager.FindByEmailAsync(email);
+            if (u != null && await _unitOfWork.UserManager.CheckPasswordAsync(u, currentPassword))
+            {
+                IdentityResult result = await _unitOfWork.UserManager.ChangePasswordAsync(u, currentPassword, newPassword);
+                if (result.Succeeded)
+                {
+                    await _unitOfWork.CommitAsync();
+                    return new AccountServiceResponse() { Success = true };
+                }
+                else
+                {
+                    return new AccountServiceResponse() { Errors = result.Errors };
+                }
+
+            }
+            else
+            {
+                return new AccountServiceResponse() { Success = false };
+            }
+        }
+
         private string GenerateTokenForUser(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

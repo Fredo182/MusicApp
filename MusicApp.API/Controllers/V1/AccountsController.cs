@@ -130,8 +130,29 @@ namespace MusicApp.API.Controllers.V1
             }
         }
 
-        //TODO Add a resend Email Confirmation with Token
-
-        //TODO Add change password
+        [HttpPost(ApiRoutes.Account.ChangePassword)]
+        public async Task<IActionResult> ChangePassword([FromBody] AccountChangePasswordRequest request)
+        {
+            try
+            {
+                var response = await _accountService.ChangePasswordAsync(request.Email, request.CurrentPassword, request.NewPassword);
+                if (response.Success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    if (response.Errors.Any())
+                        return BadRequest(new ErrorResponse(AccountErrorsToResponse.ParseIdentityErrors(response)));
+                    else
+                        return BadRequest(new ErrorResponse(ErrorMessages.Account.FailedChangePassword));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ErrorMessages.Account.FailedChangePassword);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedChangePassword));
+            }
+        }
     }
 }

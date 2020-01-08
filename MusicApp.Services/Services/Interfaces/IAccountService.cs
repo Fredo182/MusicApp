@@ -13,5 +13,6 @@ namespace MusicApp.Services.Services.Interfaces
         Task<AccountServiceResponse> ConfirmEmailAsync(int userid, string token);
         Task<AccountServiceResponse> ForgotPasswordAsync(string email);
         Task<AccountServiceResponse> ResetPasswordAsync(string email, string token, string password);
+        Task<AccountServiceResponse> ChangePasswordAsync(string email, string currentPassword, string newPassword);
     }
 }

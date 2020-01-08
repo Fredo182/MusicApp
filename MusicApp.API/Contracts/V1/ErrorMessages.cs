@@ -31,6 +31,7 @@ namespace MusicApp.API.Contracts.V1
             public const string FailedLogin =           "Failed to login user.";
             public const string FailedConfirmEmail =    "Failed to confirm user email.";
             public const string FailedPasswordReset =   "Failed to reset password.";
+            public const string FailedChangePassword =  "Failed to change password.";
 
             public const string UserNotFound =              "The user does not exist.";
             public const string EmailNotConfirmed =         "The email associated with this account has not been confirmed.";
