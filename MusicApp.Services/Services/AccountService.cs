@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,13 +24,15 @@ namespace MusicApp.Services.Services
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
         private readonly JwtSettings _jwtSettings;
+        private readonly TokenValidationParameters _tokenValidationParameters;
 
-        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, JwtSettings jwtSettings)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, JwtSettings jwtSettings, TokenValidationParameters tokenValidationParameters)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _emailService = emailService;
             _jwtSettings = jwtSettings;
+            _tokenValidationParameters = tokenValidationParameters;
         }
 
         public async Task<AccountServiceResponse> RegisterAsync(UserModel user, string password)
@@ -65,9 +69,65 @@ namespace MusicApp.Services.Services
             if (!userHasValidPassword || user == null)
                 return new AccountServiceResponse() { Success = false };
 
-            var token = GenerateTokenForUser(user);
+            return await GenerateTokensForUser(user);
+        }
 
-            return new AccountServiceResponse(token);
+        public async Task<AccountServiceResponse> RefreshAsync(string accessToken, string refreshToken)
+        {
+            var validatedToken = GetPrincipalFromToken(accessToken);
+            if (validatedToken == null)
+            {
+                // Invalid Token
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            var expiryDateUnix = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiryDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                .AddSeconds(expiryDateUnix);
+
+            if (expiryDateTimeUtc > DateTime.UtcNow)
+            {
+                // Token has not expired
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+            var f = new List<Expression<Func<UserRefreshToken, bool>>>() { (x => x.RefreshToken == refreshToken) };
+            var storedRefreshToken = await _unitOfWork.UserRefreshTokens.GetOneAsync(f, "", false);
+            if (storedRefreshToken == null)
+            {
+                // Refresh token does not exist.
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            if (DateTime.UtcNow > storedRefreshToken.ExpiryDate.UtcDateTime)
+            {
+                // Refresh token has expired
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            if (storedRefreshToken.IsActive == false)
+            {
+                // Refresh token is not active
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            if (storedRefreshToken.JwtId != jti)
+            {
+                // Refresh token does not match Access Token
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            var user = await _unitOfWork.UserManager.FindByIdAsync(validatedToken.Claims.Single(x => x.Type == "id").Value);
+            if (user == null)
+            {
+                // User not found
+                return new AccountServiceResponse() { Success = false };
+            }
+
+            return await GenerateTokensForUser(user);
+
         }
 
         public async Task<AccountServiceResponse> ConfirmEmailAsync(int userid, string token)
@@ -144,7 +204,30 @@ namespace MusicApp.Services.Services
             }
         }
 
-        private string GenerateTokenForUser(User user)
+        private ClaimsPrincipal GetPrincipalFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validateToken);
+                if (IsJwtWithValidSecurityAlgorithm(validateToken))
+                {
+                    return principal;
+                }
+                else
+                    return null;
+            }
+            catch {
+                return null;
+            }
+        }
+
+        private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validateToken)
+        {
+            return (validateToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private async Task<AccountServiceResponse> GenerateTokensForUser(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -156,13 +239,25 @@ namespace MusicApp.Services.Services
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim("id", user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.Add(_jwtSettings.AccessTokenLifetime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+
+            var refreshToken = new UserRefreshToken
+            {
+                RefreshToken = Guid.NewGuid().ToString(),
+                JwtId = token.Id,
+                UserId = user.Id,
+                ExpiryDate = DateTimeOffset.UtcNow.Add(_jwtSettings.RefreshTokenLifetime)
+            };
+
+            await _unitOfWork.UserRefreshTokens.AddAsync(refreshToken);
+            await _unitOfWork.CommitAsync();
+
+            return new AccountServiceResponse(tokenHandler.WriteToken(token), refreshToken.RefreshToken);
         }
 
     }

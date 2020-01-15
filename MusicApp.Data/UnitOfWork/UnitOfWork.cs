@@ -24,6 +24,7 @@ namespace MusicApp.Data.UnitOfWork
         // Repositories
         private UserRepository _userRepository;
         private RoleRepository _roleRepository;
+        private UserRefreshTokenRepository _userRefreshTokenRepository;
 
         private AlbumRepository _albumRepository;
         private ArtistGenreRepository _artistgenreRepository;
@@ -49,6 +50,8 @@ namespace MusicApp.Data.UnitOfWork
         public IUserRepository Users => _userRepository ??= new UserRepository(_context);
 
         public IRoleRepository Roles => _roleRepository ??= new RoleRepository(_context);
+
+        public IUserRefreshTokenRepository UserRefreshTokens => _userRefreshTokenRepository ??= new UserRefreshTokenRepository(_context);
 
         public IAlbumRepository Albums => _albumRepository ??= new AlbumRepository(_context);
 

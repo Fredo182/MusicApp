@@ -12,6 +12,7 @@ namespace MusicApp.Data.Domain.Authorization
             Logins = new List<UserLogin>();
             Tokens = new List<UserToken>();
             UserRoles = new List<UserRole>();
+            RefreshTokens = new List<UserRefreshToken>();
         }
 
         public string FirstName { get; set; }
@@ -25,6 +26,8 @@ namespace MusicApp.Data.Domain.Authorization
         public ICollection<UserToken> Tokens { get; private set; }
 
         public ICollection<UserRole> UserRoles { get; private set; }
+
+        public ICollection<UserRefreshToken> RefreshTokens { get; private set; }
 
     }
 }

@@ -8,15 +8,18 @@ namespace MusicApp.Services.Services.Responses
     {
         public AccountServiceResponse() { }
 
-        public AccountServiceResponse(string token)
+        public AccountServiceResponse(string accessToken, string refreshToken)
         {
             Success = true;
-            Token = token;
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
         }
 
         public bool Success { get; set; } = false;
 
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
+
+        public string RefreshToken { get; set; }
 
         // Custom Errors
         public bool SendConfirmEmailFailed { get; set; } = false;

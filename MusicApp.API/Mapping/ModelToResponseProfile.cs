@@ -15,6 +15,7 @@ namespace MusicApp.API.Mapping
         {
             // Service Responses
             CreateMap<AccountServiceResponse, AccountLoginResponse>();
+            CreateMap<AccountServiceResponse, AccountRefreshResponse>();
 
             // Artists Mappings
             CreateMap<ArtistModel, ArtistResponse>();

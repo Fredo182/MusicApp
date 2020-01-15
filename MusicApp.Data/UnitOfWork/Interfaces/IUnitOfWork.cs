@@ -20,6 +20,7 @@ namespace MusicApp.Data.UnitOfWork.Interfaces
 
         IUserRepository Users { get; }
         IRoleRepository Roles { get; }
+        IUserRefreshTokenRepository UserRefreshTokens { get; }
 
         IAlbumRepository Albums { get; }
         IArtistGenreRepository ArtistGenres { get; }

@@ -15,6 +15,7 @@ namespace MusicApp.API.Contracts.V1
             public const string Register = Route + "/register";
             public const string Login = Route + "/login";
             public const string Logout = Route + "/logout";
+            public const string Refresh = Route + "/refresh";
             public const string ConfirmEmail = Route + "/email/confirm";
             public const string ChangePassword = Route + "/password/change";
             public const string ForgotPassword = Route + "/password/forgot";

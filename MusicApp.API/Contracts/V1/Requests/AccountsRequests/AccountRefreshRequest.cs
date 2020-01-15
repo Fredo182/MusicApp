@@ -1,7 +1,7 @@
 ﻿using System;
-namespace MusicApp.API.Contracts.V1.Responses.AccountsResponses
+namespace MusicApp.API.Contracts.V1.Requests.AccountsRequests
 {
-    public class AccountLoginResponse
+    public class AccountRefreshRequest
     {
         public string AccessToken { get; set; }
 

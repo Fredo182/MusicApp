@@ -38,6 +38,13 @@ namespace MusicApp.Data.Configurations.Authorization
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
 
+            // Each User can have many RefreshTokens
+            builder
+                .HasMany(u => u.RefreshTokens)
+                .WithOne(ut => ut.User)
+                .HasForeignKey(ut => ut.UserId)
+                .IsRequired();
+
             //Overwrite the table name
             builder
                 .ToTable("Users");

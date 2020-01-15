@@ -2,7 +2,7 @@
 
 namespace MusicApp.Data.Migrations
 {
-    public partial class AddTriggersToModels : Migration
+    public partial class AddTriggers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,24 @@ namespace MusicApp.Data.Migrations
                     "UPDATE dbo.UserRoles " +
                     "SET ModifiedDateTime = SYSDATETIMEOFFSET() " +
                     "WHERE RoleId = @RoleId AND UserId = @UserId " +
+                "END"
+                );
+
+            migrationBuilder.Sql("CREATE TRIGGER [dbo].[UserRefresToken_UPDATE] ON [dbo].[UserRefreshTokens] " +
+                "FOR INSERT, UPDATE AS " +
+                "BEGIN " +
+                    "SET NOCOUNT ON; " +
+
+                    "IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN; " +
+
+                    "DECLARE @Id INT " +
+
+                    "SELECT @Id = INSERTED.UserRefreshTokenId " +
+                    "FROM INSERTED " +
+
+                    "UPDATE dbo.UserRefreshTokens " +
+                    "SET ModifiedDateTime = SYSDATETIMEOFFSET() " +
+                    "WHERE UserRefreshTokenId = @Id " +
                 "END"
                 );
 
@@ -176,6 +194,7 @@ namespace MusicApp.Data.Migrations
             migrationBuilder.Sql("DROP TRIGGER [dbo].[User_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[Role_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[UserRole_UPDATE]");
+            migrationBuilder.Sql("DROP TRIGGER [dbo].[UserRefresToken_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[Album_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[Artist_UPDATE]");
             migrationBuilder.Sql("DROP TRIGGER [dbo].[ArtistGenre_UPDATE]");

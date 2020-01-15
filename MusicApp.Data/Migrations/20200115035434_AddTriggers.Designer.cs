@@ -10,8 +10,8 @@ using MusicApp.Data;
 namespace MusicApp.Data.Migrations
 {
     [DbContext(typeof(MusicAppDbContext))]
-    [Migration("20200103004205_SeedInitialModels")]
-    partial class SeedInitialModels
+    [Migration("20200115035434_AddTriggers")]
+    partial class AddTriggers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -411,6 +411,71 @@ namespace MusicApp.Data.Migrations
                     b.ToTable("UserLogins");
                 });
 
+            modelBuilder.Entity("MusicApp.Data.Domain.Authorization.UserRefreshToken", b =>
+                {
+                    b.Property<int>("UserRefreshTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("CreatedDateTime")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<DateTimeOffset>("ExpiryDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool?>("IsActive")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool?>("IsDeleted")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("JwtId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTimeOffset?>("ModifiedDateTime")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserRefreshTokenId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("RefreshToken", "JwtId")
+                        .IsUnique();
+
+                    b.ToTable("UserRefreshTokens");
+                });
+
             modelBuilder.Entity("MusicApp.Data.Domain.Authorization.UserRole", b =>
                 {
                     b.Property<int>("UserId")
@@ -681,6 +746,15 @@ namespace MusicApp.Data.Migrations
                 {
                     b.HasOne("MusicApp.Data.Domain.Authorization.User", "User")
                         .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MusicApp.Data.Domain.Authorization.UserRefreshToken", b =>
+                {
+                    b.HasOne("MusicApp.Data.Domain.Authorization.User", "User")
+                        .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

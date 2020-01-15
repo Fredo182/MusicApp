@@ -72,6 +72,26 @@ namespace MusicApp.API.Controllers.V1
             }
         }
 
+        [HttpPost(ApiRoutes.Account.Refresh)]
+        public async Task<IActionResult> Refresh([FromBody] AccountRefreshRequest request)
+        {
+            try
+            {
+                var response = await _accountService.RefreshAsync(request.AccessToken, request.AccessToken);
+                if (response.Success)
+                    return Ok(_mapper.Map<AccountRefreshResponse>(response));
+                else
+                {
+                    return BadRequest(new ErrorResponse(ErrorMessages.Account.FailedRefresh));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ErrorMessages.Account.FailedRefresh);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ErrorMessages.Account.FailedRefresh));
+            }
+        }
+
         [HttpGet(ApiRoutes.Account.ConfirmEmail)]
         public async Task<IActionResult> ConfirmEmail([FromQuery] AccountConfirmEmailQuery query)
         {

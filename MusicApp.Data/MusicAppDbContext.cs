@@ -10,6 +10,7 @@ namespace MusicApp.Data
 {
     public class MusicAppDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
         public DbSet<Artist> Artists { get; set; }
 
@@ -55,6 +56,8 @@ namespace MusicApp.Data
                 .ApplyConfiguration(new UserTokenConfiguration());
             builder
                 .ApplyConfiguration(new RoleClaimConfiguration());
+            builder
+                .ApplyConfiguration(new UserRefreshTokenConfiguration());
 
 
             builder

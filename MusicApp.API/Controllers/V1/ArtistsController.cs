@@ -17,6 +17,7 @@ using MusicApp.Services.Models.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MusicApp.API.Controllers.V1
 {

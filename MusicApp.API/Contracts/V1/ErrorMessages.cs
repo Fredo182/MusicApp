@@ -29,6 +29,7 @@ namespace MusicApp.API.Contracts.V1
         {
             public const string FailedRegister =        "Failed to register user.";
             public const string FailedLogin =           "Failed to login user.";
+            public const string FailedRefresh =         "Failed to refresh access token.";
             public const string FailedConfirmEmail =    "Failed to confirm user email.";
             public const string FailedPasswordReset =   "Failed to reset password.";
             public const string FailedChangePassword =  "Failed to change password.";

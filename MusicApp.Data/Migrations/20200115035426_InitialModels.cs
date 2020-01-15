@@ -232,6 +232,33 @@ namespace MusicApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserRefreshTokens",
+                columns: table => new
+                {
+                    UserRefreshTokenId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    ConcurrencyStamp = table.Column<byte[]>(rowVersion: true, nullable: false),
+                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    RefreshToken = table.Column<string>(maxLength: 256, nullable: false),
+                    JwtId = table.Column<string>(maxLength: 256, nullable: false),
+                    ExpiryDate = table.Column<DateTimeOffset>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRefreshTokens", x => x.UserRefreshTokenId);
+                    table.ForeignKey(
+                        name: "FK_UserRefreshTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -373,6 +400,17 @@ namespace MusicApp.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserRefreshTokens_UserId",
+                table: "UserRefreshTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRefreshTokens_RefreshToken_JwtId",
+                table: "UserRefreshTokens",
+                columns: new[] { "RefreshToken", "JwtId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -409,6 +447,9 @@ namespace MusicApp.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserLogins");
+
+            migrationBuilder.DropTable(
+                name: "UserRefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");

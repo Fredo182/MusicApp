@@ -38,6 +38,19 @@ namespace MusicApp.Data.Domain.Authorization.Shared
         public DateTimeOffset? CreatedDateTime { get; set; }
     }
 
+    public class UserRefreshTokenBaseDomain
+    {
+        public bool? IsActive { get; set; }
+
+        public bool? IsDeleted { get; set; }
+
+        public byte[] ConcurrencyStamp { get; set; }
+
+        public DateTimeOffset? ModifiedDateTime { get; set; }
+
+        public DateTimeOffset? CreatedDateTime { get; set; }
+    }
+
     public class RoleClaimBaseDomain : IdentityRoleClaim<int> { }
     public class UserClaimBaseDomain : IdentityUserClaim<int> { }
     public class UserLoginBaseDomain : IdentityUserLogin<int> { }
